@@ -16,3 +16,9 @@ dist/
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Archivos de asistentes de IA (generados por prisma init)
+.agents/
+.claude/
+.windsurf/
+skills-lock.json
