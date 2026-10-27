@@ -8,6 +8,8 @@ node_modules/
 
 # Build
 dist/
+/back/generated/
+/work/
 
 # Prisma
 *.db

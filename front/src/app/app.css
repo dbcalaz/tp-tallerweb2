@@ -1,0 +1,15 @@
+:host { display: block; min-height: 100vh; }
+.app-shell { min-height: 100vh; background: #f7f8fa; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 0.9rem clamp(1rem, 5vw, 4rem); border-bottom: 1px solid #e4e7ec; background: #fff; }
+.brand { color: #172033; font-weight: 750; text-decoration: none; letter-spacing: -0.02em; }
+nav { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+nav a { padding: 0.55rem 0.8rem; border-radius: 0.5rem; color: #536079; font-size: 0.9rem; text-decoration: none; }
+nav a:hover, nav a.active { background: #eef2fa; color: #24458d; }
+.session-user { align-self: center; padding: 0.55rem 0.8rem; color: #344054; font-size: 0.9rem; font-weight: 650; }
+.logout-button { align-self: center; padding: 0.55rem 0.8rem; border: 1px solid #d0d5dd; border-radius: 0.5rem; background: #fff; color: #536079; font: inherit; font-size: 0.9rem; cursor: pointer; }
+.logout-button:hover { border-color: #aab4c3; background: #f7f8fa; color: #172033; }
+.logout-button:focus-visible { outline: 3px solid rgba(49, 86, 165, 0.3); outline-offset: 2px; }
+.success-toast { position: fixed; z-index: 1000; top: 1.25rem; right: clamp(1rem, 4vw, 3rem); max-width: min(26rem, calc(100vw - 2rem)); padding: 0.9rem 1.15rem; border: 1px solid #b7e4c7; border-radius: 0.75rem; background: #eaf8ef; box-shadow: 0 10px 30px rgba(20, 83, 45, 0.12); color: #21643b; font-weight: 650; line-height: 1.4; animation: toast-in 180ms ease-out; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(-0.4rem); } to { opacity: 1; transform: translateY(0); } }
+.app-content { min-height: calc(100vh - 3.7rem); }
+@media (max-width: 480px) { .topbar { align-items: flex-start; flex-direction: column; gap: 0.5rem; } }

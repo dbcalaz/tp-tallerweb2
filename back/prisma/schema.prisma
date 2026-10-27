@@ -1,7 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
+// Esquema de datos de Taller Web II.
+// Después de configurar DATABASE_URL, aplicar con:
+// npx prisma migrate dev --name crear_usuarios
 
 generator client {
   provider = "prisma-client"
@@ -10,4 +9,16 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  nombre       String
+  apellido     String
+  direccion    String
+  createdAt    DateTime @default(now())
+
+  @@map("users")
 }

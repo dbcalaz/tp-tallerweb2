@@ -1,15 +1,6 @@
-import express, { type Request, type Response } from "express";
 import { config } from "./config/config.js";
-import { AppRoutes } from "./routes/comercioRoutes/routes.js";
+import { app } from "./app.js";
 
-const app = express();
-
-const PORT = config.port;
-
-app.use(express.json());
-
-app.use(AppRoutes.routes)
-
-app.listen(PORT, ()=>{
-    console.log("Servidor funcionando.")
-})
+app.listen(config.port, () => {
+    console.log("Servidor funcionando en el puerto " + config.port + ".");
+});

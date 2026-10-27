@@ -1,0 +1,14 @@
+{
+  "name": "taller-web-ii",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:front": "npm --prefix front start",
+    "dev:back": "npm --prefix back run dev",
+    "build:front": "npm --prefix front run build",
+    "build:back": "npm --prefix back run build"
+  }
+}
