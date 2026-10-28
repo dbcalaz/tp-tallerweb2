@@ -6,7 +6,7 @@ import { ToastService } from './shared/toast.service';
 @Component({
   imports: [RouterLink, RouterLinkActive, RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.css',
+  styleUrl: '../styles/app.css',
   templateUrl: './app.html',
 })
 export class App {

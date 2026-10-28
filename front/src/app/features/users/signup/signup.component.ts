@@ -15,7 +15,7 @@ interface RegistrationError {
 @Component({
   imports: [ReactiveFormsModule],
   selector: 'app-signup',
-  styleUrl: './signup.component.css',
+  styleUrl: '../../../../styles/signup.css',
   templateUrl: './signup.component.html',
 })
 export class SignupComponent {

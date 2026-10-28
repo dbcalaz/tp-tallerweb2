@@ -1,13 +1,14 @@
 <div class="app-shell">
   <header class="topbar">
-    <a class="brand" routerLink="/login">Taller Web II</a>
+    <a class="brand" [routerLink]="authSession.isAuthenticated() ? '/productos' : '/login'">Taller Web II</a>
     <nav aria-label="Navegación principal">
       @if (authSession.currentUser(); as user) {
         <span class="session-user">Hola, {{ user.nombre }}</span>
         <button class="logout-button" type="button" (click)="logout()">Cerrar sesión</button>
+      } @else {
+        <a routerLink="/login" routerLinkActive="active">Iniciar sesi&oacute;n</a>
+        <a routerLink="/usuarios/registro" routerLinkActive="active">Registro</a>
       }
-      <a routerLink="/login" routerLinkActive="active">Iniciar sesi&oacute;n</a>
-      <a routerLink="/usuarios/registro" routerLinkActive="active">Registro</a>
       <a routerLink="/productos" routerLinkActive="active">Productos</a>
       <a routerLink="/carrito" routerLinkActive="active">Carrito</a>
     </nav>

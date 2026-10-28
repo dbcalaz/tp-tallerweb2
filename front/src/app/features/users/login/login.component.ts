@@ -9,7 +9,7 @@ import { AuthSessionService } from '../data-access/auth-session.service';
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-login',
-  styleUrl: '../signup/signup.component.css',
+  styleUrl: '../../../../styles/signup.css',
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
