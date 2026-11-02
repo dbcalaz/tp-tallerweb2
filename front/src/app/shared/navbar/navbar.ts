@@ -1,11 +1,11 @@
-
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, inject, ViewChild } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthSessionService } from '../../features/users/data-access/auth-session.service';
+import { CartPageComponent } from '../../features/cart/cart-page.component';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, CartPageComponent],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
@@ -14,6 +14,14 @@ export class Navbar {
 
   protected readonly authSession = inject(AuthSessionService);
   protected menuUsuarioAbierto = false;
+
+  @ViewChild(CartPageComponent)
+  private cartDrawer!: CartPageComponent;
+
+  protected abrirCarrito(): void {
+      console.log('CLICK EN CARRITO');
+    this.cartDrawer.openCart();
+  }
 
   protected alternarMenuUsuario(event: MouseEvent): void {
     event.stopPropagation();

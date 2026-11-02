@@ -140,21 +140,24 @@
               <span class="hidden text-[13px] xl:inline"> Mi cuenta </span>
             </a>
           }
-          <a
-            routerLink="/carrito"
+          <button
+            type="button"
+            (click)="abrirCarrito()"
             class="relative flex items-center gap-2 rounded-lg bg-[#edf4ff] px-2 py-1.5 text-[#141c25] transition-colors hover:bg-[#e1e9f5]"
           >
-            <span class="material-symbols-outlined text-xl"> shopping_bag </span>
+            <span class="material-symbols-outlined text-xl">shopping_bag</span>
 
-            <span class="hidden text-[13px] xl:inline"> Mi carrito </span>
+            <span class="hidden text-[13px] xl:inline">Mi carrito</span>
+
             <span
               class="flex h-5 w-5 items-center justify-center rounded-full bg-[#d77851] text-[10px] font-bold text-white"
             >
               2
             </span>
-          </a>
+          </button>
         </div>
       </div>
     </div>
   </header>
 </div>
+<app-cart-page></app-cart-page>
