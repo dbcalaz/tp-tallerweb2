@@ -1,22 +1,17 @@
-<div class="app-shell">
-  <header class="topbar">
-    <a class="brand" [routerLink]="authSession.isAuthenticated() ? '/productos' : '/login'">Taller Web II</a>
-    <nav aria-label="Navegación principal">
-      @if (authSession.currentUser(); as user) {
-        <span class="session-user">Hola, {{ user.nombre }}</span>
-        <button class="logout-button" type="button" (click)="logout()">Cerrar sesión</button>
-      } @else {
-        <a routerLink="/login" routerLinkActive="active">Iniciar sesi&oacute;n</a>
-        <a routerLink="/usuarios/registro" routerLinkActive="active">Registro</a>
-      }
-      <a routerLink="/productos" routerLinkActive="active">Productos</a>
-      <a routerLink="/carrito" routerLinkActive="active">Carrito</a>
-    </nav>
-  </header>
-  @if (toast.message()) {
-    <div class="success-toast" role="status" aria-live="polite">{{ toast.message() }}</div>
-  }
-  <div class="app-content">
-    <router-outlet />
+
+@if (authSession.isAuthenticated()) {
+  <app-navbar />
+
+  <!-- Espacio para compensar el navbar fijo -->
+  <div class="h-[94px]"></div>
+}
+
+@if (toast.message()) {
+  <div class="success-toast" role="status" aria-live="polite">
+    {{ toast.message() }}
   </div>
+}
+
+<div class="app-content">
+  <router-outlet />
 </div>

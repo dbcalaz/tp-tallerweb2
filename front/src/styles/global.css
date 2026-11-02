@@ -1,3 +1,4 @@
+@import "tailwindcss";
 * { box-sizing: border-box; }
 html, body { min-height: 100%; margin: 0; }
 body { color: #172033; font-family: Inter, "Segoe UI", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
