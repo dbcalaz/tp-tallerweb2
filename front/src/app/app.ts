@@ -4,9 +4,10 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { AuthSessionService } from './features/users/data-access/auth-session.service';
 import { ToastService } from './shared/toast.service';
 import { Navbar } from './shared/navbar/navbar';
+import { FooterComponent } from './shared/footer/footer.component';
 
 @Component({
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, Navbar],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, Navbar, FooterComponent],
   selector: 'app-root',
   styleUrl: '../styles/app.css',
   templateUrl: './app.html',
