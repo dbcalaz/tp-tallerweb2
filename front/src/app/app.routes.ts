@@ -16,6 +16,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/catalogo/catalogo.component').then((module) => module.CatalogoPageComponent),
   },
   {
+    path: 'productos/detalle',
+    loadComponent: () => import('./features/products/product-detail/detalle-producto.component')
+      .then((module) => module.DetalleProductoComponent),
+  },
+  {
     path: 'carrito',
     loadComponent: () => import('./features/cart/cart-page.component').then((module) => module.CartPageComponent),
   },
