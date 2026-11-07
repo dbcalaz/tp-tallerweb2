@@ -38,13 +38,13 @@ export class LoginComponent {
       error: (error: unknown) => {
         const timedOut = error instanceof Error && error.name === 'TimeoutError';
         const httpError = error instanceof HttpErrorResponse ? error : null;
-        this.errorMessage = httpError?.status === 401
-          ? 'El email o la contraseña no coinciden.'
+        const serverMessage = (httpError?.error as { message?: string } | null)?.message;
+
+        this.errorMessage = timedOut
+          ? 'El servidor tardó demasiado en responder. Intentá nuevamente.'
           : httpError?.status === 0
             ? 'No se pudo conectar con el servidor. Verificá que esté iniciado.'
-            : timedOut
-              ? 'El servidor tardó demasiado en responder. Intentá nuevamente.'
-              : (httpError?.error as { message?: string } | null)?.message || 'No se pudo iniciar sesión. Intentá nuevamente.';
+            : serverMessage || 'El email o la contraseña no coinciden.';
       },
     });
   }

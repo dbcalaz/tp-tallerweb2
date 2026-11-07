@@ -88,14 +88,20 @@ export class UsuarioController {
 
         try {
             const user = await getPrisma().user.findUnique({ where: { email } });
-            const [algorithm, salt, hash] = user?.passwordHash.split("$") ?? [];
+            if (!user) {
+                return res.status(401).json({ message: "No existe una cuenta registrada con este email. Registrate primero." });
+            }
+
+            const [algorithm, salt, hash] = user.passwordHash.split("$");
             let valid = false;
             if (algorithm === "scrypt" && salt && hash && /^[a-f0-9]+$/i.test(hash) && hash.length % 2 === 0) {
                 const expected = Buffer.from(hash, "hex");
                 const actual = await scrypt(password, salt, expected.length) as Buffer;
                 valid = actual.length === expected.length && timingSafeEqual(actual, expected);
             }
-            if (!user || !valid) return res.status(401).json({ message: "El email o la contraseña no coinciden." });
+            if (!valid) {
+                return res.status(401).json({ message: "La contraseña ingresada es incorrecta." });
+            }
             return res.status(200).json({
                 message: "Sesión iniciada correctamente.",
                 user: { id: user.id, email: user.email, nombre: user.nombre, apellido: user.apellido },
