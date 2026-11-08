@@ -17,6 +17,7 @@ export class LoginComponent {
   private readonly router = inject(Router);
   private readonly authSession = inject(AuthSessionService);
   protected isSubmitting = false;
+  protected showPassword = false;
   protected errorMessage = '';
   protected readonly form = new FormGroup({
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),

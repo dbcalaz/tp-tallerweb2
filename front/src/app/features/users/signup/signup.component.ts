@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { UsersApiService } from '../data-access/users-api.service';
 import { finalize, timeout } from 'rxjs';
 import { Router } from '@angular/router';
@@ -13,7 +14,7 @@ interface RegistrationError {
 }
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-signup',
   styleUrl: '../../../../styles/signup.css',
   templateUrl: './signup.component.html',
@@ -47,12 +48,16 @@ export class SignupComponent {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(8), this.passwordComplexity],
     }),
+    passwordConfirmation: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     apellido: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     direccion: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-  });
+    termsAccepted: new FormControl(false, { nonNullable: true, validators: [Validators.requiredTrue] }),
+  }, { validators: (group) => group.get('password')?.value === group.get('passwordConfirmation')?.value ? null : { passwordMismatch: true } });
 
   protected isSubmitting = false;
+  protected showPassword = false;
+  protected showPasswordConfirmation = false;
   protected errorMessage = '';
   protected serverErrors: Record<string, string> = {};
 
@@ -66,7 +71,8 @@ export class SignupComponent {
     }
 
     this.isSubmitting = true;
-    this.usersApi.register(this.form.getRawValue()).pipe(
+    const { email, password, nombre, apellido, direccion } = this.form.getRawValue();
+    this.usersApi.register({ email, password, nombre, apellido, direccion }).pipe(
       timeout({ first: 10000 }),
       finalize(() => this.isSubmitting = false),
     ).subscribe({

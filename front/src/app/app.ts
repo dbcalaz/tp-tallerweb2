@@ -7,7 +7,7 @@ import { Navbar } from './shared/navbar/navbar';
 import { FooterComponent } from './shared/footer/footer.component';
 
 @Component({
-  imports: [ RouterOutlet, Navbar, FooterComponent],
+  imports: [ RouterOutlet, Navbar, FooterComponent, RouterLink],
   selector: 'app-root',
   styleUrl: '../styles/app.css',
   templateUrl: './app.html',
