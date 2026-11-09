@@ -1,24 +1,23 @@
 import { type Request, type Response } from "express";
-import { prisma } from "../prisma.config.js";
+import { ProductoRepository } from "../repository/producto.repository.js";
+import { ProductoService } from "../services/producto.service.js";
+
+const productoRepository = new ProductoRepository();
+const productoService = new ProductoService(productoRepository);
 
 export class ProductoController {
 
     public getProductos = async (req: Request, res: Response) => {
         try {
-            const productos = await prisma.producto.findMany({
-                include: {
-                    marca: true,
-                    tipoProducto: {
-                        include: {
-                            categoria: true
-                        }
-                    }
-                }
-            });
 
+            const productos = await productoService.obtenerProductos();
+            console.log(productos)
             return res.json(productos);
-        } catch (error) {
-            console.error("Error al obtener productos:", error);
+        } catch (error: any) {
+            if (error.message) {
+                return res.status(500).json({ mensaje: error.message });
+
+            }
             return res.status(500).json({ mensaje: "Error interno del servidor" });
         }
     }
