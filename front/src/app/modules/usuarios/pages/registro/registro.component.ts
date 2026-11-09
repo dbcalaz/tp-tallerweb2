@@ -2,11 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { UsersApiService } from '../data-access/users-api.service';
+import { UsuariosService } from '../../../../api/services/usuarios/usuarios.service';
 import { finalize, timeout } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthSessionService } from '../data-access/auth-session.service';
-import { ToastService } from '../../../shared/toast.service';
+import { AuthSessionService } from '../../../../api/services/auth/auth-session.service';
+import { ToastService } from '../../../../shared/toast.service';
 
 interface RegistrationError {
   message?: string;
@@ -15,12 +15,12 @@ interface RegistrationError {
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
-  selector: 'app-signup',
-  styleUrl: '../../../../styles/signup.css',
-  templateUrl: './signup.component.html',
+  selector: 'app-registro',
+  styleUrl: '../../../../../styles/signup.css',
+  templateUrl: './registro.component.html',
 })
-export class SignupComponent {
-  private readonly usersApi = inject(UsersApiService);
+export class RegistroComponent {
+  private readonly usersApi = inject(UsuariosService);
   private readonly router = inject(Router);
   private readonly authSession = inject(AuthSessionService);
   private readonly toast = inject(ToastService);

@@ -5,10 +5,10 @@ import { CommonModule } from '@angular/common';
   selector: 'app-cart-page',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './cart-page.component.html',
-  styleUrl: './cart-page.component.css'
+  templateUrl: './carrito.component.html',
+  styleUrl: './carrito.component.css'
 })
-export class CartPageComponent {
+export class CarritoComponent {
   isOpen = signal(false);
 
   openCart(): void {

@@ -15,8 +15,8 @@
         <div class="flex items-center gap-space-xs font-label-xs text-label-xs tracking-wider uppercase bg-surface-container px-space-sm py-1 rounded">
           <span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container animate-pulse"></span>
           <span class="text-on-surface-variant">
-            Mostrando <strong class="text-on-surface">36</strong> de
-            <strong class="text-on-surface">142</strong> unidades disponibles
+            Mostrando <strong class="text-on-surface">{{ productos().length }}</strong> de
+            <strong class="text-on-surface">{{ productos().length }}</strong> unidades disponibles
           </span>
         </div>
       </div>
@@ -237,62 +237,8 @@
         </aside>
         <section class="lg:col-span-9 flex flex-col gap-space-lg">
           <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-gutter-desktop">
-            @for (producto of productos; track producto.nombre) {
-              <article class="bg-surface-container-lowest rounded-lg p-space-md flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow group">
-                <div class="space-y-space-sm">
-                  <div class="flex items-center justify-between">
-                    <span class="font-label-xs text-label-xs px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-bold tracking-wider uppercase">
-                      {{ producto.marca }}
-                    </span>
-                    <span
-                      class="flex items-center gap-1 font-label-xs text-label-xs px-2 py-0.5 rounded font-bold"
-                      [class.text-tertiary-container]="producto.stock !== 'En stock'"
-                      [class.bg-tertiary-fixed]="producto.stock !== 'En stock'"
-                      [class.text-secondary-container]="producto.stock === 'En stock'"
-                      [class.bg-primary-container]="producto.stock === 'En stock'"
-                    >
-                      <span
-                        class="w-1.5 h-1.5 rounded-full"
-                        [class.bg-error]="producto.stock !== 'En stock'"
-                        [class.bg-on-tertiary-container]="producto.stock === 'En stock'"
-                      ></span>
-                      {{ producto.stock }}
-                    </span>
-                  </div>
-                  <div class="relative w-full aspect-square bg-surface-container-low rounded flex items-center justify-center p-3 overflow-hidden">
-                    <img
-                      class="object-contain w-full h-full mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
-                      [src]="producto.imagen"
-                      [alt]="producto.nombre"
-                    />
-                  </div>
-                  <div>
-                    <p class="font-label-xs text-label-xs uppercase tracking-wider text-secondary">
-                      {{ producto.descripcion }}
-                    </p>
-                    <h3 class="font-title-md text-title-md text-primary font-semibold line-clamp-2 leading-tight">
-                      {{ producto.nombre }}
-                    </h3>
-                    <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-1">
-                      {{ producto.especificaciones }}
-                    </p>
-                  </div>
-                </div>
-                <div class="mt-space-md pt-space-xs space-y-space-xs">
-                  <div>
-                    <span class="font-price-display text-price-display text-on-tertiary-container block">
-                      {{ producto.precio }}
-                    </span>
-                    <span class="font-price-installment text-price-installment text-secondary">
-                      {{ producto.cuotas }}
-                    </span>
-                  </div>
-                  <button class="w-full h-9 flex items-center justify-center gap-1.5 bg-on-tertiary-container text-on-primary font-label-md text-label-md rounded hover:bg-tertiary-container transition-colors" type="button">
-                    <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
-                    <span>Agregar</span>
-                  </button>
-                </div>
-              </article>
+            @for (producto of productos(); track producto.id) {
+              <app-card-producto [producto]="producto" />
             }
           </div>
           <div class="w-full bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-sm">

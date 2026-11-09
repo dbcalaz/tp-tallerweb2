@@ -3,17 +3,17 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { finalize, timeout } from 'rxjs';
-import { UsersApiService } from '../data-access/users-api.service';
-import { AuthSessionService } from '../data-access/auth-session.service';
+import { UsuariosService } from '../../../../api/services/usuarios/usuarios.service';
+import { AuthSessionService } from '../../../../api/services/auth/auth-session.service';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-login',
-  styleUrl: '../../../../styles/signup.css',
+  styleUrl: '../../../../../styles/signup.css',
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
-  private readonly usersApi = inject(UsersApiService);
+  private readonly usersApi = inject(UsuariosService);
   private readonly router = inject(Router);
   private readonly authSession = inject(AuthSessionService);
   protected isSubmitting = false;

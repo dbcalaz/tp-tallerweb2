@@ -1,11 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
-
-export interface AuthenticatedUser {
-  id: string;
-  email: string;
-  nombre: string;
-  apellido: string;
-}
+import { AuthenticatedUser } from '../../../modules/usuarios/interfaces/usuario.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AuthSessionService {
@@ -19,7 +13,6 @@ export class AuthSessionService {
     try {
       sessionStorage.setItem(this.storageKey, JSON.stringify(user));
     } catch {
-      // Keep the session in memory when browser storage is unavailable.
     }
   }
 
@@ -28,7 +21,6 @@ export class AuthSessionService {
     try {
       sessionStorage.removeItem(this.storageKey);
     } catch {
-      // Clearing the in-memory session is enough when browser storage is unavailable.
     }
   }
 
