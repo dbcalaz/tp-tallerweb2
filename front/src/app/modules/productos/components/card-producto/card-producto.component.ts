@@ -1,10 +1,11 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { Producto } from '../../interfaces/producto.interface';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-card-producto',
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, RouterLink],
   templateUrl: './card-producto.component.html',
   styleUrl: './card-producto.component.css',
 })

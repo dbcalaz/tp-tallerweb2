@@ -7,5 +7,6 @@ const productoRouter = Router()
 const productoController = new ProductoController();
 
 productoRouter.get('/', productoController.getProductos)
+productoRouter.get('/:id', productoController.getProductoPorId)
 
 export default productoRouter

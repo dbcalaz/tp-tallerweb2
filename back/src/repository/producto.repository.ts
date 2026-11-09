@@ -16,4 +16,20 @@ export class ProductoRepository {
 
         return productos;
     }
+
+    async getProductoPorId(id: number) {
+        const producto = await prisma.producto.findUnique({
+            where: { id },
+            include: {
+                marca: true,
+                tipoProducto: {
+                    include: {
+                        categoria: true
+                    }
+                }
+            }
+        });
+
+        return producto;
+    }
 }

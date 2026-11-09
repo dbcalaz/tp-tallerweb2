@@ -15,4 +15,11 @@ export class ProductosService {
       .get<ProductoRest[]>(`${environment.API_URL}/productos`)
       .pipe(map((res) => ProductoMapper.mapRestArrayToFront(res)));
   }
+
+  getProductoPorId(id: number): Observable<Producto> {
+    return this.http
+      .get<ProductoRest>(`${environment.API_URL}/productos/${id}`)
+      .pipe(map((res) => ProductoMapper.mapRestToFront(res)));
+      // Nota: Si en tu mapper el método para uno solo se llama distinto (ej. mapRestToFront), lo ajustás a ese nombre.
+  }
 }

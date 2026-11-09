@@ -4,5 +4,5 @@ import { DetalleProductoComponent } from './pages/detalle-producto/detalle-produ
 
 export const productosRoutes: Routes = [
   { path: 'catalogo', component: CatalogoComponent },
-  { path: 'productos/detalle', component: DetalleProductoComponent },
+  { path: 'productos/:id', component: DetalleProductoComponent },
 ];

@@ -1,852 +1,626 @@
+@if (producto(); as productoActual) {
+  <main class="w-full min-h-[calc(100vh-280px)] bg-surface">
+    <div class="flex flex-col w-full">
 
-<main class="w-full min-h-[calc(100vh-280px)] bg-surface">
-  <div class="flex flex-col w-full">
+      <!-- DETALLE DEL PRODUCTO -->
+      <section class="max-w-[1360px] mx-auto px-margin-desktop w-full py-space-md">
 
-    <!-- DETALLE DEL PRODUCTO -->
-    <section class="max-w-[1360px] mx-auto px-margin-desktop w-full py-space-md">
+        <!-- Breadcrumb -->
+        <nav
+          aria-label="Ruta de navegación"
+          class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant mb-space-md"
+        >
+          <a class="hover:text-primary transition-colors" href="#">Inicio</a>
+          <span class="opacity-40">/</span>
+          <a class="hover:text-primary transition-colors" href="/productos">Catálogo</a>
+          <span class="opacity-40">/</span>
+          <span class="text-on-surface font-medium truncate max-w-xs sm:max-w-none">
+            {{ productoActual.nombre }}
+          </span>
+        </nav>
 
-      <!-- Breadcrumb -->
-      <nav
-        aria-label="Ruta de navegación"
-        class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant mb-space-md"
-      >
-        <a class="hover:text-primary transition-colors" href="#">Inicio</a>
-        <span class="opacity-40">/</span>
-        <a class="hover:text-primary transition-colors" href="#">Catálogo</a>
-        <span class="opacity-40">/</span>
-        <a class="hover:text-primary transition-colors" href="#">Notebooks</a>
-        <span class="opacity-40">/</span>
-        <span class="text-on-surface font-medium truncate max-w-xs sm:max-w-none">
-          Lenovo ThinkPad X1 Carbon Gen 11
-        </span>
-      </nav>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
-
-        <!-- GALERÍA DE IMÁGENES -->
-        <div class="lg:col-span-7 flex flex-col gap-space-md">
-
-          <!-- Imagen principal -->
-          <div
-            class="relative w-full aspect-[4/3] bg-surface-container-low rounded-xl overflow-hidden flex items-center justify-center p-space-lg shadow-sm group"
-          >
-            <div class="absolute top-space-md left-space-md z-10 flex flex-wrap gap-space-xs">
-              <span
-                class="inline-flex items-center gap-1 px-space-sm py-1 bg-surface-container-lowest text-primary font-label-xs text-label-xs uppercase tracking-wider rounded shadow-sm"
-              >
-                <span class="w-2 h-2 rounded-full bg-[#82958A]"></span>
-                Stock Inmediato
-              </span>
-
-              <span
-                class="inline-flex items-center gap-1 px-space-sm py-1 bg-primary text-on-primary font-label-xs text-label-xs uppercase tracking-wider rounded"
-              >
-                <span class="material-symbols-outlined text-[13px]">verified_user</span>
-                Garantía Oficial 12 Meses
-              </span>
-            </div>
-
-            <div class="absolute top-space-md right-space-md z-10">
-              <button
-                aria-label="Guardar en favoritos"
-                class="w-9 h-9 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-primary flex items-center justify-center shadow-sm transition-transform active:scale-95"
-                type="button"
-              >
-                <span class="material-symbols-outlined text-[18px]">favorite</span>
-              </button>
-            </div>
-
-            <img
-              alt="Lenovo ThinkPad X1 Carbon Gen 11 - Vista frontal"
-              class="w-full h-full object-contain transition-all duration-300 transform group-hover:scale-[1.02]"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuB09lSA0gj1bJolG95PF_S1DXjD5L1NZF5I6jMUiIZjwqMRf8HAcD7FqnThHLf75ilVXRTah9I7mEqM680yfLy1mvH7zQ88Q8LUtuiRJS7LTjumiBT6LXnUIKGAhTiU0mQ3f-5DnEvwcbp3nQX0MpsYykKtEFjl-rnAO06158b5w1gDaqe71hvhb5MWGNemMawV3f0rTD6x38i58EoktUyQrxr0rSRcfuSq08hLF63u"
-            />
+          <!-- IMAGEN DEL PRODUCTO -->
+          <div class="lg:col-span-7 flex flex-col gap-space-md">
 
             <div
-              class="absolute bottom-space-md right-space-md bg-surface-container-lowest/90 backdrop-blur-sm px-space-sm py-1 rounded text-on-surface font-label-xs text-label-xs flex items-center gap-1 shadow-sm"
+              class="relative w-full aspect-[4/3] bg-surface-container-low rounded-xl overflow-hidden flex items-center justify-center p-space-lg shadow-sm group"
             >
-              <span class="material-symbols-outlined text-[14px]">zoom_in</span>
-              360° Inspección óptica
-            </div>
-          </div>
-
-          <!-- Miniaturas -->
-          <div class="grid grid-cols-4 gap-space-sm">
-
-            <button
-              class="aspect-[4/3] rounded-lg bg-surface-container-low overflow-hidden p-space-xs transition-all shadow-sm focus:outline-none ring-2 ring-primary"
-              type="button"
-            >
-              <img
-                alt="Vista abierta OLED"
-                class="w-full h-full object-contain pointer-events-none"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDleylnnxPFsHtdxIZ0JEyiTnIMgZBwgjVDahw3jsGG53j5ESzhta5T6H_3BTlbHccRSJUzLi67sItze_995vIXMvdeqfSxfBaubXzV1sRtLl-1dXcAvOw13r5e2lVwBx6L4Guqlhab8ntq9csC0pdoWgsZR13jj5CT0V7CkFs03WpDtTvkOG5q3Ows0pEs5zVQWO8HTQWYAHz292v-gF_-jK6faiLSjAA-IjzY1UHC"
-              />
-            </button>
-
-            <button
-              class="aspect-[4/3] rounded-lg bg-surface-container-low overflow-hidden p-space-xs transition-all shadow-sm focus:outline-none opacity-70 hover:opacity-100"
-              type="button"
-            >
-              <img
-                alt="Detalle teclado y TrackPoint"
-                class="w-full h-full object-contain pointer-events-none"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuARvK2KmyGzG-11EGCIkKR5ZQhXKrfQmfs_yvhkpE9vtVLTUqhxFAUh6gNVtOfa0VF41URJT0impZ_DlehTRhHS-0fXhNGy9ABp3yXaU6GiqdiirTymYSCOh4xfYxS_BP89YPAyFg98zQ54V2KI3ADXK23fk6boXuCvbp_A0tui2iBHs8PBP0R1Cs5CrZVrhxIzYKDgMajIbW05Yc6DtZVkXWlaUe8vQyNX7oX-XLVk"
-              />
-            </button>
-
-            <button
-              class="aspect-[4/3] rounded-lg bg-surface-container-low overflow-hidden p-space-xs transition-all shadow-sm focus:outline-none opacity-70 hover:opacity-100"
-              type="button"
-            >
-              <img
-                alt="Perfil lateral y puertos"
-                class="w-full h-full object-contain pointer-events-none"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtG1UnpXVkTO2tP8WH4aJsj3lRr1JJ4Y50oOZyjwGRxhAsedK5gTwSG1N9_2H_HdCrU1UYBi5-76OM9sGodk1UdvM18xs9cMY2DlYNf8ax5qbNUUO4G1ZYNhIYfPy0AQi8biaWfUIRCXQtKNtY-PIpTvL_VVIZdwC8LqDJBaGTWz1u1arqUgvB8Me8PRSMaRd6l-MbSdNgQ6HqWHv-A88COhhxWsT4RBpc3VonYh4X"
-              />
-            </button>
-
-            <button
-              class="aspect-[4/3] rounded-lg bg-surface-container-low overflow-hidden p-space-xs transition-all shadow-sm focus:outline-none opacity-70 hover:opacity-100"
-              type="button"
-            >
-              <img
-                alt="Tapa posterior cerrada"
-                class="w-full h-full object-contain pointer-events-none"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPg_1jUl1DkwDxyVxAL8Kcz8vygkJHBSW996fcILeLbbZD8J5vVsNffL0izYeV7aOImrbLgkjZOBK2HkCCfHy2fUUfkiYbzrdi9KoHaqqeQ8y7OFJwYgNQVQUhjubWPFsV5fiD8oXXijt09O9QGgb7GcDYaYorJOA5HS2DFCaWfR_Lt8easQX2LnWbradLUTsfUVKl4U8B5Kp4KY0q-HHBs5keTH9pxIbYdd0cqHs-"
-              />
-            </button>
-
-          </div>
-
-          <!-- Información de envío y devolución -->
-          <div
-            class="p-space-md bg-surface-container-low rounded-xl flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm"
-          >
-            <div class="flex items-center gap-space-xs">
-              <span class="material-symbols-outlined text-[18px] text-primary">local_shipping</span>
-              <span>Despacho prioritario en 24hs hábiles</span>
-            </div>
-
-            <div class="flex items-center gap-space-xs">
-              <span class="material-symbols-outlined text-[18px] text-primary">assignment_return</span>
-              <span>Devolución sin costo hasta 10 días</span>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- INFORMACIÓN Y COMPRA DEL PRODUCTO -->
-        <div class="lg:col-span-5 flex flex-col gap-space-md">
-
-          <!-- Nombre y descripción -->
-          <div class="space-y-space-xs">
-            <div class="flex items-center justify-between">
-              <span
-                class="font-label-xs text-label-xs uppercase tracking-widest text-on-tertiary-container font-bold"
-              >
-                Lenovo • ThinkPad Serie X
-              </span>
-
-              <span class="font-body-sm text-body-sm text-on-surface-variant">
-                SKU: AUS-TP-X1-G11
-              </span>
-            </div>
-
-            <h1 class="font-headline-lg text-headline-lg text-primary tracking-tight leading-tight">
-              Lenovo ThinkPad X1 Carbon Gen 11
-            </h1>
-
-            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-              Intel Core i7-1365U vPro • 32GB LPDDR5 6000MHz • Pantalla 14" 2.8K OLED
-              (2880x1800) 400 nits HDR 500 • Chasis de fibra de carbono aeroespacial.
-            </p>
-          </div>
-
-          <!-- Precio -->
-          <div class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm space-y-space-sm">
-
-            <div class="flex items-baseline justify-between">
-              <div>
-                <span class="font-label-xs text-label-xs uppercase text-on-surface-variant">
-                  Precio de lista
-                </span>
-
-                <div class="flex items-baseline gap-space-xs">
+              <!-- Estado del stock -->
+              <div class="absolute top-space-md left-space-md z-10 flex flex-wrap gap-space-xs">
+                @if (productoActual.stock > 0) {
                   <span
-                    class="font-price-display text-price-display text-on-tertiary-container text-[32px] leading-tight"
+                    class="inline-flex items-center gap-1 px-space-sm py-1 bg-surface-container-lowest text-primary font-label-xs text-label-xs uppercase tracking-wider rounded shadow-sm"
                   >
-                    $2.990.000
+                    <span class="w-2 h-2 rounded-full bg-[#82958A]"></span>
+                    En stock
                   </span>
+                } @else {
+                  <span
+                    class="inline-flex items-center gap-1 px-space-sm py-1 bg-surface-container-lowest text-error font-label-xs text-label-xs uppercase tracking-wider rounded shadow-sm"
+                  >
+                    <span class="w-2 h-2 rounded-full bg-error"></span>
+                    Sin stock
+                  </span>
+                }
 
-                  <span class="font-body-sm text-body-sm text-on-surface-variant font-medium">
-                    ARS
-                  </span>
-                </div>
+                <span
+                  class="inline-flex items-center gap-1 px-space-sm py-1 bg-primary text-on-primary font-label-xs text-label-xs uppercase tracking-wider rounded"
+                >
+                  <span class="material-symbols-outlined text-[13px]">verified_user</span>
+                  Garantía Oficial 12 Meses
+                </span>
               </div>
 
-              <span
-                class="font-label-xs text-label-xs px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold tracking-wide uppercase"
+              <!-- Favoritos -->
+              <div class="absolute top-space-md right-space-md z-10">
+                <button
+                  aria-label="Guardar en favoritos"
+                  class="w-9 h-9 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-primary flex items-center justify-center shadow-sm transition-transform active:scale-95"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">favorite</span>
+                </button>
+              </div>
+
+              <!-- Imagen principal proveniente de la base de datos -->
+              @if (productoActual.imagenUrl) {
+                <img
+                  [src]="productoActual.imagenUrl"
+                  [alt]="productoActual.nombre"
+                  class="w-full h-full object-contain transition-all duration-300 transform group-hover:scale-[1.02]"
+                />
+              } @else {
+                <div class="flex flex-col items-center justify-center gap-space-xs text-on-surface-variant">
+                  <span class="material-symbols-outlined text-6xl">image</span>
+                  <span class="font-body-sm text-body-sm">Imagen no disponible</span>
+                </div>
+              }
+
+              <div
+                class="absolute bottom-space-md right-space-md bg-surface-container-lowest/90 backdrop-blur-sm px-space-sm py-1 rounded text-on-surface font-label-xs text-label-xs flex items-center gap-1 shadow-sm"
               >
-                Envío Bonificado
-              </span>
+                <span class="material-symbols-outlined text-[14px]">zoom_in</span>
+                Inspección del producto
+              </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-xs pt-space-xs">
+            <!-- Información de envío y devolución -->
+            <div
+              class="p-space-md bg-surface-container-low rounded-xl flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm"
+            >
+              <div class="flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-[18px] text-primary">
+                  local_shipping
+                </span>
+                <span>Despacho prioritario en 24hs hábiles</span>
+              </div>
 
-              <div class="p-space-xs rounded bg-surface-container-low flex flex-col">
-                <span class="font-price-installment text-price-installment text-primary font-bold">
-                  6 cuotas fijas de $498.333
+              <div class="flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-[18px] text-primary">
+                  assignment_return
+                </span>
+                <span>Devolución sin costo hasta 10 días</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- INFORMACIÓN Y COMPRA DEL PRODUCTO -->
+          <div class="lg:col-span-5 flex flex-col gap-space-md">
+
+            <!-- Nombre y datos del producto -->
+            <div class="space-y-space-xs">
+              <div class="flex items-center justify-between">
+                <span
+                  class="font-label-xs text-label-xs uppercase tracking-widest text-on-tertiary-container font-bold"
+                >
+                  {{ productoActual.marca }} • {{ productoActual.tipo }}
                 </span>
 
                 <span class="font-body-sm text-body-sm text-on-surface-variant">
-                  Con Visa, Mastercard o American Express
+                  SKU: {{ productoActual.id }}
                 </span>
               </div>
 
-              <div class="p-space-xs rounded bg-secondary-container/40 flex flex-col">
-                <span class="font-price-installment text-price-installment text-primary font-bold">
-                  10% OFF pagando con Transferencia
-                </span>
+              <h1 class="font-headline-lg text-headline-lg text-primary tracking-tight leading-tight">
+                {{ productoActual.nombre }}
+              </h1>
+            </div>
 
-                <span class="font-body-sm text-body-sm text-on-tertiary-container font-semibold">
-                  $2.691.000 ARS final
+            <!-- Precio -->
+            <div class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm space-y-space-sm">
+
+              <div class="flex items-baseline justify-between">
+                <div>
+                  <span class="font-label-xs text-label-xs uppercase text-on-surface-variant">
+                    Precio de lista
+                  </span>
+
+                  <div class="flex items-baseline gap-space-xs">
+                    <span
+                      class="font-price-display text-price-display text-on-tertiary-container text-[32px] leading-tight"
+                    >
+                      {{ getPrecioFormateado() }}
+                    </span>
+
+                    <span class="font-body-sm text-body-sm text-on-surface-variant font-medium">
+                      ARS
+                    </span>
+                  </div>
+                </div>
+
+                <span
+                  class="font-label-xs text-label-xs px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold tracking-wide uppercase"
+                >
+                  Envío Bonificado
                 </span>
               </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-xs pt-space-xs">
+
+                <div class="p-space-xs rounded bg-surface-container-low flex flex-col">
+                  <span class="font-price-installment text-price-installment text-primary font-bold">
+                    6 cuotas fijas de {{ getCuotaFormateada() }}
+                  </span>
+
+                  <span class="font-body-sm text-body-sm text-on-surface-variant">
+                    Con Visa, Mastercard o American Express
+                  </span>
+                </div>
+
+                <div class="p-space-xs rounded bg-secondary-container/40 flex flex-col">
+                  <span class="font-price-installment text-price-installment text-primary font-bold">
+                    10% OFF pagando con Transferencia
+                  </span>
+
+                  <span class="font-body-sm text-body-sm text-on-tertiary-container font-semibold">
+                    {{ getPrecioTransferenciaFormateado() }} ARS final
+                  </span>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Almacenamiento: se mantiene estático por ahora -->
+            <div class="space-y-space-xs">
+              <div class="flex justify-between items-center">
+                <label class="font-label-md text-label-md text-on-surface font-semibold">
+                  Almacenamiento NVMe PCIe 4.0
+                </label>
+
+                <span class="font-body-sm text-body-sm text-on-surface-variant">
+                  1TB Seleccionado
+                </span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-space-xs">
+
+                <button
+                  class="p-space-sm rounded-lg text-left bg-surface-container-lowest ring-2 ring-primary flex flex-col justify-between transition-all"
+                  type="button"
+                >
+                  <div class="flex justify-between items-center w-full">
+                    <span class="font-label-md text-label-md text-primary font-bold">
+                      1TB SSD NVMe
+                    </span>
+
+                    <span class="material-symbols-outlined text-[16px] text-primary">
+                      check_circle
+                    </span>
+                  </div>
+
+                  <span class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                    Configuración base de fábrica
+                  </span>
+                </button>
+
+                <button
+                  class="p-space-sm rounded-lg text-left bg-surface-container-low opacity-80 hover:opacity-100 flex flex-col justify-between transition-all"
+                  type="button"
+                >
+                  <div class="flex justify-between items-center w-full">
+                    <span class="font-label-md text-label-md text-primary font-bold">
+                      2TB SSD NVMe
+                    </span>
+
+                    <span class="font-label-xs text-label-xs text-on-tertiary-container font-semibold">
+                      +$350.000
+                    </span>
+                  </div>
+
+                  <span class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                    Alta velocidad 7000 MB/s
+                  </span>
+                </button>
+
+              </div>
+            </div>
+
+            <!-- Cantidad y botones de compra -->
+            <div class="flex items-center gap-space-sm pt-space-xs">
+
+              <div class="flex items-center bg-surface-container-lowest rounded-lg shadow-sm p-1">
+                <button
+                  aria-label="Restar una unidad"
+                  class="w-8 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded transition-colors font-bold text-lg"
+                  type="button"
+                >
+                  -
+                </button>
+
+                <span class="w-10 text-center font-label-md text-label-md text-on-surface font-bold">
+                  1
+                </span>
+
+                <button
+                  aria-label="Sumar una unidad"
+                  class="w-8 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded transition-colors font-bold text-lg"
+                  type="button"
+                >
+                  +
+                </button>
+              </div>
+
+              <button
+                class="flex-1 py-3 px-space-md bg-on-tertiary-container hover:bg-tertiary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm flex items-center justify-center gap-space-xs transition-colors active:scale-[0.99]"
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                Agregar al carrito
+              </button>
+
+              <button
+                class="py-3 px-space-md bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm transition-colors hidden sm:block"
+                type="button"
+              >
+                Comprar ahora
+              </button>
 
             </div>
-          </div>
 
-          <!-- Almacenamiento -->
-          <div class="space-y-space-xs">
-            <div class="flex justify-between items-center">
-              <label class="font-label-md text-label-md text-on-surface font-semibold">
-                Almacenamiento NVMe PCIe 4.0
+            <!-- Calculadora de envío -->
+            <div class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm space-y-space-xs">
+
+              <label
+                class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-space-xs"
+                for="postal-code"
+              >
+                <span class="material-symbols-outlined text-[18px] text-primary">
+                  local_shipping
+                </span>
+                Calcular costo y tiempo de entrega
               </label>
 
-              <span class="font-body-sm text-body-sm text-on-surface-variant">
-                1TB Seleccionado
-              </span>
-            </div>
-
-            <div class="grid grid-cols-2 gap-space-xs">
-
-              <button
-                class="p-space-sm rounded-lg text-left bg-surface-container-lowest ring-2 ring-primary flex flex-col justify-between transition-all"
-                type="button"
-              >
-                <div class="flex justify-between items-center w-full">
-                  <span class="font-label-md text-label-md text-primary font-bold">
-                    1TB SSD NVMe
-                  </span>
-
-                  <span class="material-symbols-outlined text-[16px] text-primary">
-                    check_circle
-                  </span>
+              <div class="flex gap-space-xs">
+                <div class="relative flex-1">
+                  <input
+                    class="w-full px-space-md py-2 bg-surface-container-low rounded font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none"
+                    id="postal-code"
+                    maxlength="8"
+                    placeholder="Ej. C1425 o 5000"
+                    type="text"
+                  />
                 </div>
 
-                <span class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                  Configuración base de fábrica
-                </span>
-              </button>
+                <button
+                  class="px-space-md py-2 bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-md text-label-md rounded transition-colors"
+                  type="button"
+                >
+                  Calcular
+                </button>
+              </div>
 
-              <button
-                class="p-space-sm rounded-lg text-left bg-surface-container-low opacity-80 hover:opacity-100 flex flex-col justify-between transition-all"
-                type="button"
-              >
-                <div class="flex justify-between items-center w-full">
-                  <span class="font-label-md text-label-md text-primary font-bold">
-                    2TB SSD NVMe
+              <div class="pt-space-xs text-body-sm font-body-sm text-on-surface-variant">
+                <div class="flex items-center justify-between p-space-xs bg-surface-container-low rounded">
+                  <span class="font-medium text-primary flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px] text-[#82958A]">
+                      check_circle
+                    </span>
+                    OCA / Andreani Express Puerta a Puerta
                   </span>
 
-                  <span class="font-label-xs text-label-xs text-on-tertiary-container font-semibold">
-                    +$350.000
-                  </span>
+                  <span class="font-bold text-primary">Gratis</span>
                 </div>
 
-                <span class="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                  Alta velocidad 7000 MB/s
-                </span>
-              </button>
-
-            </div>
-          </div>
-
-          <!-- Cantidad y botones de compra -->
-          <div class="flex items-center gap-space-sm pt-space-xs">
-
-            <div class="flex items-center bg-surface-container-lowest rounded-lg shadow-sm p-1">
-              <button
-                aria-label="Restar una unidad"
-                class="w-8 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded transition-colors font-bold text-lg"
-                type="button"
-              >
-                -
-              </button>
-
-              <span class="w-10 text-center font-label-md text-label-md text-on-surface font-bold">
-                1
-              </span>
-
-              <button
-                aria-label="Sumar una unidad"
-                class="w-8 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded transition-colors font-bold text-lg"
-                type="button"
-              >
-                +
-              </button>
-            </div>
-
-            <button
-              class="flex-1 py-3 px-space-md bg-on-tertiary-container hover:bg-tertiary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm flex items-center justify-center gap-space-xs transition-colors active:scale-[0.99]"
-              type="button"
-            >
-              <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
-              Agregar al carrito
-            </button>
-
-            <button
-              class="py-3 px-space-md bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm transition-colors hidden sm:block"
-              type="button"
-            >
-              Comprar ahora
-            </button>
-
-          </div>
-
-          <!-- Calculadora de envío -->
-          <div class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm space-y-space-xs">
-
-            <label
-              class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-space-xs"
-              for="postal-code"
-            >
-              <span class="material-symbols-outlined text-[18px] text-primary">
-                local_shipping
-              </span>
-              Calcular costo y tiempo de entrega
-            </label>
-
-            <div class="flex gap-space-xs">
-              <div class="relative flex-1">
-                <input
-                  class="w-full px-space-md py-2 bg-surface-container-low rounded font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none"
-                  id="postal-code"
-                  maxlength="8"
-                  placeholder="Ej. C1425 o 5000"
-                  type="text"
-                />
+                <p class="text-[11px] text-on-surface-variant mt-1 pl-1">
+                  Llega entre 24 y 48 horas hábiles con seguro total contra pérdidas o roturas.
+                </p>
               </div>
 
-              <button
-                class="px-space-md py-2 bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-md text-label-md rounded transition-colors"
-                type="button"
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DESCRIPCIÓN DEL PRODUCTO -->
+      <section class="max-w-[1360px] mx-auto px-margin-desktop w-full py-space-xl">
+        <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+
+          <div
+            class="flex flex-col md:flex-row md:items-center justify-between gap-space-md pb-space-md mb-space-lg"
+          >
+            <div>
+              <span
+                class="font-label-xs text-label-xs uppercase tracking-widest text-on-surface-variant font-bold"
               >
-                Calcular
-              </button>
+                Información del producto
+              </span>
+
+              <h2 class="font-headline-md text-headline-md text-primary">
+                Descripción
+              </h2>
+            </div>
+          </div>
+
+          <div class="p-space-sm rounded-lg bg-surface-container-low">
+            <p class="font-body-md text-body-md text-on-surface leading-relaxed whitespace-pre-line">
+              {{ productoActual.descripcion || 'Este producto todavía no tiene una descripción disponible.' }}
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- PRODUCTOS RELACIONADOS -->
+      <section class="max-w-[1360px] mx-auto px-margin-desktop w-full pb-space-xl">
+        <div class="flex flex-col gap-space-md">
+
+          <div class="flex items-baseline justify-between">
+            <div>
+              <span
+                class="font-label-xs text-label-xs uppercase tracking-widest text-on-surface-variant font-bold"
+              >
+                Ecosistema Profesional
+              </span>
+
+              <h2 class="font-headline-sm text-headline-sm text-primary">
+                Productos relacionados y periféricos recomendados
+              </h2>
             </div>
 
-            <div class="pt-space-xs text-body-sm font-body-sm text-on-surface-variant">
-              <div class="flex items-center justify-between p-space-xs bg-surface-container-low rounded">
-                <span class="font-medium text-primary flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[16px] text-[#82958A]">
-                    check_circle
+            <a
+              class="font-body-sm text-body-sm text-on-tertiary-container hover:underline font-semibold flex items-center gap-1"
+              href="#"
+            >
+              Ver todo en accesorios
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-desktop">
+
+            <!-- Logitech MX Master 3S -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
+            >
+              <div>
+                <div
+                  class="relative w-full aspect-square bg-surface-container-low rounded-lg overflow-hidden p-space-sm flex items-center justify-center mb-space-sm"
+                >
+                  <span
+                    class="absolute top-2 left-2 px-1.5 py-0.5 bg-surface-container-lowest text-primary font-label-xs text-label-xs rounded font-bold uppercase"
+                  >
+                    Ergonomía
                   </span>
-                  OCA / Andreani Express Puerta a Puerta
+
+                  <img
+                    alt="Logitech MX Master 3S"
+                    class="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCt8b7Mq6mi2yU5TokZ2AKtH1k5l7Q42eqiNtMoZNu5NR6tDRjYCWUupqZ_8zPM3z2VoJXnSM3Jxk_Zgs4jwgf7kBY8ADvovKUp-LmpeMP0lTorwi34D9R71v9RWMRZ9PW1lsmxlwwiLX45k8vtRyTbqeTMlA6JNiJCIzPQiwDdd8r10ppeUw9omsJYSfHYCD2ROFF2ZbD632ZE55PkzERBjuiuI8IYgqiTZ8D6VKAo"
+                  />
+                </div>
+
+                <span class="font-label-xs text-label-xs uppercase text-on-surface-variant">
+                  Logitech
                 </span>
 
-                <span class="font-bold text-primary">Gratis</span>
-              </div>
+                <h3 class="font-title-md text-title-md text-primary truncate">
+                  MX Master 3S Performance
+                </h3>
 
-              <p class="text-[11px] text-on-surface-variant mt-1 pl-1">
-                Llega entre 24 y 48 horas hábiles con seguro total contra pérdidas o roturas.
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ESPECIFICACIONES TÉCNICAS -->
-    <section class="max-w-[1360px] mx-auto px-margin-desktop w-full py-space-xl">
-      <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
-
-        <div
-          class="flex flex-col md:flex-row md:items-center justify-between gap-space-md pb-space-md mb-space-lg"
-        >
-          <div>
-            <span
-              class="font-label-xs text-label-xs uppercase tracking-widest text-on-surface-variant font-bold"
-            >
-              Documentación Oficial
-            </span>
-
-            <h2 class="font-headline-md text-headline-md text-primary">
-              Ficha de Especificaciones Técnicas
-            </h2>
-          </div>
-
-          <div class="flex items-center gap-space-xs overflow-x-auto">
-
-            <button
-              class="px-space-md py-1.5 rounded font-label-md text-label-md bg-primary text-on-primary transition-colors"
-              type="button"
-            >
-              Todo el Hardware
-            </button>
-
-            <button
-              class="px-space-md py-1.5 rounded font-label-md text-label-md bg-surface-container-low text-on-surface-variant hover:text-primary transition-colors"
-              type="button"
-            >
-              Procesador &amp; Memoria
-            </button>
-
-            <button
-              class="px-space-md py-1.5 rounded font-label-md text-label-md bg-surface-container-low text-on-surface-variant hover:text-primary transition-colors"
-              type="button"
-            >
-              Puertos &amp; Conectividad
-            </button>
-
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-gutter-desktop gap-y-space-md">
-
-          <!-- Procesador -->
-          <div
-            class="p-space-sm rounded-lg bg-surface-container-low flex flex-col justify-between"
-          >
-            <div class="flex items-center justify-between">
-              <span class="font-label-md text-label-md text-primary font-bold">
-                Procesador Central (CPU)
-              </span>
-
-              <span
-                class="font-label-xs text-label-xs bg-surface-container-lowest px-1.5 py-0.5 rounded text-on-surface-variant"
-              >
-                13ª Generación
-              </span>
-            </div>
-
-            <p class="font-body-md text-body-md text-on-surface mt-1">
-              Intel® Core™ i7-1365U vPro (10 Núcleos: 2 P-Cores hasta 5.2 GHz,
-              8 E-Cores hasta 3.9 GHz, 12MB Intel Smart Cache)
-            </p>
-          </div>
-
-          <!-- Memoria RAM -->
-          <div
-            class="p-space-sm rounded-lg bg-surface-container-low flex flex-col justify-between"
-          >
-            <div class="flex items-center justify-between">
-              <span class="font-label-md text-label-md text-primary font-bold">
-                Memoria RAM
-              </span>
-
-              <span
-                class="font-label-xs text-label-xs bg-surface-container-lowest px-1.5 py-0.5 rounded text-on-surface-variant"
-              >
-                Dual-Channel Soldada
-              </span>
-            </div>
-
-            <p class="font-body-md text-body-md text-on-surface mt-1">
-              32GB LPDDR5x 6000MHz de ultra bajo consumo y máxima tasa de transferencia
-              para virtualización y desarrollo.
-            </p>
-          </div>
-
-          <!-- Almacenamiento -->
-          <div
-            class="p-space-sm rounded-lg bg-surface-container-low flex flex-col justify-between"
-          >
-            <div class="flex items-center justify-between">
-              <span class="font-label-md text-label-md text-primary font-bold">
-                Almacenamiento Interno
-              </span>
-
-              <span
-                class="font-label-xs text-label-xs bg-surface-container-lowest px-1.5 py-0.5 rounded text-on-surface-variant"
-              >
-                M.2 2280
-              </span>
-            </div>
-
-            <p class="font-body-md text-body-md text-on-surface mt-1">
-              1TB SSD M.2 2280 PCIe® 4.0x4 Performance NVMe® Opal 2.0
-              (Configurable hasta 2TB).
-            </p>
-          </div>
-
-          <!-- Pantalla -->
-          <div
-            class="p-space-sm rounded-lg bg-surface-container-low flex flex-col justify-between"
-          >
-            <div class="flex items-center justify-between">
-              <span class="font-label-md text-label-md text-primary font-bold">
-                Pantalla y Visualización
-              </span>
-
-              <span
-                class="font-label-xs text-label-xs bg-surface-container-lowest px-1.5 py-0.5 rounded text-on-surface-variant"
-              >
-                OLED HDR
-              </span>
-            </div>
-
-            <p class="font-body-md text-body-md text-on-surface mt-1">
-              14.0" 2.8K (2880 x 1800) OLED, reflectancia controlada, 400 nits,
-              100% DCI-P3, DisplayHDR™ True Black 500, Eyesafe® Certified.
-            </p>
-          </div>
-
-          <!-- Gráficos -->
-          <div
-            class="p-space-sm rounded-lg bg-surface-container-low flex flex-col justify-between"
-          >
-            <div class="flex items-center justify-between">
-              <span class="font-label-md text-label-md text-primary font-bold">
-                Tarjeta Gráfica
-              </span>
-
-              <span
-                class="font-label-xs text-label-xs bg-surface-container-lowest px-1.5 py-0.5 rounded text-on-surface-variant"
-              >
-                Integrada
-              </span>
-            </div>
-
-            <p class="font-body-md text-body-md text-on-surface mt-1">
-              Intel® Iris® Xe Graphics con soporte para hasta tres monitores externos
-              4K simultáneos vía Thunderbolt 4.
-            </p>
-          </div>
-
-          <!-- Puertos -->
-          <div
-            class="p-space-sm rounded-lg bg-surface-container-low flex flex-col justify-between"
-          >
-            <div class="flex items-center justify-between">
-              <span class="font-label-md text-label-md text-primary font-bold">
-                Puertos de E/S
-              </span>
-
-              <span
-                class="font-label-xs text-label-xs bg-surface-container-lowest px-1.5 py-0.5 rounded text-on-surface-variant"
-              >
-                40 Gbps
-              </span>
-            </div>
-
-            <p class="font-body-md text-body-md text-on-surface mt-1">
-              2x Thunderbolt™ 4 / USB4® 40Gbps (soporta Power Delivery 3.0 y
-              DisplayPort™ 1.4a), 2x USB 3.2 Gen 1 (uno siempre activo),
-              1x HDMI® 2.1, 1x combo jack audio 3.5mm.
-            </p>
-          </div>
-
-          <!-- Conectividad -->
-          <div
-            class="p-space-sm rounded-lg bg-surface-container-low flex flex-col justify-between"
-          >
-            <div class="flex items-center justify-between">
-              <span class="font-label-md text-label-md text-primary font-bold">
-                Conectividad Inalámbrica
-              </span>
-
-              <span
-                class="font-label-xs text-label-xs bg-surface-container-lowest px-1.5 py-0.5 rounded text-on-surface-variant"
-              >
-                Wi-Fi 6E
-              </span>
-            </div>
-
-            <p class="font-body-md text-body-md text-on-surface mt-1">
-              Intel® Wi-Fi® 6E AX211, 802.11ax 2x2 Wi-Fi + Bluetooth 5.1
-              con vPro activado.
-            </p>
-          </div>
-
-          <!-- Chasis -->
-          <div
-            class="p-space-sm rounded-lg bg-surface-container-low flex flex-col justify-between"
-          >
-            <div class="flex items-center justify-between">
-              <span class="font-label-md text-label-md text-primary font-bold">
-                Chasis, Peso &amp; Batería
-              </span>
-
-              <span
-                class="font-label-xs text-label-xs bg-surface-container-lowest px-1.5 py-0.5 rounded text-on-surface-variant"
-              >
-                MIL-STD-810H
-              </span>
-            </div>
-
-            <p class="font-body-md text-body-md text-on-surface mt-1">
-              Peso ultraligero de 1.12 kg. Batería integrada de 57Wh con tecnología
-              Rapid Charge (80% en 60 minutos con cargador USB-C de 65W incluido).
-            </p>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- PRODUCTOS RELACIONADOS -->
-    <section class="max-w-[1360px] mx-auto px-margin-desktop w-full pb-space-xl">
-      <div class="flex flex-col gap-space-md">
-
-        <div class="flex items-baseline justify-between">
-          <div>
-            <span
-              class="font-label-xs text-label-xs uppercase tracking-widest text-on-surface-variant font-bold"
-            >
-              Ecosistema Profesional
-            </span>
-
-            <h2 class="font-headline-sm text-headline-sm text-primary">
-              Productos relacionados y periféricos recomendados
-            </h2>
-          </div>
-
-          <a
-            class="font-body-sm text-body-sm text-on-tertiary-container hover:underline font-semibold flex items-center gap-1"
-            href="#"
-          >
-            Ver todo en accesorios
-            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-          </a>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-desktop">
-
-          <!-- Logitech MX Master 3S -->
-          <div
-            class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
-          >
-            <div>
-              <div
-                class="relative w-full aspect-square bg-surface-container-low rounded-lg overflow-hidden p-space-sm flex items-center justify-center mb-space-sm"
-              >
-                <span
-                  class="absolute top-2 left-2 px-1.5 py-0.5 bg-surface-container-lowest text-primary font-label-xs text-label-xs rounded font-bold uppercase"
-                >
-                  Ergonomía
-                </span>
-
-                <img
-                  alt="Logitech MX Master 3S"
-                  class="w-full h-full object-contain group-hover:scale-105 transition-transform"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCt8b7Mq6mi2yU5TokZ2AKtH1k5l7Q42eqiNtMoZNu5NR6tDRjYCWUupqZ_8zPM3z2VoJXnSM3Jxk_Zgs4jwgf7kBY8ADvovKUp-LmpeMP0lTorwi34D9R71v9RWMRZ9PW1lsmxlwwiLX45k8vtRyTbqeTMlA6JNiJCIzPQiwDdd8r10ppeUw9omsJYSfHYCD2ROFF2ZbD632ZE55PkzERBjuiuI8IYgqiTZ8D6VKAo"
-                />
-              </div>
-
-              <span class="font-label-xs text-label-xs uppercase text-on-surface-variant">
-                Logitech
-              </span>
-
-              <h3 class="font-title-md text-title-md text-primary truncate">
-                MX Master 3S Performance
-              </h3>
-
-              <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">
-                Sensor 8K DPI silencioso, rueda MagSpeed electromagnética.
-              </p>
-            </div>
-
-            <div class="pt-space-md mt-space-sm flex items-end justify-between">
-              <div>
-                <span class="font-price-display text-price-display text-on-tertiary-container">
-                  $184.990
-                </span>
-
-                <p class="font-price-installment text-price-installment text-secondary">
-                  3 cuotas fijas
+                <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">
+                  Sensor 8K DPI silencioso, rueda MagSpeed electromagnética.
                 </p>
               </div>
 
-              <button
-                aria-label="Agregar mouse"
-                class="w-9 h-9 rounded bg-surface-container-low hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-colors"
-                type="button"
-              >
-                <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-              </button>
-            </div>
-          </div>
+              <div class="pt-space-md mt-space-sm flex items-end justify-between">
+                <div>
+                  <span class="font-price-display text-price-display text-on-tertiary-container">
+                    $184.990
+                  </span>
 
-          <!-- Dell UltraSharp -->
-          <div
-            class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
-          >
-            <div>
-              <div
-                class="relative w-full aspect-square bg-surface-container-low rounded-lg overflow-hidden p-space-sm flex items-center justify-center mb-space-sm"
-              >
-                <span
-                  class="absolute top-2 left-2 px-1.5 py-0.5 bg-surface-container-lowest text-primary font-label-xs text-label-xs rounded font-bold uppercase"
+                  <p class="font-price-installment text-price-installment text-secondary">
+                    3 cuotas fijas
+                  </p>
+                </div>
+
+                <button
+                  aria-label="Agregar mouse"
+                  class="w-9 h-9 rounded bg-surface-container-low hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-colors"
+                  type="button"
                 >
-                  Color Grade
-                </span>
-
-                <img
-                  alt="Dell UltraSharp 27 4K"
-                  class="w-full h-full object-contain group-hover:scale-105 transition-transform"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbYkxg5E-f_G5FdzCO4kHJwXUj-DxCg6P46H-X5X21LaLyJ2siOWqD95Oq20-fGywvMGHOocuOGAqTfjhAmT7dy4anyDpujp17fxv6MCh3nUscOrft5TVrMjltq8ZDrSJigWpeQZmQalvHFsoRebU6P5FseZihnQC0olx6kpbx7DTX_mn1XUnS8kIhcVeeOxSFEEZB4iZZrkbcev_T8ZSI4RW9GSabyLiRiaZTr3M5"
-                />
+                  <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                </button>
               </div>
-
-              <span class="font-label-xs text-label-xs uppercase text-on-surface-variant">
-                Dell Technologies
-              </span>
-
-              <h3 class="font-title-md text-title-md text-primary truncate">
-                UltraSharp 27" 4K Hub U2723QE
-              </h3>
-
-              <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">
-                IPS Black, contraste 2000:1, carga USB-C PD de 90W.
-              </p>
             </div>
 
-            <div class="pt-space-md mt-space-sm flex items-end justify-between">
+            <!-- Dell UltraSharp -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
+            >
               <div>
-                <span class="font-price-display text-price-display text-on-tertiary-container">
-                  $1.420.000
+                <div
+                  class="relative w-full aspect-square bg-surface-container-low rounded-lg overflow-hidden p-space-sm flex items-center justify-center mb-space-sm"
+                >
+                  <span
+                    class="absolute top-2 left-2 px-1.5 py-0.5 bg-surface-container-lowest text-primary font-label-xs text-label-xs rounded font-bold uppercase"
+                  >
+                    Color Grade
+                  </span>
+
+                  <img
+                    alt="Dell UltraSharp 27 4K"
+                    class="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbYkxg5E-f_G5FdzCO4kHJwXUj-DxCg6P46H-X5X21LaLyJ2siOWqD95Oq20-fGywvMGHOocuOGAqTfjhAmT7dy4anyDpujp17fxv6MCh3nUscOrft5TVrMjltq8ZDrSJigWpeQZmQalvHFsoRebU6P5FseZihnQC0olx6kpbx7DTX_mn1XUnS8kIhcVeeOxSFEEZB4iZZrkbcev_T8ZSI4RW9GSabyLiRiaZTr3M5"
+                  />
+                </div>
+
+                <span class="font-label-xs text-label-xs uppercase text-on-surface-variant">
+                  Dell Technologies
                 </span>
 
-                <p class="font-price-installment text-price-installment text-secondary">
-                  6 cuotas fijas
+                <h3 class="font-title-md text-title-md text-primary truncate">
+                  UltraSharp 27" 4K Hub U2723QE
+                </h3>
+
+                <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">
+                  IPS Black, contraste 2000:1, carga USB-C PD de 90W.
                 </p>
               </div>
 
-              <button
-                aria-label="Agregar monitor"
-                class="w-9 h-9 rounded bg-surface-container-low hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-colors"
-                type="button"
-              >
-                <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-              </button>
-            </div>
-          </div>
+              <div class="pt-space-md mt-space-sm flex items-end justify-between">
+                <div>
+                  <span class="font-price-display text-price-display text-on-tertiary-container">
+                    $1.420.000
+                  </span>
 
-          <!-- Thunderbolt Dock -->
-          <div
-            class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
-          >
-            <div>
-              <div
-                class="relative w-full aspect-square bg-surface-container-low rounded-lg overflow-hidden p-space-sm flex items-center justify-center mb-space-sm"
-              >
-                <span
-                  class="absolute top-2 left-2 px-1.5 py-0.5 bg-surface-container-lowest text-primary font-label-xs text-label-xs rounded font-bold uppercase"
+                  <p class="font-price-installment text-price-installment text-secondary">
+                    6 cuotas fijas
+                  </p>
+                </div>
+
+                <button
+                  aria-label="Agregar monitor"
+                  class="w-9 h-9 rounded bg-surface-container-low hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-colors"
+                  type="button"
                 >
-                  Conectividad
-                </span>
-
-                <img
-                  alt="ThinkPad Universal Thunderbolt 4 Dock"
-                  class="w-full h-full object-contain group-hover:scale-105 transition-transform"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEa3P-062XyNyQJ1WzGb6x0NGxKA5B1rzkYecZpWSa1jYUjOWooK5-4wkuR2o23j-7kRLLRNxIEsY1vW_f5dmPcuDGguR_uUm8pYilHb4HF54avsC9OREozYGR6103_VZB-Fv8-fOB6tgPqL_PtGqtyIn0bBrXbJcWdom5oJ_0YSbI0jmQDXr6iTvW9uodqw7q-aqbVgp4c7aW-uDibavF0qvY83LVHBztQOn6yN0A"
-                />
+                  <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                </button>
               </div>
-
-              <span class="font-label-xs text-label-xs uppercase text-on-surface-variant">
-                Lenovo ThinkPad
-              </span>
-
-              <h3 class="font-title-md text-title-md text-primary truncate">
-                Thunderbolt 4 Universal Dock
-              </h3>
-
-              <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">
-                Carga de 100W, salida dual 4K 60Hz, Ethernet 1Gbps.
-              </p>
             </div>
 
-            <div class="pt-space-md mt-space-sm flex items-end justify-between">
+            <!-- Thunderbolt Dock -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
+            >
               <div>
-                <span class="font-price-display text-price-display text-on-tertiary-container">
-                  $485.000
+                <div
+                  class="relative w-full aspect-square bg-surface-container-low rounded-lg overflow-hidden p-space-sm flex items-center justify-center mb-space-sm"
+                >
+                  <span
+                    class="absolute top-2 left-2 px-1.5 py-0.5 bg-surface-container-lowest text-primary font-label-xs text-label-xs rounded font-bold uppercase"
+                  >
+                    Conectividad
+                  </span>
+
+                  <img
+                    alt="ThinkPad Universal Thunderbolt 4 Dock"
+                    class="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEa3P-062XyNyQJ1WzGb6x0NGxKA5B1rzkYecZpWSa1jYUjOWooK5-4wkuR2o23j-7kRLLRNxIEsY1vW_f5dmPcuDGguR_uUm8pYilHb4HF54avsC9OREozYGR6103_VZB-Fv8-fOB6tgPqL_PtGqtyIn0bBrXbJcWdom5oJ_0YSbI0jmQDXr6iTvW9uodqw7q-aqbVgp4c7aW-uDibavF0qvY83LVHBztQOn6yN0A"
+                  />
+                </div>
+
+                <span class="font-label-xs text-label-xs uppercase text-on-surface-variant">
+                  Lenovo ThinkPad
                 </span>
 
-                <p class="font-price-installment text-price-installment text-secondary">
-                  6 cuotas fijas
+                <h3 class="font-title-md text-title-md text-primary truncate">
+                  Thunderbolt 4 Universal Dock
+                </h3>
+
+                <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">
+                  Carga de 100W, salida dual 4K 60Hz, Ethernet 1Gbps.
                 </p>
               </div>
 
-              <button
-                aria-label="Agregar dock"
-                class="w-9 h-9 rounded bg-surface-container-low hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-colors"
-                type="button"
-              >
-                <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-              </button>
-            </div>
-          </div>
+              <div class="pt-space-md mt-space-sm flex items-end justify-between">
+                <div>
+                  <span class="font-price-display text-price-display text-on-tertiary-container">
+                    $485.000
+                  </span>
 
-          <!-- Funda -->
-          <div
-            class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
-          >
-            <div>
-              <div
-                class="relative w-full aspect-square bg-surface-container-low rounded-lg overflow-hidden p-space-sm flex items-center justify-center mb-space-sm"
-              >
-                <span
-                  class="absolute top-2 left-2 px-1.5 py-0.5 bg-surface-container-lowest text-primary font-label-xs text-label-xs rounded font-bold uppercase"
+                  <p class="font-price-installment text-price-installment text-secondary">
+                    6 cuotas fijas
+                  </p>
+                </div>
+
+                <button
+                  aria-label="Agregar dock"
+                  class="w-9 h-9 rounded bg-surface-container-low hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-colors"
+                  type="button"
                 >
-                  Protección
-                </span>
-
-                <img
-                  alt="Funda de Cuero Artesanal 14"
-                  class="w-full h-full object-contain group-hover:scale-105 transition-transform"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ2HubJVaojQwsVB6_asQuLstWyQ8b-vxmJsmicwltBHvF-pQS_Q0iGyvE6bwq5IUnJPrRQ9tpIxE6oxT1Uv__2EFcHo4499JBDCIRfd9DqYzKcKPg50IQCyJCXXD8cOWEoRrvV-fxJ4hRXLxZB2_4KJ1r9c__bdDXmWM9HU8iM8UvFqM08zDO0eJ_Mknx5fXydh8fJJ0QrO02eNW5iKkCAaZoMr4wmw1vh4gclDhs"
-                />
+                  <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                </button>
               </div>
-
-              <span class="font-label-xs text-label-xs uppercase text-on-surface-variant">
-                Austral Craft
-              </span>
-
-              <h3 class="font-title-md text-title-md text-primary truncate">
-                Funda de Cuero Vacuno 14"
-              </h3>
-
-              <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">
-                Cuero genuino de curtiembre local, forro suave de microfibra.
-              </p>
             </div>
 
-            <div class="pt-space-md mt-space-sm flex items-end justify-between">
+            <!-- Funda -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
+            >
               <div>
-                <span class="font-price-display text-price-display text-on-tertiary-container">
-                  $128.000
+                <div
+                  class="relative w-full aspect-square bg-surface-container-low rounded-lg overflow-hidden p-space-sm flex items-center justify-center mb-space-sm"
+                >
+                  <span
+                    class="absolute top-2 left-2 px-1.5 py-0.5 bg-surface-container-lowest text-primary font-label-xs text-label-xs rounded font-bold uppercase"
+                  >
+                    Protección
+                  </span>
+
+                  <img
+                    alt="Funda de Cuero Artesanal 14"
+                    class="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ2HubJVaojQwsVB6_asQuLstWyQ8b-vxmJsmicwltBHvF-pQS_Q0iGyvE6bwq5IUnJPrRQ9tpIxE6oxT1Uv__2EFcHo4499JBDCIRfd9DqYzKcKPg50IQCyJCXXD8cOWEoRrvV-fxJ4hRXLxZB2_4KJ1r9c__bdDXmWM9HU8iM8UvFqM08zDO0eJ_Mknx5fXydh8fJJ0QrO02eNW5iKkCAaZoMr4wmw1vh4gclDhs"
+                  />
+                </div>
+
+                <span class="font-label-xs text-label-xs uppercase text-on-surface-variant">
+                  Austral Craft
                 </span>
 
-                <p class="font-price-installment text-price-installment text-secondary">
-                  3 cuotas fijas
+                <h3 class="font-title-md text-title-md text-primary truncate">
+                  Funda de Cuero Vacuno 14"
+                </h3>
+
+                <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">
+                  Cuero genuino de curtiembre local, forro suave de microfibra.
                 </p>
               </div>
 
-              <button
-                aria-label="Agregar funda"
-                class="w-9 h-9 rounded bg-surface-container-low hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-colors"
-                type="button"
-              >
-                <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-              </button>
-            </div>
-          </div>
+              <div class="pt-space-md mt-space-sm flex items-end justify-between">
+                <div>
+                  <span class="font-price-display text-price-display text-on-tertiary-container">
+                    $128.000
+                  </span>
 
+                  <p class="font-price-installment text-price-installment text-secondary">
+                    3 cuotas fijas
+                  </p>
+                </div>
+
+                <button
+                  aria-label="Agregar funda"
+                  class="w-9 h-9 rounded bg-surface-container-low hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-colors"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-  </div>
-</main>
+    </div>
+  </main>
+} @else {
+  <main class="w-full min-h-[calc(100vh-280px)] bg-surface flex items-center justify-center">
+    <p class="font-body-md text-body-md text-on-surface-variant">
+      Cargando producto...
+    </p>
+  </main>
+}

@@ -1,5 +1,5 @@
 import express, { type Request, type Response, type NextFunction } from "express";
-import { AppRoutes } from "./routes/index.js";
+import { AppRoutes } from "./routes/routes.js";
 import { requestLogger } from "./middlewares/logger.middleware.js";
 
 export const app = express();

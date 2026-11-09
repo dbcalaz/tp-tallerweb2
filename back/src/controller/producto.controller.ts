@@ -21,4 +21,23 @@ export class ProductoController {
             return res.status(500).json({ mensaje: "Error interno del servidor" });
         }
     }
+
+    public getProductoPorId = async (req: Request, res: Response) => {
+        try {
+
+            const id = Number(req.params.id);
+
+            if (isNaN(id)) {
+                return res.status(400).json({ mensaje: "El ID proporcionado no es válido." });
+            }
+            const producto = await productoService.obtenerProductoPorId(id);
+            return res.json(producto);
+        } catch (error: any) {
+            if (error.message) {
+                return res.status(500).json({ mensaje: error.message });
+
+            }
+            return res.status(500).json({ mensaje: "Error interno del servidor" });
+        }
+    }
 }
