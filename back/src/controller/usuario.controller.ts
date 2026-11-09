@@ -1,7 +1,7 @@
 import { randomBytes, scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
 import type { Request, Response } from "express";
-import { DatabaseNotConfiguredError, getPrisma } from "../../prisma.config.js";
+import { prisma } from "../prisma.config.js";
 
 const scrypt = promisify(scryptCallback);
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -56,16 +56,13 @@ export class UsuarioController {
             const derivedKey = await scrypt(password, salt, 64) as Buffer;
             const passwordHash = "scrypt$" + salt + "$" + derivedKey.toString("hex");
 
-            const user = await getPrisma().user.create({
+            const user = await prisma.user.create({
                 data: { email, passwordHash, nombre, apellido, direccion },
                 select: { id: true, email: true, nombre: true, apellido: true },
             });
 
             return res.status(201).json({ message: "Tu cuenta se creó correctamente.", user });
         } catch (error: unknown) {
-            if (error instanceof DatabaseNotConfiguredError) {
-                return res.status(503).json({ message: "La base de datos no está configurada. Definí DATABASE_URL en back/.env." });
-            }
             if (error && typeof error === "object" && "code" in error && error.code === "P2002") {
                 return res.status(409).json({
                     message: "Ese email ya está registrado. Probá con otro.",
@@ -87,7 +84,7 @@ export class UsuarioController {
         }
 
         try {
-            const user = await getPrisma().user.findUnique({ where: { email } });
+            const user = await prisma.user.findUnique({ where: { email } });
             if (!user) {
                 return res.status(401).json({ message: "No existe una cuenta registrada con este email. Registrate primero." });
             }
@@ -107,11 +104,8 @@ export class UsuarioController {
                 user: { id: user.id, email: user.email, nombre: user.nombre, apellido: user.apellido },
             });
         } catch (error: unknown) {
-            if (error instanceof DatabaseNotConfiguredError) {
-                return res.status(503).json({ message: "La base de datos no está configurada. Definí DATABASE_URL en back/.env." });
-            }
             console.error("Error al iniciar sesión:", error);
-            return res.status(503).json({ message: "No se pudo consultar la base de datos. Revisá su configuración e intentá nuevamente." });
+            return res.status(500).json({ message: "No se pudo consultar la base de datos. Intentá nuevamente." });
         }
     };
 }

@@ -1,6 +1,15 @@
+import express, { type Request, type Response } from "express";
 import { config } from "./config/config.js";
-import { app } from "./app.js";
+import { AppRoutes } from "./routes/routes.js";
 
-app.listen(config.port, () => {
-    console.log("Servidor funcionando en el puerto " + config.port + ".");
+const app = express();
+
+const PORT = config.port
+
+app.use(express.json())
+
+app.use(AppRoutes.routes);
+
+app.listen(PORT, () => {
+    console.log("Servidor funcionando en el puerto " + PORT + ".");
 });
