@@ -1,33 +1,24 @@
 @if (producto(); as productoActual) {
   <main class="w-full min-h-[calc(100vh-280px)] bg-surface">
     <div class="flex flex-col w-full">
-
-      <!-- DETALLE DEL PRODUCTO -->
       <section class="max-w-[1360px] mx-auto px-margin-desktop w-full py-space-md">
-
-        <!-- Breadcrumb -->
         <nav
           aria-label="Ruta de navegación"
           class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant mb-space-md"
         >
-          <a class="hover:text-primary transition-colors" href="#">Inicio</a>
+          <a class="hover:text-primary transition-colors" href="/productos">Inicio</a>
           <span class="opacity-40">/</span>
-          <a class="hover:text-primary transition-colors" href="/productos">Catálogo</a>
+          <a class="hover:text-primary transition-colors" href="/catalogo">Catálogo</a>
           <span class="opacity-40">/</span>
           <span class="text-on-surface font-medium truncate max-w-xs sm:max-w-none">
             {{ productoActual.nombre }}
           </span>
         </nav>
-
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
-
-          <!-- IMAGEN DEL PRODUCTO -->
           <div class="lg:col-span-7 flex flex-col gap-space-md">
-
             <div
               class="relative w-full aspect-[4/3] bg-surface-container-low rounded-xl overflow-hidden flex items-center justify-center p-space-lg shadow-sm group"
             >
-              <!-- Estado del stock -->
               <div class="absolute top-space-md left-space-md z-10 flex flex-wrap gap-space-xs">
                 @if (productoActual.stock > 0) {
                   <span
@@ -44,7 +35,6 @@
                     Sin stock
                   </span>
                 }
-
                 <span
                   class="inline-flex items-center gap-1 px-space-sm py-1 bg-primary text-on-primary font-label-xs text-label-xs uppercase tracking-wider rounded"
                 >
@@ -52,8 +42,6 @@
                   Garantía Oficial 12 Meses
                 </span>
               </div>
-
-              <!-- Favoritos -->
               <div class="absolute top-space-md right-space-md z-10">
                 <button
                   aria-label="Guardar en favoritos"
@@ -63,8 +51,6 @@
                   <span class="material-symbols-outlined text-[18px]">favorite</span>
                 </button>
               </div>
-
-              <!-- Imagen principal proveniente de la base de datos -->
               @if (productoActual.imagenUrl) {
                 <img
                   [src]="productoActual.imagenUrl"
@@ -72,12 +58,13 @@
                   class="w-full h-full object-contain transition-all duration-300 transform group-hover:scale-[1.02]"
                 />
               } @else {
-                <div class="flex flex-col items-center justify-center gap-space-xs text-on-surface-variant">
+                <div
+                  class="flex flex-col items-center justify-center gap-space-xs text-on-surface-variant"
+                >
                   <span class="material-symbols-outlined text-6xl">image</span>
                   <span class="font-body-sm text-body-sm">Imagen no disponible</span>
                 </div>
               }
-
               <div
                 class="absolute bottom-space-md right-space-md bg-surface-container-lowest/90 backdrop-blur-sm px-space-sm py-1 rounded text-on-surface font-label-xs text-label-xs flex items-center gap-1 shadow-sm"
               >
@@ -85,8 +72,6 @@
                 Inspección del producto
               </div>
             </div>
-
-            <!-- Información de envío y devolución -->
             <div
               class="p-space-md bg-surface-container-low rounded-xl flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm"
             >
@@ -96,7 +81,6 @@
                 </span>
                 <span>Despacho prioritario en 24hs hábiles</span>
               </div>
-
               <div class="flex items-center gap-space-xs">
                 <span class="material-symbols-outlined text-[18px] text-primary">
                   assignment_return
@@ -104,13 +88,8 @@
                 <span>Devolución sin costo hasta 10 días</span>
               </div>
             </div>
-
           </div>
-
-          <!-- INFORMACIÓN Y COMPRA DEL PRODUCTO -->
           <div class="lg:col-span-5 flex flex-col gap-space-md">
-
-            <!-- Nombre y datos del producto -->
             <div class="space-y-space-xs">
               <div class="flex items-center justify-between">
                 <span
@@ -124,14 +103,15 @@
                 </span>
               </div>
 
-              <h1 class="font-headline-lg text-headline-lg text-primary tracking-tight leading-tight">
+              <h1
+                class="font-headline-lg text-headline-lg text-primary tracking-tight leading-tight"
+              >
                 {{ productoActual.nombre }}
               </h1>
             </div>
-
-            <!-- Precio -->
-            <div class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm space-y-space-sm">
-
+            <div
+              class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm space-y-space-sm"
+            >
               <div class="flex items-baseline justify-between">
                 <div>
                   <span class="font-label-xs text-label-xs uppercase text-on-surface-variant">
@@ -150,53 +130,46 @@
                     </span>
                   </div>
                 </div>
-
                 <span
                   class="font-label-xs text-label-xs px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold tracking-wide uppercase"
                 >
                   Envío Bonificado
                 </span>
               </div>
-
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-xs pt-space-xs">
-
                 <div class="p-space-xs rounded bg-surface-container-low flex flex-col">
-                  <span class="font-price-installment text-price-installment text-primary font-bold">
+                  <span
+                    class="font-price-installment text-price-installment text-primary font-bold"
+                  >
                     6 cuotas fijas de {{ getCuotaFormateada() }}
                   </span>
-
                   <span class="font-body-sm text-body-sm text-on-surface-variant">
                     Con Visa, Mastercard o American Express
                   </span>
                 </div>
 
                 <div class="p-space-xs rounded bg-secondary-container/40 flex flex-col">
-                  <span class="font-price-installment text-price-installment text-primary font-bold">
+                  <span
+                    class="font-price-installment text-price-installment text-primary font-bold"
+                  >
                     10% OFF pagando con Transferencia
                   </span>
-
                   <span class="font-body-sm text-body-sm text-on-tertiary-container font-semibold">
                     {{ getPrecioTransferenciaFormateado() }} ARS final
                   </span>
                 </div>
-
               </div>
             </div>
-
-            <!-- Almacenamiento: se mantiene estático por ahora -->
             <div class="space-y-space-xs">
               <div class="flex justify-between items-center">
                 <label class="font-label-md text-label-md text-on-surface font-semibold">
                   Almacenamiento NVMe PCIe 4.0
                 </label>
-
                 <span class="font-body-sm text-body-sm text-on-surface-variant">
                   1TB Seleccionado
                 </span>
               </div>
-
               <div class="grid grid-cols-2 gap-space-xs">
-
                 <button
                   class="p-space-sm rounded-lg text-left bg-surface-container-lowest ring-2 ring-primary flex flex-col justify-between transition-all"
                   type="button"
@@ -210,12 +183,10 @@
                       check_circle
                     </span>
                   </div>
-
                   <span class="font-body-sm text-body-sm text-on-surface-variant mt-1">
                     Configuración base de fábrica
                   </span>
                 </button>
-
                 <button
                   class="p-space-sm rounded-lg text-left bg-surface-container-low opacity-80 hover:opacity-100 flex flex-col justify-between transition-all"
                   type="button"
@@ -224,23 +195,19 @@
                     <span class="font-label-md text-label-md text-primary font-bold">
                       2TB SSD NVMe
                     </span>
-
-                    <span class="font-label-xs text-label-xs text-on-tertiary-container font-semibold">
+                    <span
+                      class="font-label-xs text-label-xs text-on-tertiary-container font-semibold"
+                    >
                       +$350.000
                     </span>
                   </div>
-
                   <span class="font-body-sm text-body-sm text-on-surface-variant mt-1">
                     Alta velocidad 7000 MB/s
                   </span>
                 </button>
-
               </div>
             </div>
-
-            <!-- Cantidad y botones de compra -->
             <div class="flex items-center gap-space-sm pt-space-xs">
-
               <div class="flex items-center bg-surface-container-lowest rounded-lg shadow-sm p-1">
                 <button
                   aria-label="Restar una unidad"
@@ -249,8 +216,9 @@
                 >
                   -
                 </button>
-
-                <span class="w-10 text-center font-label-md text-label-md text-on-surface font-bold">
+                <span
+                  class="w-10 text-center font-label-md text-label-md text-on-surface font-bold"
+                >
                   1
                 </span>
 
@@ -262,7 +230,6 @@
                   +
                 </button>
               </div>
-
               <button
                 class="flex-1 py-3 px-space-md bg-on-tertiary-container hover:bg-tertiary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm flex items-center justify-center gap-space-xs transition-colors active:scale-[0.99]"
                 type="button"
@@ -270,19 +237,16 @@
                 <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
                 Agregar al carrito
               </button>
-
               <button
                 class="py-3 px-space-md bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm transition-colors hidden sm:block"
                 type="button"
               >
                 Comprar ahora
               </button>
-
             </div>
-
-            <!-- Calculadora de envío -->
-            <div class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm space-y-space-xs">
-
+            <div
+              class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm space-y-space-xs"
+            >
               <label
                 class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-space-xs"
                 for="postal-code"
@@ -292,7 +256,6 @@
                 </span>
                 Calcular costo y tiempo de entrega
               </label>
-
               <div class="flex gap-space-xs">
                 <div class="relative flex-1">
                   <input
@@ -303,7 +266,6 @@
                     type="text"
                   />
                 </div>
-
                 <button
                   class="px-space-md py-2 bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-md text-label-md rounded transition-colors"
                   type="button"
@@ -311,33 +273,28 @@
                   Calcular
                 </button>
               </div>
-
               <div class="pt-space-xs text-body-sm font-body-sm text-on-surface-variant">
-                <div class="flex items-center justify-between p-space-xs bg-surface-container-low rounded">
+                <div
+                  class="flex items-center justify-between p-space-xs bg-surface-container-low rounded"
+                >
                   <span class="font-medium text-primary flex items-center gap-1">
                     <span class="material-symbols-outlined text-[16px] text-[#82958A]">
                       check_circle
                     </span>
                     OCA / Andreani Express Puerta a Puerta
                   </span>
-
                   <span class="font-bold text-primary">Gratis</span>
                 </div>
-
                 <p class="text-[11px] text-on-surface-variant mt-1 pl-1">
                   Llega entre 24 y 48 horas hábiles con seguro total contra pérdidas o roturas.
                 </p>
               </div>
-
             </div>
           </div>
         </div>
       </section>
-
-      <!-- DESCRIPCIÓN DEL PRODUCTO -->
       <section class="max-w-[1360px] mx-auto px-margin-desktop w-full py-space-xl">
         <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
-
           <div
             class="flex flex-col md:flex-row md:items-center justify-between gap-space-md pb-space-md mb-space-lg"
           >
@@ -348,22 +305,22 @@
                 Información del producto
               </span>
 
-              <h2 class="font-headline-md text-headline-md text-primary">
-                Descripción
-              </h2>
+              <h2 class="font-headline-md text-headline-md text-primary">Descripción</h2>
             </div>
           </div>
-
           <div class="p-space-sm rounded-lg bg-surface-container-low">
-            <p class="font-body-md text-body-md text-on-surface leading-relaxed whitespace-pre-line">
-              {{ productoActual.descripcion || 'Este producto todavía no tiene una descripción disponible.' }}
+            <p
+              class="font-body-md text-body-md text-on-surface leading-relaxed whitespace-pre-line"
+            >
+              {{
+                productoActual.descripcion ||
+                  'Este producto todavía no tiene una descripción disponible.'
+              }}
             </p>
           </div>
-
         </div>
       </section>
-
-      <!-- PRODUCTOS RELACIONADOS -->
+      <!-- PRODUCTOS RELACIONADOS
       <section class="max-w-[1360px] mx-auto px-margin-desktop w-full pb-space-xl">
         <div class="flex flex-col gap-space-md">
 
@@ -391,7 +348,7 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-desktop">
 
-            <!-- Logitech MX Master 3S -->
+
             <div
               class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
             >
@@ -446,7 +403,7 @@
               </div>
             </div>
 
-            <!-- Dell UltraSharp -->
+
             <div
               class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
             >
@@ -501,7 +458,7 @@
               </div>
             </div>
 
-            <!-- Thunderbolt Dock -->
+
             <div
               class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
             >
@@ -556,7 +513,7 @@
               </div>
             </div>
 
-            <!-- Funda -->
+
             <div
               class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
             >
@@ -613,14 +570,11 @@
 
           </div>
         </div>
-      </section>
-
+      </section> -->
     </div>
   </main>
 } @else {
   <main class="w-full min-h-[calc(100vh-280px)] bg-surface flex items-center justify-center">
-    <p class="font-body-md text-body-md text-on-surface-variant">
-      Cargando producto...
-    </p>
+    <p class="font-body-md text-body-md text-on-surface-variant">Cargando producto...</p>
   </main>
 }

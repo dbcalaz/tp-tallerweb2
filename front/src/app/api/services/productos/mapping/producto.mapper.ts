@@ -12,6 +12,8 @@ export class ProductoMapper {
       imagenUrl: p.imagenUrl ?? '',
       marca: p.marca?.nombre ?? '',
       tipo: p.tipoProducto?.nombre ?? '',
+      categoriaId: p.tipoProducto?.categoria?.id ?? 0,
+      categoria: p.tipoProducto?.categoria?.nombre ?? '',
     };
   }
 

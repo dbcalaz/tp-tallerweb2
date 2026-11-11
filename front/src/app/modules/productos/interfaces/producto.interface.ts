@@ -7,4 +7,6 @@ export interface Producto {
   imagenUrl: string;
   marca: string;
   tipo: string;
+  categoriaId: number;
+  categoria: string;
 }
