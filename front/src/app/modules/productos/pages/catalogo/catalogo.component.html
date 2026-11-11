@@ -13,7 +13,7 @@
             <span>Inicio</span>
           </a>
           <span class="opacity-40">/</span>
-          <span class="hover:text-primary">Catálogo</span>
+          <a routerLink="/catalogo" class="hover:text-primary">Catálogo</a>
           <span class="opacity-40">/</span>
           <span class="text-on-surface font-semibold">{{ tituloCategoria() }}</span>
         </nav>
@@ -64,250 +64,20 @@
         </div>
       </div>
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
-        <aside
-          class="lg:col-span-3 flex flex-col gap-space-md bg-surface-container-lowest p-space-md rounded-lg shadow-sm"
-        >
-          <div class="space-y-space-xs">
-            <div class="flex items-center justify-between">
-              <span
-                class="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant"
-              >
-                Filtros Activos
-              </span>
-              <button
-                class="font-label-xs text-label-xs text-on-tertiary-container hover:underline font-bold"
-                type="button"
-              >
-                Limpiar filtros
-              </button>
-            </div>
-            <div class="pt-1">
-              <span class="font-body-sm text-body-sm text-on-surface-variant">
-                No hay filtros seleccionados
-              </span>
-            </div>
-          </div>
-          <div class="w-full h-[1px] bg-surface-container"></div>
-          <div class="space-y-space-xs">
-            <div class="flex items-center justify-between">
-              <h2 class="font-headline-sm text-title-md text-primary">Categoría</h2>
-              <span class="material-symbols-outlined text-[16px] text-on-surface-variant"
-                >unfold_less</span
-              >
-            </div>
-            <div class="space-y-1 pt-1 font-body-sm text-body-sm text-on-surface">
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>Notebooks</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">32</span>
-              </label>
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>Monitores</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">24</span>
-              </label>
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>Periféricos</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">45</span>
-              </label>
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>Componentes</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">28</span>
-              </label>
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>Almacenamiento</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">19</span>
-              </label>
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>Accesorios</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">14</span>
-              </label>
-            </div>
-          </div>
-          <div class="w-full h-[1px] bg-surface-container"></div>
-          <div class="space-y-space-xs">
-            <div class="flex items-center justify-between">
-              <h2 class="font-headline-sm text-title-md text-primary">Marca</h2>
-              <span class="material-symbols-outlined text-[16px] text-on-surface-variant"
-                >unfold_less</span
-              >
-            </div>
-            <div class="space-y-1 pt-1 font-body-sm text-body-sm text-on-surface">
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>Apple</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">12</span>
-              </label>
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>Dell</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">18</span>
-              </label>
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>ASUS</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">22</span>
-              </label>
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>Logitech</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">15</span>
-              </label>
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>Keychron</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">8</span>
-              </label>
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>Corsair</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">14</span>
-              </label>
-              <label
-                class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
-              >
-                <span class="flex items-center gap-space-xs">
-                  <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-                  <span>Samsung</span>
-                </span>
-                <span class="font-label-xs text-on-surface-variant">16</span>
-              </label>
-            </div>
-          </div>
-          <div class="w-full h-[1px] bg-surface-container"></div>
-          <div class="space-y-space-xs">
-            <h2 class="font-headline-sm text-title-md text-primary">Rango de Precio (ARS)</h2>
-            <div class="pt-2 px-1">
-              <div class="relative w-full h-1 bg-surface-container rounded">
-                <div class="absolute left-1/6 right-1/4 h-full bg-primary-container rounded"></div>
-                <div
-                  class="absolute left-1/6 top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-on-tertiary-container shadow cursor-pointer"
-                ></div>
-                <div
-                  class="absolute right-1/4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-on-tertiary-container shadow cursor-pointer"
-                ></div>
-              </div>
-            </div>
-            <div class="grid grid-cols-2 gap-2 pt-2">
-              <div class="bg-surface-container-low p-1.5 rounded">
-                <span class="block font-label-xs text-label-xs text-on-surface-variant">Mín</span>
-                <input
-                  class="w-full bg-transparent font-label-md text-label-md text-on-surface focus:outline-none"
-                  type="text"
-                  value="$ 50.000"
-                />
-              </div>
-              <div class="bg-surface-container-low p-1.5 rounded">
-                <span class="block font-label-xs text-label-xs text-on-surface-variant">Máx</span>
-                <input
-                  class="w-full bg-transparent font-label-md text-label-md text-on-surface focus:outline-none"
-                  type="text"
-                  value="$ 4.500.000"
-                />
-              </div>
-            </div>
-            <button
-              class="w-full mt-2 py-1.5 bg-primary text-on-primary font-label-md text-label-md rounded hover:bg-primary-container transition-colors"
-              type="button"
-            >
-              Aplicar
-            </button>
-          </div>
-          <div class="w-full h-[1px] bg-surface-container"></div>
-          <div class="space-y-space-xs">
-            <h2 class="font-headline-sm text-title-md text-primary">Disponibilidad</h2>
-            <div class="space-y-1.5 pt-1 font-body-sm text-body-sm text-on-surface">
-              <label class="flex items-start gap-space-xs cursor-pointer">
-                <input
-                  class="mt-0.5 w-3.5 h-3.5 accent-primary-container rounded"
-                  type="checkbox"
-                />
-                <div>
-                  <span class="font-medium text-on-surface block">Stock inmediato</span>
-                  <span class="font-label-xs text-label-xs text-secondary block"
-                    >Despacho en el día en CABA</span
-                  >
-                </div>
-              </label>
-              <label class="flex items-start gap-space-xs cursor-pointer">
-                <input
-                  class="mt-0.5 w-3.5 h-3.5 accent-primary-container rounded"
-                  type="checkbox"
-                />
-                <div>
-                  <span class="font-medium text-on-surface block">Reserva / Próximo ingreso</span>
-                  <span class="font-label-xs text-label-xs text-secondary block"
-                    >Entrega en 5 a 8 días</span
-                  >
-                </div>
-              </label>
-            </div>
-          </div>
-          <div class="w-full h-[1px] bg-surface-container"></div>
-          <div class="space-y-space-xs">
-            <h2 class="font-headline-sm text-title-md text-primary">Financiación</h2>
-            <label
-              class="flex items-center gap-space-xs cursor-pointer bg-surface-container-low p-2 rounded"
-            >
-              <input class="w-3.5 h-3.5 accent-primary-container rounded" type="checkbox" />
-              <span class="font-body-sm text-body-sm text-on-surface font-semibold">
-                3 y 6 Cuotas sin interés
-              </span>
-            </label>
-          </div>
-        </aside>
+        <app-sidebar-filtros
+          class="block lg:col-span-3"
+          [modoCategoria]="categoriaId() !== null"
+          [categorias]="categoriasOpciones()"
+          [tipos]="tiposOpciones()"
+          [marcas]="marcasOpciones()"
+          [categoriasSel]="categoriasSel()"
+          [tiposSel]="tiposSel()"
+          [marcasSel]="marcasActivas()"
+          (categoriaToggle)="alternarCategoria($event)"
+          (tipoToggle)="alternarTipo($event)"
+          (marcaToggle)="alternarMarca($event)"
+          (limpiar)="limpiarFiltros()"
+        />
         <section class="lg:col-span-9 flex flex-col gap-space-lg">
           <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-gutter-desktop">
             @for (producto of productosFiltrados(); track producto.id) {

@@ -1,0 +1,124 @@
+<aside
+  class="flex flex-col gap-space-md bg-surface-container-lowest p-space-md rounded-lg shadow-sm"
+>
+  <div class="space-y-space-xs">
+    <div class="flex items-center justify-between">
+      <span class="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant">
+        Filtros Activos
+      </span>
+      <button
+        class="font-label-xs text-label-xs text-on-tertiary-container hover:underline font-bold"
+        type="button"
+        (click)="limpiar.emit()"
+      >
+        Limpiar filtros
+      </button>
+    </div>
+    <div class="pt-1">
+      <span class="font-body-sm text-body-sm text-on-surface-variant">
+        @if (cantidadActivos() === 0) {
+          No hay filtros seleccionados
+        } @else {
+          {{ cantidadActivos() }} seleccionado(s)
+        }
+      </span>
+    </div>
+  </div>
+
+  <div class="w-full h-[1px] bg-surface-container"></div>
+
+  @if (modoCategoria()) {
+    <!-- SITUACIÓN B: tipos de la categoría elegida -->
+    <div class="space-y-space-xs">
+      <h2 class="font-headline-sm text-title-md text-primary">Tipo de producto</h2>
+      <div class="space-y-1 pt-1 font-body-sm text-body-sm text-on-surface">
+        @for (tipo of tipos(); track tipo.id) {
+          <label
+            class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
+          >
+            <span class="flex items-center gap-space-xs">
+              <input
+                class="w-3.5 h-3.5 accent-primary-container rounded"
+                type="checkbox"
+                [checked]="tiposSel().includes(tipo.id)"
+                (change)="tipoToggle.emit(tipo.id)"
+              />
+              <span>{{ tipo.nombre }}</span>
+            </span>
+            <span class="font-label-xs text-on-surface-variant">{{ tipo.cantidad }}</span>
+          </label>
+        }
+      </div>
+    </div>
+  } @else {
+    <!-- SITUACIÓN A: categorías con tipos desplegables -->
+    <div class="space-y-space-xs">
+      <h2 class="font-headline-sm text-title-md text-primary">Categoría</h2>
+      <div class="space-y-1 pt-1 font-body-sm text-body-sm text-on-surface">
+        @for (cat of categorias(); track cat.id) {
+          <label
+            class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
+          >
+            <span class="flex items-center gap-space-xs">
+              <input
+                class="w-3.5 h-3.5 accent-primary-container rounded"
+                type="checkbox"
+                [checked]="categoriasSel().includes(cat.id)"
+                (change)="categoriaToggle.emit(cat.id)"
+              />
+              <span>{{ cat.nombre }}</span>
+            </span>
+            <span class="font-label-xs text-on-surface-variant">{{ cat.cantidad }}</span>
+          </label>
+
+          @if (categoriasSel().includes(cat.id)) {
+            <div class="pl-6 space-y-1">
+              @for (tipo of cat.tipos; track tipo.id) {
+                <label
+                  class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
+                >
+                  <span class="flex items-center gap-space-xs">
+                    <input
+                      class="w-3.5 h-3.5 accent-primary-container rounded"
+                      type="checkbox"
+                      [checked]="tiposSel().includes(tipo.id)"
+                      (change)="tipoToggle.emit(tipo.id)"
+                    />
+                    <span>{{ tipo.nombre }}</span>
+                  </span>
+                  <span class="font-label-xs text-on-surface-variant">{{ tipo.cantidad }}</span>
+                </label>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+
+  <div class="w-full h-[1px] bg-surface-container"></div>
+
+  <div class="space-y-space-xs">
+    <h2 class="font-headline-sm text-title-md text-primary">Marca</h2>
+    <div class="space-y-1 pt-1 font-body-sm text-body-sm text-on-surface">
+      @for (marca of marcas(); track marca.id) {
+        <label
+          class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low cursor-pointer"
+        >
+          <span class="flex items-center gap-space-xs">
+            <input
+              class="w-3.5 h-3.5 accent-primary-container rounded"
+              type="checkbox"
+              [checked]="marcasSel().includes(marca.id)"
+              (change)="marcaToggle.emit(marca.id)"
+            />
+            <span>{{ marca.nombre }}</span>
+          </span>
+          <span class="font-label-xs text-on-surface-variant">{{ marca.cantidad }}</span>
+        </label>
+      } @empty {
+        <span class="text-on-surface-variant">Sin marcas disponibles</span>
+      }
+    </div>
+  </div>
+</aside>
