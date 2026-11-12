@@ -1,7 +1,8 @@
-import { Component, computed, DestroyRef, effect, inject, OnInit, signal } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { Component, computed, effect, inject, signal } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { map } from 'rxjs';
+import { catchError, debounce, distinctUntilChanged, map, of, switchMap, tap, timer, } from 'rxjs';
+import { BusquedaService } from '../../../../api/services/busqueda/busqueda.service';
 import { ProductosService } from '../../../../api/services/productos/productos.service';
 import { CardProductoComponent } from '../../components/card-producto/card-producto.component';
 import { SidebarFiltrosComponent } from '../../components/sidebar-filtros/sidebar-filtros';
@@ -14,13 +15,32 @@ import { Producto } from '../../interfaces/producto.interface';
   templateUrl: './catalogo.component.html',
   styleUrl: './catalogo.component.css',
 })
-export class CatalogoComponent implements OnInit {
+export class CatalogoComponent {
   private readonly productosService = inject(ProductosService);
-  private readonly destroyRef = inject(DestroyRef);
   private readonly route = inject(ActivatedRoute);
+  private readonly busqueda = inject(BusquedaService);
 
-  protected readonly productos = signal<Producto[]>([]);
+  protected readonly texto = this.busqueda.texto;
   protected readonly cargando = signal(true);
+
+  protected readonly productos = toSignal(
+    toObservable(this.texto).pipe(
+      map((t) => t.trim()),
+      debounce((t) => timer(t === '' ? 0 : 200)),
+      distinctUntilChanged(),
+      switchMap((t) => {
+        this.cargando.set(true);
+        return this.productosService.listProductos(t).pipe(
+          catchError((err) => {
+            console.error('Error al listar productos', err);
+            return of([] as Producto[]);
+          }),
+        );
+      }),
+      tap(() => this.cargando.set(false)),
+    ),
+    { initialValue: [] as Producto[] },
+  );
 
   protected readonly categoriasSel = signal<number[]>([]);
   protected readonly tiposSel = signal<number[]>([]);
@@ -81,10 +101,20 @@ export class CatalogoComponent implements OnInit {
     return [...marcas.values()].sort((a, b) => a.nombre.localeCompare(b.nombre));
   });
 
+  protected readonly categoriasTildadas = computed(() =>
+    this.categoriasSel().filter((id) => this.categoriasOpciones().some((c) => c.id === id)),
+  );
+
+  protected readonly tiposActivos = computed(() => {
+    const existentes = new Set(
+      this.categoriasOpciones().flatMap((c) => c.tipos.map((t) => t.id)),
+    );
+    return this.tiposSel().filter((id) => existentes.has(id));
+  });
+
   protected readonly marcasActivas = computed(() =>
     this.marcasSel().filter((id) => this.marcasOpciones().some((m) => m.id === id)),
   );
-
 
   private readonly categoriaDeTipo = computed(() => {
     const mapa = new Map<number, number>();
@@ -94,7 +124,7 @@ export class CatalogoComponent implements OnInit {
 
   private readonly categoriasActivas = computed(() => {
     const id = this.categoriaId();
-    return id !== null ? [id] : this.categoriasSel();
+    return id !== null ? [id] : this.categoriasTildadas();
   });
 
   private pasaCategoriaYTipo(p: Producto): boolean {
@@ -102,7 +132,7 @@ export class CatalogoComponent implements OnInit {
     if (categorias.length === 0) return true;
     if (!categorias.includes(p.categoriaId)) return false;
 
-    const tiposDeSuCategoria = this.tiposSel().filter(
+    const tiposDeSuCategoria = this.tiposActivos().filter(
       (t) => this.categoriaDeTipo().get(t) === p.categoriaId,
     );
     return tiposDeSuCategoria.length === 0 || tiposDeSuCategoria.includes(p.tipoId);
@@ -115,10 +145,30 @@ export class CatalogoComponent implements OnInit {
     );
   });
 
-  protected readonly tituloCategoria = computed(() => {
-    if (this.categoriaId() === null) return 'Todos los productos';
-    return this.categoriasOpciones().find((c) => c.id === this.categoriaId())?.nombre ?? 'Categoría';
+  protected readonly orden = signal<'nombre' | 'precio_asc' | 'precio_desc'>('nombre');
+
+  protected readonly productosOrdenados = computed(() => {
+    const lista = [...this.productosFiltrados()];
+    switch (this.orden()) {
+      case 'precio_asc':
+        return lista.sort((a, b) => a.precio - b.precio);
+      case 'precio_desc':
+        return lista.sort((a, b) => b.precio - a.precio);
+      default:
+        return lista.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+    }
   });
+
+  protected cambiarOrden(valor: string): void {
+    this.orden.set(valor as 'nombre' | 'precio_asc' | 'precio_desc');
+  }
+
+  protected readonly tituloCategoria = computed(() => {
+    const id = this.categoriaId();
+    if (id === null) return 'Todos los productos';
+    return this.productos().find((p) => p.categoriaId === id)?.categoria ?? 'Categoría';
+  });
+
 
   private alternar(lista: number[], id: number): number[] {
     return lista.includes(id) ? lista.filter((x) => x !== id) : [...lista, id];
@@ -128,7 +178,6 @@ export class CatalogoComponent implements OnInit {
     const estabaTildada = this.categoriasSel().includes(id);
     this.categoriasSel.update((lista) => this.alternar(lista, id));
     if (estabaTildada) {
-      // Al destildar una categoría, se destildan sus tipos
       this.tiposSel.update((lista) => lista.filter((t) => this.categoriaDeTipo().get(t) !== id));
     }
   }
@@ -145,19 +194,5 @@ export class CatalogoComponent implements OnInit {
     this.categoriasSel.set([]);
     this.tiposSel.set([]);
     this.marcasSel.set([]);
-  }
-
-  ngOnInit(): void {
-    this.productosService
-      .listProductos()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (res) => this.productos.set(res),
-        error: (err) => {
-          console.error('Error al listar productos', err);
-          this.cargando.set(false);
-        },
-        complete: () => this.cargando.set(false),
-      });
   }
 }

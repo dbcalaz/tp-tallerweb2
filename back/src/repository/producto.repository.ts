@@ -2,8 +2,23 @@ import { prisma } from "../prisma.config.js";
 
 export class ProductoRepository {
 
-    async getProductos() {
+    async getProductos(busqueda?: string) {
+        const palabras = (busqueda ?? "").trim().split(/\s+/).filter(Boolean);
+
         const productos = await prisma.producto.findMany({
+            where: {
+                AND: palabras.map((palabra) => {
+                    const coincide = { contains: palabra, mode: "insensitive" as const };
+                    return {
+                        OR: [
+                            { nombre: coincide },
+                            { marca: { nombre: coincide } },
+                            { tipoProducto: { nombre: coincide } },
+                            { tipoProducto: { categoria: { nombre: coincide } } },
+                        ]
+                    };
+                })
+            },
             include: {
                 marca: true,
                 tipoProducto: {

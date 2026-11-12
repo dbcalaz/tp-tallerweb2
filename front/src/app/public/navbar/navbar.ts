@@ -1,7 +1,10 @@
 import { Component, HostListener, inject, ViewChild } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/router';
 import { AuthSessionService } from '../../api/services/auth/auth-session.service';
 import { CarritoComponent } from '../../modules/carrito/pages/carrito/carrito.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs';
+import { BusquedaService } from '../../api/services/busqueda/busqueda.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,12 +17,34 @@ export class Navbar {
 
   protected readonly authSession = inject(AuthSessionService);
   protected menuUsuarioAbierto = false;
+  protected readonly busqueda = inject(BusquedaService);
+
+  constructor() {
+    this.router.events
+      .pipe(
+        filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+        takeUntilDestroyed(),
+      )
+      .subscribe((e) => {
+        if (!e.urlAfterRedirects.startsWith('/catalogo')) {
+          this.busqueda.limpiar();
+        }
+      });
+  }
+
+  protected alBuscar(valor: string): void {
+    this.busqueda.establecer(valor);
+
+    if (valor.trim() !== '' && !this.router.url.startsWith('/catalogo')) {
+      void this.router.navigateByUrl('/catalogo');
+    }
+  }
 
   @ViewChild(CarritoComponent)
   private cartDrawer!: CarritoComponent;
 
   protected abrirCarrito(): void {
-      console.log('CLICK EN CARRITO');
+    console.log('CLICK EN CARRITO');
     this.cartDrawer.openCart();
   }
 

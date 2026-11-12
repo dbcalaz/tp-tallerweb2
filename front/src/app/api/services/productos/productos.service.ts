@@ -10,9 +10,10 @@ import { ProductoMapper } from './mapping/producto.mapper';
 export class ProductosService {
   private readonly http = inject(HttpClient);
 
-  listProductos(): Observable<Producto[]> {
+  listProductos(busqueda = ''): Observable<Producto[]> {
+    const params: Record<string, string> = busqueda ? { busqueda } : {};
     return this.http
-      .get<ProductoRest[]>(`${environment.API_URL}/productos`)
+      .get<ProductoRest[]>(`${environment.API_URL}/productos`, { params })
       .pipe(map((res) => ProductoMapper.mapRestArrayToFront(res)));
   }
 
@@ -20,6 +21,5 @@ export class ProductosService {
     return this.http
       .get<ProductoRest>(`${environment.API_URL}/productos/${id}`)
       .pipe(map((res) => ProductoMapper.mapRestToFront(res)));
-      // Nota: Si en tu mapper el método para uno solo se llama distinto (ej. mapRestToFront), lo ajustás a ese nombre.
   }
 }

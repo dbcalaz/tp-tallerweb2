@@ -9,9 +9,9 @@ export class ProductoController {
 
     public getProductos = async (req: Request, res: Response) => {
         try {
+            const busqueda = typeof req.query.busqueda === "string" ? req.query.busqueda : undefined;
 
-            const productos = await productoService.obtenerProductos();
-            console.log(productos)
+            const productos = await productoService.obtenerProductos(busqueda);
             return res.json(productos);
         } catch (error: any) {
             if (error.message) {

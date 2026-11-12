@@ -48,12 +48,13 @@
               Ordenar por:
             </span>
             <select
+              #ordenSelect
+              (change)="cambiarOrden(ordenSelect.value)"
               class="bg-transparent font-title-md text-body-md text-on-surface focus:outline-none cursor-pointer pr-space-md appearance-none"
             >
-              <option value="relevant">Más relevantes</option>
-              <option value="price_asc">Menor precio</option>
-              <option value="price_desc">Mayor precio</option>
-              <option value="newest">Novedades</option>
+              <option value="nombre">Nombre A-Z</option>
+              <option value="precio_asc">Menor precio</option>
+              <option value="precio_desc">Mayor precio</option>
             </select>
             <span
               class="material-symbols-outlined text-[16px] text-on-surface pointer-events-none absolute right-2"
@@ -88,7 +89,7 @@
               </p>
             }
           </div>
-          <div
+          <!--<div
             class="w-full bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-sm"
           >
             <span class="font-body-sm text-body-sm text-on-surface-variant">
@@ -132,7 +133,7 @@
                 <span class="material-symbols-outlined text-[16px]">chevron_right</span>
               </button>
             </div>
-          </div>
+          </div>-->
         </section>
       </div>
     </div>
