@@ -1,7 +1,8 @@
-import { Component, HostListener, inject, ViewChild } from '@angular/core';
+import { Component, HostListener, inject, ViewChild, effect } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthSessionService } from '../../features/users/data-access/auth-session.service';
 import { CartPageComponent } from '../../features/cart/cart-page.component';
+import { CartService } from '../../features/cart/cart.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,13 +14,26 @@ export class Navbar {
   private readonly router = inject(Router);
 
   protected readonly authSession = inject(AuthSessionService);
+  protected readonly cartService = inject(CartService);
+  protected readonly itemCount = this.cartService.itemCount;
   protected menuUsuarioAbierto = false;
 
   @ViewChild(CartPageComponent)
   private cartDrawer!: CartPageComponent;
 
+  constructor() {
+    effect(() => {
+      const user = this.authSession.currentUser();
+
+      if (user) {
+        this.cartService.loadCart(Number(user.id));
+      } else {
+        this.cartService.clearCart();
+      }
+    });
+  }
+
   protected abrirCarrito(): void {
-      console.log('CLICK EN CARRITO');
     this.cartDrawer.openCart();
   }
 
@@ -35,6 +49,7 @@ export class Navbar {
   protected logout(): void {
     this.cerrarMenuUsuario();
     this.authSession.clear();
+    this.cartService.clearCart();
     void this.router.navigateByUrl('/login');
   }
 
