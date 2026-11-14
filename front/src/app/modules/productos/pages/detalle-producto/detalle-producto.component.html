@@ -211,8 +211,9 @@
               <div class="flex items-center bg-surface-container-lowest rounded-lg shadow-sm p-1">
                 <button
                   (click)="decrementarCantidad()"
+                  [disabled]="!puedeDecrementar()"
                   aria-label="Restar una unidad"
-                  class="w-8 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded transition-colors font-bold text-lg cursor-pointer"
+                  class="w-8 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded transition-colors font-bold text-lg cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-on-surface-variant"
                   type="button"
                 >
                   -
@@ -225,8 +226,9 @@
 
                 <button
                   (click)="incrementarCantidad()"
+                  [disabled]="!puedeIncrementar()"
                   aria-label="Sumar una unidad"
-                  class="w-8 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded transition-colors font-bold text-lg cursor-pointer"
+                  class="w-8 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded transition-colors font-bold text-lg cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-on-surface-variant"
                   type="button"
                 >
                   +
@@ -234,7 +236,8 @@
               </div>
               <button
                 (click)="agregarAlCarrito()"
-                class="flex-1 py-3 px-space-md bg-on-tertiary-container hover:bg-tertiary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm flex items-center justify-center gap-space-xs transition-colors active:scale-[0.99] cursor-pointer"
+                [disabled]="!puedeAgregar()"
+                class="flex-1 py-3 px-space-md bg-on-tertiary-container hover:bg-tertiary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm flex items-center justify-center gap-space-xs transition-colors active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-on-tertiary-container"
                 type="button"
               >
                 <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
@@ -242,7 +245,8 @@
               </button>
               <button
                 (click)="agregarAlCarrito()"
-                class="py-3 px-space-md bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm transition-colors hidden sm:block cursor-pointer"
+                [disabled]="!puedeAgregar()"
+                class="py-3 px-space-md bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm transition-colors hidden sm:block cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary"
                 type="button"
               >
                 Comprar ahora
