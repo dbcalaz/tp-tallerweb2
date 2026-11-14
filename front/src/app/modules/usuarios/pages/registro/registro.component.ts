@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { RegistroRequestDto } from '../../../../api/dto/usuario.dto';
@@ -56,26 +56,26 @@ export class RegistroComponent {
     termsAccepted: new FormControl(false, { nonNullable: true, validators: [Validators.requiredTrue] }),
   }, { validators: (group) => group.get('password')?.value === group.get('passwordConfirmation')?.value ? null : { passwordMismatch: true } });
 
-  protected isSubmitting = false;
+  protected readonly isSubmitting = signal(false);
   protected showPassword = false;
   protected showPasswordConfirmation = false;
-  protected errorMessage = '';
-  protected serverErrors: Record<string, string> = {};
+  protected readonly errorMessage = signal('');
+  protected readonly serverErrors = signal<Record<string, string>>({});
 
   protected submit(): void {
-    this.errorMessage = '';
-    this.serverErrors = {};
+    this.errorMessage.set('');
+    this.serverErrors.set({});
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
     const { email, password, nombre, apellido, direccion } = this.form.getRawValue();
     this.usersApi.register(new RegistroRequestDto(email, password, nombre, apellido, direccion)).pipe(
       timeout({ first: 10000 }),
-      finalize(() => this.isSubmitting = false),
+      finalize(() => this.isSubmitting.set(false)),
     ).subscribe({
       next: (response) => {
         this.authSession.start(response.user);
@@ -87,19 +87,20 @@ export class RegistroComponent {
         const timedOut = error instanceof Error && error.name === 'TimeoutError';
         const httpError = error instanceof HttpErrorResponse ? error : null;
         const response = httpError?.error as RegistrationError | null;
-        this.errorMessage = timedOut
+        this.errorMessage.set(timedOut
           ? 'El servidor tardó demasiado en responder. Verificá que esté iniciado e intentá nuevamente.'
           : httpError?.status === 0
             ? 'No se pudo conectar con el servidor. Verificá que esté iniciado e intentá nuevamente.'
-            : response?.message || 'No se pudo completar el registro. Intentá nuevamente.';
-        this.serverErrors = response?.fieldErrors || {};
+            : response?.message || 'No se pudo completar el registro. Intentá nuevamente.');
+        this.serverErrors.set(response?.fieldErrors || {});
       },
     });
   }
 
   protected clearServerError(field: string): void {
-    delete this.serverErrors[field];
-    this.serverErrors = { ...this.serverErrors };
+    const errors = { ...this.serverErrors() };
+    delete errors[field];
+    this.serverErrors.set(errors);
   }
 
 }

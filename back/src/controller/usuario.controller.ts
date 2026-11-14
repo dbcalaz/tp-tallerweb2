@@ -4,6 +4,8 @@ import {
     ActualizarPerfilDto,
     LoginUsuarioDto,
     RegistroUsuarioDto,
+    RestablecerPasswordDto,
+    SolicitarRecuperacionDto,
 } from "../dto/usuario.dto.js";
 import { UsuarioRepository } from "../repository/usuario.repository.js";
 import { UsuarioService } from "../services/usuario.service.js";
@@ -32,6 +34,20 @@ export class UsuarioController {
             message: "Sesión iniciada correctamente.",
             user,
         });
+    };
+
+    public solicitarRecuperacion = async (req: Request, res: Response) => {
+        const dto = SolicitarRecuperacionDto.fromBody(req.body);
+        await usuarioService.solicitarRecuperacion(dto);
+        return res.status(200).json({
+            message: "Si existe una cuenta con ese email, vas a recibir instrucciones para recuperar tu contraseña.",
+        });
+    };
+
+    public restablecerPassword = async (req: Request, res: Response) => {
+        const dto = RestablecerPasswordDto.fromBody(req.body);
+        await usuarioService.restablecerPassword(dto);
+        return res.status(200).json({ message: "Tu contraseña se actualizó correctamente." });
     };
 
     public getPerfil = async (req: Request, res: Response) => {

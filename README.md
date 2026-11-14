@@ -1,60 +1,57 @@
 # Taller Web II
 
-Aplicación web preparada con Angular para el frontend y Node.js con Express para la API.
+Aplicación de comercio electrónico con frontend Angular y API Node.js/Express. El backend usa Prisma y PostgreSQL.
 
 ## Requisitos
 
 - Node.js 24 o compatible con Angular CLI 22.
 - npm.
-- PostgreSQL para guardar usuarios.
+- Una base PostgreSQL local o la base compartida del equipo en Neon.
 
-## Estructura
+## Instalar dependencias
 
-- front/: aplicación Angular.
-  - src/app/features/users/: formulario de registro y cliente de la API.
-  - src/app/features/products/: página de productos preparada.
-  - src/app/features/cart/: página del carrito preparada.
-- back/: API de Node.js y Express.
-  - src/features/users/: rutas y controlador de usuarios.
-  - src/features/products/: punto de entrada de productos.
-  - src/features/cart/: punto de entrada del carrito.
-  - src/routes/index.ts: montaje de módulos de API.
-- scripts/dev.mjs: inicia frontend y backend juntos.
+Desde la raíz del repositorio:
 
-## Preparar el entorno
+```powershell
+npm ci --prefix front
+npm ci --prefix back
+```
 
-Instalá las dependencias desde la raíz del proyecto:
+## Configurar base de datos
 
-    npm ci --prefix front
-    npm ci --prefix back
+Creá `back/.env` a partir de `back/.env.example` y configurá `DATABASE_URL`. No subas `back/.env` a Git.
 
-Configurá PostgreSQL. Copiá el archivo de ejemplo y editá la cadena de conexión:
+Para aplicar las migraciones pendientes de la base compartida (por ejemplo, una migración nueva de recuperación de contraseña) y generar el cliente Prisma:
 
-    Copy-Item back/.env.example back/.env
+```powershell
+npm run db:deploy
+npm run db:generate
+```
 
-En `back/.env`, configurá `PORT=5555` y `DATABASE_URL` con el usuario, contraseña y nombre de tu base de datos. El proyecto usa la tabla `users` definida en `back/prisma/schema.prisma`; no hace falta ejecutar `db pull`. Para crear la tabla y generar el cliente, desde `back` ejecutá:
+En una base local descartable, las migraciones nuevas se pueden crear con `npm --prefix back run db:migrate -- --name nombre_migracion`.
 
-    npm run db:migrate -- --name crear_usuarios
+## Correr frontend y backend
 
-## Ejecutar durante la presentación
+Desde la raíz:
 
-Desde la raíz del repo, ejecutá un solo comando:
+```powershell
+npm run dev
+```
 
-    npm run dev
+- Frontend Angular: <http://localhost:4200>
+- API Express: <http://localhost:5555>
 
-La terminal muestra las salidas con las etiquetas API y WEB. Abrí http://localhost:4200. La API queda disponible en http://localhost:5555. Para detener ambos procesos, presioná Ctrl+C.
+`Ctrl+C` detiene ambos procesos. También se pueden ejecutar por separado con `npm run dev:front` y `npm run dev:back`.
 
-También podés iniciar cada parte por separado:
+## Funciones
 
-    npm run dev:front
-    npm run dev:back
+- Registro e inicio de sesión con validaciones, email único y contraseñas con hash scrypt.
+- Catálogo con filtros, orden y paginación en páginas de 12 productos.
+- Detalle de producto, carrito y compras.
+- Recuperación de contraseña con enlace de un solo uso que vence a los 30 minutos.
 
-## Registro de usuario
+## Correo para recuperar contraseña
 
-El formulario solicita email, contraseña, nombre, apellido y dirección. Valida campos obligatorios y formato del email. La contraseña requiere al menos 8 caracteres, con mayúscula, minúscula, número y símbolo. El backend normaliza el email, aplica la restricción única en PostgreSQL y guarda la contraseña con scrypt.
+Configurá `FRONTEND_URL` y las variables `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS` y `SMTP_FROM` en `back/.env` para enviar el enlace al correo. En desarrollo, si SMTP no está configurado, el backend escribe el enlace en la terminal de la API para poder probar el flujo localmente. En producción, SMTP es obligatorio.
 
-El endpoint de registro es POST /api/usuario/registro. Productos y carrito tienen rutas de módulo preparadas, pero todavía no implementan operaciones de negocio.
-
-## Inicio de sesion
-
-La ruta `/login` permite ingresar con el email y la contrasena registrados. Si coinciden, la aplicacion continua a `/productos`; si no, muestra un mensaje claro. El endpoint es `POST /api/usuario/login`. Registro e inicio de sesion requieren que PostgreSQL este configurado y disponible.
+La recuperación usa la tabla `password_reset_tokens`; aplicá la migración de Prisma antes de usarla en una base compartida.

@@ -67,6 +67,47 @@ export class LoginUsuarioDto {
     }
 }
 
+export class SolicitarRecuperacionDto {
+    constructor(public readonly email: string) {}
+
+    static fromBody(body: unknown): SolicitarRecuperacionDto {
+        const raw = (body ?? {}) as Record<string, unknown>;
+        const email = typeof raw.email === "string" ? raw.email.trim().toLowerCase() : "";
+        if (!EMAIL_PATTERN.test(email)) {
+            throw new BadRequestError("Ingresá un email con formato válido.", {
+                email: "Ingresá un email con formato válido.",
+            });
+        }
+        return new SolicitarRecuperacionDto(email);
+    }
+}
+
+export class RestablecerPasswordDto {
+    constructor(
+        public readonly token: string,
+        public readonly password: string,
+    ) {}
+
+    static fromBody(body: unknown): RestablecerPasswordDto {
+        const raw = (body ?? {}) as Record<string, unknown>;
+        const token = typeof raw.token === "string" ? raw.token.trim() : "";
+        const password = typeof raw.password === "string" ? raw.password : "";
+        const fieldErrors: Record<string, string> = {};
+
+        if (!token) fieldErrors.token = "El enlace de recuperación no es válido.";
+        if (!password) fieldErrors.password = "Ingresá una nueva contraseña.";
+        else if (!isComplexPassword(password)) {
+            fieldErrors.password = "Usá al menos 8 caracteres e incluí mayúscula, minúscula, número y símbolo.";
+        }
+
+        if (Object.keys(fieldErrors).length > 0) {
+            throw new BadRequestError("Revisá los campos marcados.", fieldErrors);
+        }
+
+        return new RestablecerPasswordDto(token, password);
+    }
+}
+
 export class ActualizarPerfilDto {
     constructor(
         public readonly nombre: string,

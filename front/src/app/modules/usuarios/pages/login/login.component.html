@@ -5,7 +5,7 @@
       <h1 id="page-title">Iniciar sesión</h1>
       <p class="subtitle">Accedé a tu cuenta y seguí disfrutando de Tecnova.</p>
     </div>
-    @if (errorMessage) { <div class="notice error" role="alert" aria-live="assertive">{{ errorMessage }}</div> }
+    @if (errorMessage()) { <div class="notice error" role="alert" aria-live="assertive">{{ errorMessage() }}</div> }
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
       <div class="field">
         <label for="email">Correo electrónico</label>
@@ -22,7 +22,8 @@
         @if (form.controls.password.touched && form.controls.password.hasError('required')) { <small id="password-error" class="field-error">Ingresá tu contraseña.</small> }
       </div>
       <label class="remember-control"><input type="checkbox"><span>Recordar mi sesión en este equipo</span></label>
-      <button type="submit" [disabled]="isSubmitting">{{ isSubmitting ? 'Ingresando...' : 'Ingresar a mi cuenta' }} <span aria-hidden="true">→</span></button>
+      <p class="auth-switch"><a routerLink="/recuperar-contrasena">¿Olvidaste tu contraseña?</a></p>
+      <button type="submit" [disabled]="isSubmitting()">{{ isSubmitting() ? 'Ingresando...' : 'Ingresar a mi cuenta' }} <span aria-hidden="true">→</span></button>
     </form>
     <p class="auth-switch">¿Todavía no tenés cuenta? <a routerLink="/usuarios/registro">Crear cuenta</a></p>
     <div class="login-assurance"><span class="material-symbols-outlined" aria-hidden="true">verified_user</span><span><strong>Tu cuenta, protegida</strong><small>Tus datos se mantienen seguros en Tecnova.</small></span></div>

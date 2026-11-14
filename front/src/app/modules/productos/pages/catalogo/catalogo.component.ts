@@ -8,6 +8,7 @@ import { CardProductoComponent } from '../../components/card-producto/card-produ
 import { SidebarFiltrosComponent } from '../../components/sidebar-filtros/sidebar-filtros';
 import { CategoriaFiltro, OpcionFiltro } from '../../interfaces/filtros.interface';
 import { Producto } from '../../interfaces/producto.interface';
+import { calcularPaginas, obtenerElementosDePagina, limitarPagina, PRODUCTOS_POR_PAGINA } from '../../utils/paginacion.utils';
 
 @Component({
   selector: 'app-catalog-page',
@@ -62,6 +63,10 @@ export class CatalogoComponent {
       this.categoriasSel.set([]);
       this.tiposSel.set([]);
       this.marcasSel.set([]);
+    });
+    effect(() => {
+      this.productosOrdenados();
+      this.paginaActual.set(1);
     });
   }
 
@@ -158,6 +163,28 @@ export class CatalogoComponent {
         return lista.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
     }
   });
+
+  protected readonly productosPorPagina = PRODUCTOS_POR_PAGINA;
+  protected readonly paginaActual = signal(1);
+  protected readonly paginasTotales = computed(() =>
+    calcularPaginas(this.productosOrdenados().length, this.productosPorPagina),
+  );
+  protected readonly paginas = computed(() =>
+    Array.from({ length: this.paginasTotales() }, (_, indice) => indice + 1),
+  );
+  protected readonly productosPaginados = computed(() => {
+    return obtenerElementosDePagina(this.productosOrdenados(), this.paginaActual(), this.productosPorPagina);
+  });
+  protected readonly primerProductoVisible = computed(() =>
+    this.productosOrdenados().length === 0 ? 0 : (this.paginaActual() - 1) * this.productosPorPagina + 1,
+  );
+  protected readonly ultimoProductoVisible = computed(() =>
+    Math.min(this.paginaActual() * this.productosPorPagina, this.productosOrdenados().length),
+  );
+
+  protected cambiarPagina(pagina: number): void {
+    this.paginaActual.set(limitarPagina(pagina, this.paginasTotales()));
+  }
 
   protected cambiarOrden(valor: string): void {
     this.orden.set(valor as 'nombre' | 'precio_asc' | 'precio_desc');

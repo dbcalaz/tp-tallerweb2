@@ -1,19 +1,25 @@
-import { randomBytes, scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
+import { createHash, randomBytes, scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
 import {
     ActualizarPerfilDto,
     LoginUsuarioDto,
     PerfilUsuarioResponseDto,
     RegistroUsuarioDto,
+    RestablecerPasswordDto,
+    SolicitarRecuperacionDto,
     UsuarioResponseDto,
 } from "../dto/usuario.dto.js";
-import { ConflictError, NotFoundError, UnauthorizedError } from "../errors/http.error.js";
+import { BadRequestError, ConflictError, NotFoundError, UnauthorizedError } from "../errors/http.error.js";
 import type { UsuarioRepository } from "../repository/usuario.repository.js";
+import { EmailService } from "./email.service.js";
 
 const scrypt = promisify(scryptCallback);
 
 export class UsuarioService {
-    constructor(private readonly usuarioRepository: UsuarioRepository) {}
+    constructor(
+        private readonly usuarioRepository: UsuarioRepository,
+        private readonly emailService = new EmailService(),
+    ) {}
 
     async registrar(dto: RegistroUsuarioDto): Promise<UsuarioResponseDto> {
         const salt = randomBytes(16).toString("hex");
@@ -58,6 +64,34 @@ export class UsuarioService {
         }
 
         return UsuarioResponseDto.fromEntity(user);
+    }
+
+    async solicitarRecuperacion(dto: SolicitarRecuperacionDto): Promise<void> {
+        const user = await this.usuarioRepository.findByEmail(dto.email);
+        if (!user) return;
+
+        const token = randomBytes(32).toString("base64url");
+        const tokenHash = createHash("sha256").update(token).digest("hex");
+        const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
+        await this.usuarioRepository.replacePasswordResetToken(user.id, tokenHash, expiresAt);
+
+        const frontendUrl = (process.env.FRONTEND_URL || "http://localhost:4200").replace(/\/+$/, "");
+        const resetUrl = `${frontendUrl}/restablecer-contrasena?token=${encodeURIComponent(token)}`;
+        await this.emailService.enviarEnlaceRecuperacion(user.email, resetUrl);
+    }
+
+    async restablecerPassword(dto: RestablecerPasswordDto): Promise<void> {
+        const salt = randomBytes(16).toString("hex");
+        const derivedKey = await scrypt(dto.password, salt, 64) as Buffer;
+        const passwordHash = `scrypt$${salt}$${derivedKey.toString("hex")}`;
+        const tokenHash = createHash("sha256").update(dto.token).digest("hex");
+        const actualizado = await this.usuarioRepository.resetPasswordWithToken(tokenHash, passwordHash);
+
+        if (!actualizado) {
+            throw new BadRequestError("El enlace venció o ya fue utilizado. Solicitá uno nuevo.", {
+                token: "El enlace venció o ya fue utilizado.",
+            });
+        }
     }
 
     async obtenerPerfil(userId: number): Promise<PerfilUsuarioResponseDto> {

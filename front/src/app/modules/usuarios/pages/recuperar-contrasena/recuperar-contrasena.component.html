@@ -1,0 +1,38 @@
+<main class="page-shell login-page">
+  <section class="signup-card login-card" aria-labelledby="page-title">
+    <div class="intro">
+      <div class="auth-icon" aria-hidden="true"><span class="material-symbols-outlined">lock_reset</span></div>
+      <h1 id="page-title">Recuperar contraseña</h1>
+      <p class="subtitle">Ingresá el email de tu cuenta y te enviaremos un enlace para crear una nueva contraseña.</p>
+    </div>
+
+    @if (errorMessage()) { <div class="notice error" role="alert" aria-live="assertive">{{ errorMessage() }}</div> }
+    @if (successMessage()) { <div class="success-toast" role="status" aria-live="polite">{{ successMessage() }}</div> }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="field">
+        <label for="email">Correo electrónico</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="ejemplo@correo.com"
+          [attr.aria-invalid]="form.controls.email.invalid && form.controls.email.touched"
+          aria-describedby="email-error"
+        >
+        @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+          <small id="email-error" class="field-error">Ingresá tu email.</small>
+        } @else if (form.controls.email.touched && form.controls.email.hasError('email')) {
+          <small id="email-error" class="field-error">Ingresá un email con formato válido.</small>
+        }
+      </div>
+      <button type="submit" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Enviando instrucciones...' : 'Enviar enlace de recuperación' }}
+        <span aria-hidden="true">→</span>
+      </button>
+    </form>
+
+    <p class="auth-switch"><a routerLink="/login">Volver a iniciar sesión</a></p>
+  </section>
+</main>
