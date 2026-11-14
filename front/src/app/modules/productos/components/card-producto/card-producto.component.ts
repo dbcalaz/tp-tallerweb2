@@ -24,8 +24,20 @@ export class CardProductoComponent {
   });
   cuota = computed(() => this.producto().precio / 6);
 
+  cantidadEnCarrito = computed(() => {
+    const id = this.producto().id;
+    return this.carritoService.items().find((i) => i.productoId === id)?.cantidad ?? 0;
+  });
+
+  stockDisponible = computed(() =>
+    Math.max(0, (this.producto().stock ?? 0) - this.cantidadEnCarrito()),
+  );
+
+  sinStockDisponible = computed(() => this.stockDisponible() === 0);
+
   agregarAlCarrito(event: MouseEvent): void {
     event.stopPropagation();
+    if (this.sinStockDisponible()) return;
     this.carritoService.agregarProducto(this.producto());
   }
 }

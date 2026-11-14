@@ -122,6 +122,18 @@ export class CarritoService {
   }
 
   agregarProducto(producto: Producto, cantidad = 1): void {
+    const stock = producto.stock ?? 0;
+    const yaEnCarrito =
+      this.items().find((i) => i.productoId === producto.id)?.cantidad ?? 0;
+    const disponible = Math.max(0, stock - yaEnCarrito);
+
+    if (disponible <= 0) {
+      this.toastService.showSuccess(`No hay más unidades de "${producto.nombre}" disponibles.`);
+      return;
+    }
+
+    cantidad = Math.min(cantidad, disponible);
+
     const current = [...this.items()];
     const index = current.findIndex((i) => i.productoId === producto.id);
 
@@ -154,8 +166,6 @@ export class CarritoService {
     if (user?.id) {
       this.syncBackendAdd(user.id, producto.id, cantidad);
     }
-
-    this.abrirCarrito();
   }
 
   actualizarCantidad(productoId: number, cantidad: number): void {
@@ -175,7 +185,11 @@ export class CarritoService {
       this.http
         .patch<CarritoResponseDto>(`${environment.API_URL}/carrito/${user.id}/items/${productoId}`, body)
         .subscribe({
-          error: (err) => console.error('Error al actualizar en backend:', err),
+          error: (err) => {
+            console.error('Error al actualizar en backend:', err);
+            const msg = err?.error?.message;
+            if (msg) this.toastService.showSuccess(msg);
+          },
         });
     }
   }
