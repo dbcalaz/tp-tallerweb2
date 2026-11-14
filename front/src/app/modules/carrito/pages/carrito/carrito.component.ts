@@ -1,7 +1,7 @@
 import { Component, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService, CartItem } from './cart.service';
-import { AuthSessionService } from '../../../../modules/users/data-access/auth-session.service';
+import { AuthSessionService } from '../../../../api/services/auth/auth-session.service';
 
 @Component({
   selector: 'app-carrito',
@@ -44,53 +44,54 @@ export class CarritoComponent {
   }
 
   private loadCart(): void {
-    const user = this.authSession.currentUser();
+    const user = this.authSession.currentUser() as { id: string | number } | null;
     if (user) {
       this.cartService.loadCart(Number(user.id));
     }
   }
 
   increaseQuantity(item: CartItem): void {
-    const user = this.authSession.currentUser();
+    const user = this.authSession.currentUser() as { id: string | number } | null;
     if (user) {
+      const productoId = item.productoId ?? item.producto?.id;
+      if (!productoId) return;
       this.cartService.updateItemQuantity({
         userId: Number(user.id),
-        productId: item.productoId,
+        productoId,
         cantidad: item.cantidad + 1,
       });
     }
   }
 
   decreaseQuantity(item: CartItem): void {
-    const user = this.authSession.currentUser();
+    const user = this.authSession.currentUser() as { id: string | number } | null;
     if (user && item.cantidad > 1) {
+      const productoId = item.productoId ?? item.producto?.id;
+      if (!productoId) return;
       this.cartService.updateItemQuantity({
         userId: Number(user.id),
-        productId: item.productoId,
+        productoId,
         cantidad: item.cantidad - 1,
       });
     }
   }
 
   removeItem(item: CartItem): void {
-    const user = this.authSession.currentUser();
+    const user = this.authSession.currentUser() as { id: string | number } | null;
     if (user) {
+      const productoId = item.productoId ?? item.producto?.id;
+      if (!productoId) return;
       this.cartService.removeProduct({
         userId: Number(user.id),
-        productId: item.productoId,
+        productoId,
       });
     }
   }
 
   clearCart(): void {
-    const user = this.authSession.currentUser();
+    const user = this.authSession.currentUser() as { id: string | number } | null;
     if (user) {
-      this.items().forEach(item => {
-        this.cartService.removeProduct({
-          userId: Number(user.id),
-          productId: item.productoId,
-        });
-      });
+      this.cartService.clearCart(Number(user.id));
     }
   }
 

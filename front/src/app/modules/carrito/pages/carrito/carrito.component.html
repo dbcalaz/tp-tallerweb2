@@ -78,6 +78,7 @@
                     aria-label="Aumentar cantidad"
                     class="w-6 h-6 flex items-center justify-center text-[#141c25] hover:bg-[#edf4ff] font-bold"
                     (click)="increaseQuantity(item)"
+                    [disabled]="item.cantidad >= (item.producto?.stock ?? 99)"
                   >
                     +
                   </button>

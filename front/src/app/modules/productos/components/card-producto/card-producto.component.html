@@ -47,9 +47,9 @@
           6 cuotas fijas de {{ cuota() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
         </span>
       </div>
-      <button class="w-full h-9 flex items-center justify-center gap-1.5 bg-on-tertiary-container text-on-primary font-label-md text-label-md rounded hover:bg-tertiary-container transition-colors" type="button">
+      <button class="w-full h-9 flex items-center justify-center gap-1.5 bg-on-tertiary-container text-on-primary font-label-md text-label-md rounded hover:bg-tertiary-container transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-on-tertiary-container" type="button" (click)="addToCart(); $event.stopPropagation()" [disabled]="stockDisponible() === 0">
         <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
-        <span>Agregar</span>
+        <span>{{ stockDisponible() === 0 ? 'Sin stock' : 'Agregar' }}</span>
       </button>
     </div>
   </article>

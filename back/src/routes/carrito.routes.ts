@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { CartController } from "./cart.controller.js";
+import { CarritoController } from "../controller/carrito.controller.js";
 
 const carritoRoutes = Router();
-const cartController = new CartController();
+const carritoController = new CarritoController();
 
-carritoRoutes.get("/", cartController.getCart);
-carritoRoutes.post("/agregar", cartController.addToCart);
-carritoRoutes.post("/eliminar", cartController.removeFromCart);
-carritoRoutes.post("/actualizar-cantidad", cartController.updateQuantity);
+carritoRoutes.get("/", carritoController.getCarrito);
+carritoRoutes.post("/agregar", carritoController.addToCart);
+carritoRoutes.post("/eliminar", carritoController.removeFromCart);
+carritoRoutes.post("/actualizar-cantidad", carritoController.updateQuantity);
+carritoRoutes.post("/vaciar", carritoController.clearCart);
 
 export default carritoRoutes;

@@ -26,9 +26,10 @@ export interface Producto {
 
 export interface CartItem {
   id: number;
-  cartId: number;
-  productId: number;
+  carritoId: number;
+  productoId: number;
   cantidad: number;
+  createdAt: string;
   producto: Producto;
 }
 
@@ -41,18 +42,18 @@ export interface Cart {
 }
 
 export interface CartResponse {
-  cart: Cart;
+  carrito: Cart;
 }
 
 export interface AddToCartData {
   userId: number;
-  productId: number;
+  productoId: number;
   cantidad: number;
 }
 
 export interface RemoveFromCartData {
   userId: number;
-  productId: number;
+  productoId: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -67,15 +68,15 @@ export class CartService {
   );
   readonly isEmpty = computed(() => this.items().length === 0);
 
-  private setCartState(cart: Cart | null): void {
-    if (!cart) {
+  private setCartState(carrito: Cart | null): void {
+    if (!carrito) {
       this.cartSignal.set(null);
       return;
     }
 
     this.cartSignal.set({
-      ...cart,
-      items: cart.items.map(item => ({
+      ...carrito,
+      items: carrito.items.map(item => ({
         ...item,
         producto: { ...item.producto }
       }))
@@ -89,8 +90,8 @@ export class CartService {
   addToCart(data: AddToCartData): Observable<CartResponse> {
     return this.http.post<CartResponse>('/api/carrito/agregar', data).pipe(
       tap((response) => {
-        if (response?.cart) {
-          this.setCartState(response.cart);
+        if (response?.carrito) {
+          this.setCartState(response.carrito);
         } else {
           this.loadCart(data.userId);
         }
@@ -108,7 +109,7 @@ export class CartService {
 
   loadCart(userId: number): void {
     this.getCart(userId).subscribe({
-      next: (response) => this.setCartState(response.cart),
+      next: (response) => this.setCartState(response.carrito),
       error: (error) => console.error('Error al cargar carrito:', error),
     });
   }
@@ -125,19 +126,27 @@ export class CartService {
 
   removeProduct(data: RemoveFromCartData): void {
     this.removeFromCart(data).subscribe({
-      next: (response) => this.setCartState(response.cart),
+      next: (response) => this.setCartState(response.carrito),
       error: (error) => console.error('Error al eliminar producto:', error),
     });
   }
 
   updateItemQuantity(data: AddToCartData): void {
     this.updateQuantity(data).subscribe({
-      next: (response) => this.setCartState(response.cart),
+      next: (response) => this.setCartState(response.carrito),
       error: (error) => console.error('Error al actualizar cantidad:', error),
     });
   }
 
-  clearCart(): void {
-    this.setCartState(null);
+  clearCart(userId?: number): void {
+    if (!userId) {
+      this.setCartState(null);
+      return;
+    }
+
+    this.http.post<CartResponse>('/api/carrito/vaciar', { userId }).subscribe({
+      next: (response) => this.setCartState(response.carrito),
+      error: (error) => console.error('Error al vaciar carrito:', error),
+    });
   }
 }

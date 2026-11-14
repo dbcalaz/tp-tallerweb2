@@ -1,10 +1,12 @@
-import { Component, HostListener, inject, ViewChild } from '@angular/core';
+import { Component, HostListener, inject, ViewChild, effect } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/router';
 import { AuthSessionService } from '../../api/services/auth/auth-session.service';
 import { CarritoComponent } from '../../modules/carrito/pages/carrito/carrito.component';
+import { CartService } from '../../modules/carrito/pages/carrito/cart.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
 import { BusquedaService } from '../../api/services/busqueda/busqueda.service';
+
 
 @Component({
   selector: 'app-navbar',
@@ -16,8 +18,10 @@ export class Navbar {
   private readonly router = inject(Router);
 
   protected readonly authSession = inject(AuthSessionService);
+  protected readonly cartService = inject(CartService);
   protected menuUsuarioAbierto = false;
   protected readonly busqueda = inject(BusquedaService);
+  protected readonly itemCount = this.cartService.itemCount;
 
   constructor() {
     this.router.events
@@ -30,6 +34,16 @@ export class Navbar {
           this.busqueda.limpiar();
         }
       });
+
+    effect(() => {
+      const user = this.authSession.currentUser();
+
+      if (user) {
+        this.cartService.loadCart(Number(user.id));
+      } else {
+        this.cartService.clearCart();
+      }
+    });
   }
 
   protected alBuscar(valor: string): void {
@@ -60,6 +74,7 @@ export class Navbar {
   protected logout(): void {
     this.cerrarMenuUsuario();
     this.authSession.clear();
+    this.cartService.clearCart();
     void this.router.navigateByUrl('/login');
   }
 
