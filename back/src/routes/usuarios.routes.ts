@@ -7,6 +7,8 @@ const usuarioController = new UsuarioController();
 usersRoutes.get("/", usuarioController.getUsuarios);
 usersRoutes.post("/registro", usuarioController.register);
 usersRoutes.post("/login", usuarioController.login);
+usersRoutes.post("/recuperar-password", usuarioController.solicitarRecuperacion);
+usersRoutes.post("/restablecer-password", usuarioController.restablecerPassword);
 usersRoutes.get("/perfil/:id", usuarioController.getPerfil);
 usersRoutes.put("/perfil/:id", usuarioController.updatePerfil);
 

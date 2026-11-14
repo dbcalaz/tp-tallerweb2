@@ -22,6 +22,17 @@ export class UsuariosService {
     return this.http.post<AuthResponseDto>(`${environment.API_URL}/usuario/login`, data);
   }
 
+  solicitarRecuperacion(email: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${environment.API_URL}/usuario/recuperar-password`, { email });
+  }
+
+  restablecerPassword(token: string, password: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${environment.API_URL}/usuario/restablecer-password`, {
+      token,
+      password,
+    });
+  }
+
   getPerfil(userId: string | number): Observable<PerfilUsuarioResponseDto> {
     return this.http.get<PerfilUsuarioResponseDto>(`${environment.API_URL}/usuario/perfil/${userId}`);
   }

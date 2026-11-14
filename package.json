@@ -8,6 +8,8 @@
     "dev": "node scripts/dev.mjs",
     "dev:front": "npm --prefix front start",
     "dev:back": "npm --prefix back run dev",
+    "db:generate": "npm --prefix back run db:generate",
+    "db:deploy": "npm --prefix back run db:deploy",
     "build:front": "npm --prefix front run build",
     "build:back": "npm --prefix back run build"
   }

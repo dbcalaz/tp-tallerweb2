@@ -22,8 +22,8 @@
         >
           <span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container animate-pulse"></span>
           <span class="text-on-surface-variant">
-            Mostrando <strong class="text-on-surface">{{ productosFiltrados().length }}</strong> de
-            <strong class="text-on-surface">{{ productos().length }}</strong> unidades disponibles
+            Mostrando <strong class="text-on-surface">{{ primerProductoVisible() }}–{{ ultimoProductoVisible() }}</strong> de
+            <strong class="text-on-surface">{{ productosOrdenados().length }}</strong> productos
           </span>
         </div>
       </div>
@@ -81,7 +81,7 @@
         />
         <section class="lg:col-span-9 flex flex-col gap-space-lg">
           <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-gutter-desktop">
-            @for (producto of productosFiltrados(); track producto.id) {
+            @for (producto of productosPaginados(); track producto.id) {
               <app-card-producto [producto]="producto" />
             } @empty {
               <p class="col-span-full text-on-surface-variant">
@@ -89,51 +89,54 @@
               </p>
             }
           </div>
-          <!--<div
-            class="w-full bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-sm"
-          >
-            <span class="font-body-sm text-body-sm text-on-surface-variant">
-              Página <strong class="text-on-surface">1</strong> de
-              <strong class="text-on-surface">4</strong> (36 de 142 artículos)
-            </span>
-            <div class="flex items-center gap-1 font-label-md text-label-md">
-              <button
-                class="h-8 px-2 flex items-center justify-center rounded text-outline opacity-40 cursor-not-allowed"
-                disabled
-                type="button"
-              >
-                <span class="material-symbols-outlined text-[16px]">chevron_left</span>
-              </button>
-              <button class="h-8 w-8 rounded bg-primary text-on-primary font-bold" type="button">
-                1
-              </button>
-              <button
-                class="h-8 w-8 rounded bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors"
-                type="button"
-              >
-                2
-              </button>
-              <button
-                class="h-8 w-8 rounded bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors"
-                type="button"
-              >
-                3
-              </button>
-              <button
-                class="h-8 w-8 rounded bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors"
-                type="button"
-              >
-                4
-              </button>
-              <button
-                class="h-8 px-3 rounded bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors flex items-center gap-1"
-                type="button"
-              >
-                <span>Siguiente</span>
-                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-              </button>
-            </div>
-          </div>-->
+          @if (paginasTotales() > 1) {
+            <nav
+              class="w-full bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-sm"
+              aria-label="Paginación del catálogo"
+            >
+              <span class="font-body-sm text-body-sm text-on-surface-variant">
+                Página <strong class="text-on-surface">{{ paginaActual() }}</strong> de
+                <strong class="text-on-surface">{{ paginasTotales() }}</strong>
+              </span>
+              <div class="flex items-center gap-1 font-label-md text-label-md">
+                <button
+                  class="h-9 px-2 rounded bg-surface-container text-on-surface disabled:opacity-40 disabled:cursor-not-allowed"
+                  type="button"
+                  aria-label="Página anterior"
+                  [disabled]="paginaActual() === 1"
+                  (click)="cambiarPagina(paginaActual() - 1)"
+                >
+                  <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                </button>
+                @for (pagina of paginas(); track pagina) {
+                  <button
+                    class="h-9 w-9 rounded transition-colors"
+                    [class.bg-primary]="pagina === paginaActual()"
+                    [class.text-on-primary]="pagina === paginaActual()"
+                    [class.font-bold]="pagina === paginaActual()"
+                    [class.bg-surface-container]="pagina !== paginaActual()"
+                    [class.text-on-surface]="pagina !== paginaActual()"
+                    type="button"
+                    [attr.aria-label]="'Ir a la página ' + pagina"
+                    [attr.aria-current]="pagina === paginaActual() ? 'page' : null"
+                    (click)="cambiarPagina(pagina)"
+                  >
+                    {{ pagina }}
+                  </button>
+                }
+                <button
+                  class="h-9 px-3 rounded bg-surface-container text-on-surface disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
+                  type="button"
+                  aria-label="Página siguiente"
+                  [disabled]="paginaActual() === paginasTotales()"
+                  (click)="cambiarPagina(paginaActual() + 1)"
+                >
+                  <span>Siguiente</span>
+                  <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                </button>
+              </div>
+            </nav>
+          }
         </section>
       </div>
     </div>
