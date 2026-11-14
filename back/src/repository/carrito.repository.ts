@@ -15,6 +15,13 @@ const CARRITO_INCLUDE = {
 };
 
 export class CarritoRepository {
+    async findByUserId(userId: number) {
+        return prisma.carrito.findUnique({
+            where: { userId },
+            include: CARRITO_INCLUDE,
+        });
+    }
+
     async findOrCreateByUserId(userId: number) {
         let carrito = await prisma.carrito.findUnique({
             where: { userId },

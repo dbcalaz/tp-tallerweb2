@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
@@ -36,9 +36,45 @@ export class DetalleProductoComponent {
   // Precio con el descuento del 10% por transferencia.
   readonly precioTransferencia = computed(() => (this.producto()?.precio ?? 0) * 0.9);
 
+  readonly cantidadEnCarrito = computed(() => {
+    const id = this.producto()?.id;
+    if (id === undefined) return 0;
+    return this.carritoService.items().find((i) => i.productoId === id)?.cantidad ?? 0;
+  });
+
+  readonly stockDisponible = computed(() =>
+    Math.max(0, (this.producto()?.stock ?? 0) - this.cantidadEnCarrito()),
+  );
+
+  readonly sinStockDisponible = computed(() => this.stockDisponible() === 0);
+
+  readonly puedeDecrementar = computed(() => this.cantidad() > 1);
+
+  readonly puedeIncrementar = computed(
+    () => this.stockDisponible() > 0 && this.cantidad() < this.stockDisponible(),
+  );
+
+  readonly puedeAgregar = computed(
+    () => this.stockDisponible() > 0 && this.cantidad() > 0 && this.cantidad() <= this.stockDisponible(),
+  );
+
+  constructor() {
+    effect(() => {
+      const disponible = this.stockDisponible();
+      const actual = untracked(() => this.cantidad());
+
+      if (disponible <= 0) {
+        if (actual !== 0) this.cantidad.set(0);
+      } else if (actual === 0 || actual > disponible) {
+        this.cantidad.set(Math.min(Math.max(actual, 1), disponible));
+      }
+    });
+  }
+
   incrementarCantidad(): void {
-    const stock = this.producto()?.stock ?? 1;
-    this.cantidad.update((c) => Math.min(c + 1, Math.max(stock, 1)));
+    const disponible = this.stockDisponible();
+    if (disponible <= 0) return;
+    this.cantidad.update((c) => Math.min(c + 1, disponible));
   }
 
   decrementarCantidad(): void {
@@ -47,8 +83,7 @@ export class DetalleProductoComponent {
 
   agregarAlCarrito(): void {
     const prod = this.producto();
-    if (prod) {
-      this.carritoService.agregarProducto(prod, this.cantidad());
-    }
+    if (!prod || !this.puedeAgregar()) return;
+    this.carritoService.agregarProducto(prod, this.cantidad());
   }
 }

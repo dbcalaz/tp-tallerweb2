@@ -13,7 +13,10 @@ export class CarritoService {
     constructor(private readonly carritoRepository: CarritoRepository) {}
 
     async obtenerCarrito(userId: number): Promise<CarritoResponseDto> {
-        const carrito = await this.carritoRepository.findOrCreateByUserId(userId);
+        const carrito = await this.carritoRepository.findByUserId(userId);
+        if (!carrito) {
+            return new CarritoResponseDto(0, userId, []);
+        }
         return CarritoResponseDto.fromEntity(carrito);
     }
 
@@ -24,6 +27,17 @@ export class CarritoService {
         }
 
         const carrito = await this.carritoRepository.findOrCreateByUserId(userId);
+        const itemExistente = carrito.items.find((item) => item.productoId === dto.productoId);
+        const cantidadActual = itemExistente?.cantidad ?? 0;
+        const cantidadResultante = cantidadActual + dto.cantidad;
+
+        if (cantidadResultante > producto.stock) {
+            const disponible = Math.max(0, producto.stock - cantidadActual);
+            throw new BadRequestError(
+                `Stock insuficiente para "${producto.nombre}". Solo hay ${disponible} unidad${disponible === 1 ? "" : "es"} disponible${disponible === 1 ? "" : "s"}.`,
+            );
+        }
+
         await this.carritoRepository.upsertItem(carrito.id, dto.productoId, dto.cantidad);
 
         const updated = await this.carritoRepository.findOrCreateByUserId(userId);
@@ -31,6 +45,18 @@ export class CarritoService {
     }
 
     async actualizarCantidad(userId: number, productoId: number, dto: ActualizarCantidadDto): Promise<CarritoResponseDto> {
+        if (dto.cantidad > 0) {
+            const producto = await this.carritoRepository.findProductoActivo(productoId);
+            if (!producto) {
+                throw new NotFoundError("El producto no existe o no está disponible.");
+            }
+            if (dto.cantidad > producto.stock) {
+                throw new BadRequestError(
+                    `Stock insuficiente para "${producto.nombre}". El máximo disponible es ${producto.stock} unidad${producto.stock === 1 ? "" : "es"}.`,
+                );
+            }
+        }
+
         const carrito = await this.carritoRepository.findOrCreateByUserId(userId);
         await this.carritoRepository.updateItemQuantity(carrito.id, productoId, dto.cantidad);
 
