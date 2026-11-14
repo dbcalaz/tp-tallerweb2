@@ -1,28 +1,20 @@
 import { Routes } from '@angular/router';
+import { HomeComponent } from './public/home/home.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
-  { path: 'login', loadComponent: () => import('./features/users/login/login.component').then((module) => module.LoginComponent) },
+  { path: 'productos', pathMatch: 'full', component: HomeComponent },
   {
-    path: 'usuarios/registro',
-    loadComponent: () => import('./features/users/signup/signup.component').then((module) => module.SignupComponent),
+    path: '',
+    loadChildren: () => import('./modules/usuarios/usuarios.routes').then((m) => m.usuariosRoutes),
   },
   {
-    path: 'productos',
-    loadComponent: () => import('./features/products/products-page.component').then((module) => module.ProductsPageComponent),
+    path: '',
+    loadChildren: () => import('./modules/productos/productos.routes').then((m) => m.productosRoutes),
   },
   {
-    path: 'catalogo',
-    loadComponent: () => import('./features/catalogo/catalogo.component').then((module) => module.CatalogoPageComponent),
-  },
-  {
-    path: 'productos/detalle',
-    loadComponent: () => import('./features/products/product-detail/detalle-producto.component')
-      .then((module) => module.DetalleProductoComponent),
-  },
-  {
-    path: 'carrito',
-    loadComponent: () => import('./features/cart/cart-page.component').then((module) => module.CartPageComponent),
+    path: '',
+    loadChildren: () => import('./modules/carrito/carrito.routes').then((m) => m.carritoRoutes),
   },
   { path: '**', redirectTo: 'login' },
 ];

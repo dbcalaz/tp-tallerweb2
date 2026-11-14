@@ -12,4 +12,7 @@ nav a:hover, nav a.active { background: #eef2fa; color: #24458d; }
 .success-toast { position: fixed; z-index: 1000; top: 1.25rem; right: clamp(1rem, 4vw, 3rem); max-width: min(26rem, calc(100vw - 2rem)); padding: 0.9rem 1.15rem; border: 1px solid #b7e4c7; border-radius: 0.75rem; background: #eaf8ef; box-shadow: 0 10px 30px rgba(20, 83, 45, 0.12); color: #21643b; font-weight: 650; line-height: 1.4; animation: toast-in 180ms ease-out; }
 @keyframes toast-in { from { opacity: 0; transform: translateY(-0.4rem); } to { opacity: 1; transform: translateY(0); } }
 .app-content { min-height: calc(100vh - 3.7rem); }
+.auth-topbar { height: 68px; display: flex; align-items: center; padding: 0 clamp(1.25rem, 6vw, 5rem); border-bottom: 1px solid #e9edf3; background: #fff; }
+.auth-brand { color: #12253a; font: 700 1.55rem/1 "Space Grotesk", sans-serif; letter-spacing: -.08em; text-decoration: none; }
+.auth-brand span { color: #db7953; }
 @media (max-width: 480px) { .topbar { align-items: flex-start; flex-direction: column; gap: 0.5rem; } }

@@ -1,0 +1,29 @@
+<a
+  class="group flex flex-col p-space-sm rounded-lg bg-surface-container-lowest shadow-sm hover:shadow-md transition-all"
+  [routerLink]="['/catalogo']"
+  [queryParams]="{ categoria: categoria().id }"
+>
+  <div class="w-full aspect-[4/3] rounded bg-secondary-container/40 overflow-hidden mb-space-sm">
+    @if (categoria().imagenUrl) {
+      <img
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        [src]="categoria().imagenUrl"
+        [alt]="categoria().nombre"
+      />
+    }
+  </div>
+  <div class="space-y-0.5">
+    <h3
+      class="font-title-md text-title-md text-on-surface group-hover:text-on-tertiary-container transition-colors truncate"
+    >
+      {{ categoria().nombre }}
+    </h3>
+  </div>
+  <div class="mt-space-xs pt-space-xs flex items-center justify-between text-secondary">
+    <span class="font-label-xs text-label-xs">{{ categoria().cantidadProductos }} modelos</span>
+    <span
+      class="material-symbols-outlined text-[14px] group-hover:translate-x-0.5 transition-transform"
+      >arrow_forward</span
+    >
+  </div>
+</a>

@@ -1,0 +1,141 @@
+<main class="w-full min-h-[calc(100vh-280px)] bg-surface">
+  <div class="flex flex-col w-full">
+    <div class="w-full max-w-[1360px] mx-auto px-margin-desktop py-space-md">
+      <div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-md">
+        <nav
+          class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant"
+        >
+          <a
+            routerLink="/productos"
+            class="hover:text-primary transition-colors flex items-center gap-1"
+          >
+            <span class="material-symbols-outlined text-[14px]">home</span>
+            <span>Inicio</span>
+          </a>
+          <span class="opacity-40">/</span>
+          <a routerLink="/catalogo" class="hover:text-primary">Catálogo</a>
+          <span class="opacity-40">/</span>
+          <span class="text-on-surface font-semibold">{{ tituloCategoria() }}</span>
+        </nav>
+        <div
+          class="flex items-center gap-space-xs font-label-xs text-label-xs tracking-wider uppercase bg-surface-container px-space-sm py-1 rounded"
+        >
+          <span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container animate-pulse"></span>
+          <span class="text-on-surface-variant">
+            Mostrando <strong class="text-on-surface">{{ productosFiltrados().length }}</strong> de
+            <strong class="text-on-surface">{{ productos().length }}</strong> unidades disponibles
+          </span>
+        </div>
+      </div>
+      <div
+        class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg"
+      >
+        <div class="flex items-baseline gap-space-md">
+          <h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">
+            Catálogo de Tecnología
+          </h1>
+          <span
+            class="font-label-xs text-label-xs uppercase tracking-widest text-on-surface-variant hidden lg:inline"
+          >
+            Hardware Certificado CABA
+          </span>
+        </div>
+        <div class="flex items-center gap-space-md self-end md:self-auto">
+          <div
+            class="relative flex items-center bg-surface-container-low px-space-md py-1.5 rounded"
+          >
+            <span class="font-label-xs text-label-xs uppercase text-on-surface-variant mr-space-xs">
+              Ordenar por:
+            </span>
+            <select
+              #ordenSelect
+              (change)="cambiarOrden(ordenSelect.value)"
+              class="bg-transparent font-title-md text-body-md text-on-surface focus:outline-none cursor-pointer pr-space-md appearance-none"
+            >
+              <option value="nombre">Nombre A-Z</option>
+              <option value="precio_asc">Menor precio</option>
+              <option value="precio_desc">Mayor precio</option>
+            </select>
+            <span
+              class="material-symbols-outlined text-[16px] text-on-surface pointer-events-none absolute right-2"
+            >
+              expand_more
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
+        <app-sidebar-filtros
+          class="block lg:col-span-3"
+          [modoCategoria]="categoriaId() !== null"
+          [categorias]="categoriasOpciones()"
+          [tipos]="tiposOpciones()"
+          [marcas]="marcasOpciones()"
+          [categoriasSel]="categoriasSel()"
+          [tiposSel]="tiposSel()"
+          [marcasSel]="marcasActivas()"
+          (categoriaToggle)="alternarCategoria($event)"
+          (tipoToggle)="alternarTipo($event)"
+          (marcaToggle)="alternarMarca($event)"
+          (limpiar)="limpiarFiltros()"
+        />
+        <section class="lg:col-span-9 flex flex-col gap-space-lg">
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-gutter-desktop">
+            @for (producto of productosFiltrados(); track producto.id) {
+              <app-card-producto [producto]="producto" />
+            } @empty {
+              <p class="col-span-full text-on-surface-variant">
+                No hay productos en esta categoría.
+              </p>
+            }
+          </div>
+          <!--<div
+            class="w-full bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-sm"
+          >
+            <span class="font-body-sm text-body-sm text-on-surface-variant">
+              Página <strong class="text-on-surface">1</strong> de
+              <strong class="text-on-surface">4</strong> (36 de 142 artículos)
+            </span>
+            <div class="flex items-center gap-1 font-label-md text-label-md">
+              <button
+                class="h-8 px-2 flex items-center justify-center rounded text-outline opacity-40 cursor-not-allowed"
+                disabled
+                type="button"
+              >
+                <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+              </button>
+              <button class="h-8 w-8 rounded bg-primary text-on-primary font-bold" type="button">
+                1
+              </button>
+              <button
+                class="h-8 w-8 rounded bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors"
+                type="button"
+              >
+                2
+              </button>
+              <button
+                class="h-8 w-8 rounded bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors"
+                type="button"
+              >
+                3
+              </button>
+              <button
+                class="h-8 w-8 rounded bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors"
+                type="button"
+              >
+                4
+              </button>
+              <button
+                class="h-8 px-3 rounded bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors flex items-center gap-1"
+                type="button"
+              >
+                <span>Siguiente</span>
+                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+              </button>
+            </div>
+          </div>-->
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
