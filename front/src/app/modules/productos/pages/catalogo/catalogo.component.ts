@@ -8,6 +8,7 @@ import { CardProductoComponent } from '../../components/card-producto/card-produ
 import { SidebarFiltrosComponent } from '../../components/sidebar-filtros/sidebar-filtros';
 import { CategoriaFiltro, OpcionFiltro } from '../../interfaces/filtros.interface';
 import { Producto } from '../../interfaces/producto.interface';
+import { calcularPaginas, obtenerElementosDePagina, limitarPagina, PRODUCTOS_POR_PAGINA } from '../../utils/paginacion.utils';
 
 @Component({
   selector: 'app-catalog-page',
@@ -163,17 +164,16 @@ export class CatalogoComponent {
     }
   });
 
-  protected readonly productosPorPagina = 12;
+  protected readonly productosPorPagina = PRODUCTOS_POR_PAGINA;
   protected readonly paginaActual = signal(1);
   protected readonly paginasTotales = computed(() =>
-    Math.max(1, Math.ceil(this.productosOrdenados().length / this.productosPorPagina)),
+    calcularPaginas(this.productosOrdenados().length, this.productosPorPagina),
   );
   protected readonly paginas = computed(() =>
     Array.from({ length: this.paginasTotales() }, (_, indice) => indice + 1),
   );
   protected readonly productosPaginados = computed(() => {
-    const inicio = (this.paginaActual() - 1) * this.productosPorPagina;
-    return this.productosOrdenados().slice(inicio, inicio + this.productosPorPagina);
+    return obtenerElementosDePagina(this.productosOrdenados(), this.paginaActual(), this.productosPorPagina);
   });
   protected readonly primerProductoVisible = computed(() =>
     this.productosOrdenados().length === 0 ? 0 : (this.paginaActual() - 1) * this.productosPorPagina + 1,
@@ -183,7 +183,7 @@ export class CatalogoComponent {
   );
 
   protected cambiarPagina(pagina: number): void {
-    this.paginaActual.set(Math.min(Math.max(1, pagina), this.paginasTotales()));
+    this.paginaActual.set(limitarPagina(pagina, this.paginasTotales()));
   }
 
   protected cambiarOrden(valor: string): void {

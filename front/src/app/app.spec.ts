@@ -17,11 +17,11 @@ describe('App', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should show the main feature navigation', () => {
+  it('should show the public header when no user is signed in', () => {
     const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('nav')?.textContent).toContain('Usuarios');
-    expect(compiled.querySelector('nav')?.textContent).toContain('Productos');
-    expect(compiled.querySelector('nav')?.textContent).toContain('Carrito');
+    expect(compiled.querySelector('.auth-topbar')?.textContent).toContain('tecnova');
+    expect(compiled.querySelector('nav')).toBeNull();
   });
 });
