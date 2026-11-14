@@ -36,9 +36,10 @@ export class CarritoService {
   private readonly authSession = inject(AuthSessionService);
   private readonly toastService = inject(ToastService);
 
-  private readonly storageKey = 'tecnova_carrito_items';
+  private readonly legacyStorageKey = 'tecnova_carrito_items';
+  private userIdActual: string | number | null = null;
 
-  readonly items = signal<CarritoItem[]>(this.readLocalItems());
+  readonly items = signal<CarritoItem[]>([]);
   readonly isOpen = signal<boolean>(false);
 
   readonly totalItems = computed(() =>
@@ -52,17 +53,37 @@ export class CarritoService {
   readonly cuotas = computed(() => Math.round(this.subtotal() / 6));
 
   constructor() {
+    try {
+      localStorage.removeItem(this.legacyStorageKey);
+    } catch {
+    }
+
     effect(() => {
-      const user = this.authSession.currentUser();
-      if (user?.id) {
-        this.cargarCarritoUsuario(user.id);
+      const userId = this.authSession.currentUser()?.id ?? null;
+      if (String(userId) === String(this.userIdActual)) return;
+
+      if (this.userIdActual != null) {
+        try {
+          localStorage.removeItem(this.storageKeyFor(this.userIdActual));
+        } catch {
+        }
+      }
+
+      this.userIdActual = userId;
+      this.cerrarCarrito();
+      this.items.set(userId != null ? this.readLocalItems(userId) : []);
+
+      if (userId != null) {
+        this.cargarCarritoUsuario(userId);
       }
     });
 
     effect(() => {
       const current = this.items();
+      const userId = this.userIdActual;
+      if (userId == null) return;
       try {
-        localStorage.setItem(this.storageKey, JSON.stringify(current));
+        localStorage.setItem(this.storageKeyFor(userId), JSON.stringify(current));
       } catch {
       }
     });
@@ -89,6 +110,7 @@ export class CarritoService {
   cargarCarritoUsuario(userId: string | number): void {
     this.http.get<CarritoResponseDto>(`${environment.API_URL}/carrito/${userId}`).subscribe({
       next: (res) => {
+        if (String(this.userIdActual) !== String(userId)) return;
         if (!Array.isArray(res?.items)) return;
 
         const remoteItems: CarritoItem[] = res.items.map((it: CarritoItemResponseDto) => ({
@@ -107,14 +129,7 @@ export class CarritoService {
           },
         }));
 
-        const local = this.items();
-        if (local.length > 0 && remoteItems.length === 0) {
-          for (const item of local) {
-            this.syncBackendAdd(userId, item.productoId, item.cantidad);
-          }
-        } else if (remoteItems.length > 0) {
-          this.items.set(remoteItems);
-        }
+        this.items.set(remoteItems);
       },
       error: () => {
       },
@@ -122,6 +137,12 @@ export class CarritoService {
   }
 
   agregarProducto(producto: Producto, cantidad = 1): void {
+    const user = this.authSession.currentUser();
+    if (!user?.id) {
+      this.toastService.showSuccess('Iniciá sesión para agregar productos al carrito.');
+      return;
+    }
+
     const stock = producto.stock ?? 0;
     const yaEnCarrito =
       this.items().find((i) => i.productoId === producto.id)?.cantidad ?? 0;
@@ -162,10 +183,7 @@ export class CarritoService {
     this.items.set(current);
     this.toastService.showSuccess(`¡Agregaste "${producto.nombre}" al carrito!`);
 
-    const user = this.authSession.currentUser();
-    if (user?.id) {
-      this.syncBackendAdd(user.id, producto.id, cantidad);
-    }
+    this.syncBackendAdd(user.id, producto.id, cantidad);
   }
 
   actualizarCantidad(productoId: number, cantidad: number): void {
@@ -247,9 +265,13 @@ export class CarritoService {
       });
   }
 
-  private readLocalItems(): CarritoItem[] {
+  private storageKeyFor(userId: string | number): string {
+    return `carrito_user_${userId}`;
+  }
+
+  private readLocalItems(userId: string | number): CarritoItem[] {
     try {
-      const raw = localStorage.getItem(this.storageKey);
+      const raw = localStorage.getItem(this.storageKeyFor(userId));
       if (!raw) return [];
       const parsed = JSON.parse(raw);
       return Array.isArray(parsed) ? (parsed as CarritoItem[]) : [];
