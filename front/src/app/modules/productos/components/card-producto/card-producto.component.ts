@@ -1,7 +1,8 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { Producto } from '../../interfaces/producto.interface';
 import { RouterLink } from '@angular/router';
+import { CarritoService } from '../../../../api/services/carrito/carrito.service';
 
 @Component({
   selector: 'app-card-producto',
@@ -10,6 +11,8 @@ import { RouterLink } from '@angular/router';
   styleUrl: './card-producto.component.css',
 })
 export class CardProductoComponent {
+  private readonly carritoService = inject(CarritoService);
+
   producto = input.required<Producto>();
 
   enStock = computed(() => this.producto().stock > 5);
@@ -20,4 +23,9 @@ export class CardProductoComponent {
     return 'Sin stock';
   });
   cuota = computed(() => this.producto().precio / 6);
+
+  agregarAlCarrito(event: MouseEvent): void {
+    event.stopPropagation();
+    this.carritoService.agregarProducto(this.producto());
+  }
 }

@@ -1,21 +1,22 @@
-import type { ProductoRepository } from "../repository/producto.repository.js"
+import { FiltroProductoDto, ProductoResponseDto } from "../dto/producto.dto.js";
+import { NotFoundError } from "../errors/http.error.js";
+import type { ProductoRepository } from "../repository/producto.repository.js";
 
 export class ProductoService {
+    constructor(private readonly productoRepository: ProductoRepository) {}
 
-    constructor(private productoRepository: ProductoRepository) { }
-
-    async obtenerProductos(busqueda?: string) {
-        return await this.productoRepository.getProductos(busqueda);
+    async obtenerProductos(filtro: FiltroProductoDto): Promise<ProductoResponseDto[]> {
+        const productos = await this.productoRepository.getProductos(filtro.busqueda);
+        return ProductoResponseDto.fromEntityList(productos);
     }
 
-    async obtenerProductoPorId(id: number) {
+    async obtenerProductoPorId(id: number): Promise<ProductoResponseDto> {
         const producto = await this.productoRepository.getProductoPorId(id);
 
-        if (producto == null) {
-            throw new Error("No se encontró ningún producto.")
+        if (!producto) {
+            throw new NotFoundError("No se encontró ningún producto.");
         }
 
-        return producto;
+        return ProductoResponseDto.fromEntity(producto);
     }
-
 }

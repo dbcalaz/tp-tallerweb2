@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { finalize, timeout } from 'rxjs';
+import { LoginRequestDto } from '../../../../api/dto/usuario.dto';
 import { UsuariosService } from '../../../../api/services/usuarios/usuarios.service';
 import { AuthSessionService } from '../../../../api/services/auth/auth-session.service';
 
@@ -28,7 +29,8 @@ export class LoginComponent {
     this.errorMessage = '';
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     this.isSubmitting = true;
-    this.usersApi.login(this.form.getRawValue()).pipe(
+    const { email, password } = this.form.getRawValue();
+    this.usersApi.login(new LoginRequestDto(email, password)).pipe(
       timeout({ first: 10000 }),
       finalize(() => this.isSubmitting = false),
     ).subscribe({

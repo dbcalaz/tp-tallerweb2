@@ -2,6 +2,7 @@ import { Component, HostListener, inject, ViewChild } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/router';
 import { AuthSessionService } from '../../api/services/auth/auth-session.service';
 import { CarritoComponent } from '../../modules/carrito/pages/carrito/carrito.component';
+import { CarritoService } from '../../api/services/carrito/carrito.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
 import { BusquedaService } from '../../api/services/busqueda/busqueda.service';
@@ -16,6 +17,7 @@ export class Navbar {
   private readonly router = inject(Router);
 
   protected readonly authSession = inject(AuthSessionService);
+  protected readonly carritoService = inject(CarritoService);
   protected menuUsuarioAbierto = false;
   protected readonly busqueda = inject(BusquedaService);
 

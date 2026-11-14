@@ -1,8 +1,8 @@
 import { Producto } from '../../../../modules/productos/interfaces/producto.interface';
-import { ProductoRest } from './producto.interface.rest';
+import { ProductoRestDto } from '../../../dto/producto.dto';
 
 export class ProductoMapper {
-  static mapRestToFront(p: ProductoRest): Producto {
+  static mapRestToFront(p: ProductoRestDto): Producto {
     return {
       id: p.id,
       nombre: p.nombre,
@@ -19,7 +19,7 @@ export class ProductoMapper {
     };
   }
 
-  static mapRestArrayToFront(lista: ProductoRest[]): Producto[] {
+  static mapRestArrayToFront(lista: ProductoRestDto[]): Producto[] {
     return lista.map((p) => ProductoMapper.mapRestToFront(p));
   }
 }

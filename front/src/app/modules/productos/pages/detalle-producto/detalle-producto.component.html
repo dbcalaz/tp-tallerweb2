@@ -122,7 +122,7 @@
                     <span
                       class="font-price-display text-price-display text-on-tertiary-container text-[32px] leading-tight"
                     >
-                      {{ getPrecioFormateado() }}
+                      {{ producto()?.precio ?? 0 | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
                     </span>
 
                     <span class="font-body-sm text-body-sm text-on-surface-variant font-medium">
@@ -141,7 +141,7 @@
                   <span
                     class="font-price-installment text-price-installment text-primary font-bold"
                   >
-                    6 cuotas fijas de {{ getCuotaFormateada() }}
+                    6 cuotas fijas de {{ cuota() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
                   </span>
                   <span class="font-body-sm text-body-sm text-on-surface-variant">
                     Con Visa, Mastercard o American Express
@@ -155,7 +155,7 @@
                     10% OFF pagando con Transferencia
                   </span>
                   <span class="font-body-sm text-body-sm text-on-tertiary-container font-semibold">
-                    {{ getPrecioTransferenciaFormateado() }} ARS final
+                    {{ precioTransferencia() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }} ARS final
                   </span>
                 </div>
               </div>
@@ -210,8 +210,9 @@
             <div class="flex items-center gap-space-sm pt-space-xs">
               <div class="flex items-center bg-surface-container-lowest rounded-lg shadow-sm p-1">
                 <button
+                  (click)="decrementarCantidad()"
                   aria-label="Restar una unidad"
-                  class="w-8 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded transition-colors font-bold text-lg"
+                  class="w-8 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded transition-colors font-bold text-lg cursor-pointer"
                   type="button"
                 >
                   -
@@ -219,26 +220,29 @@
                 <span
                   class="w-10 text-center font-label-md text-label-md text-on-surface font-bold"
                 >
-                  1
+                  {{ cantidad() }}
                 </span>
 
                 <button
+                  (click)="incrementarCantidad()"
                   aria-label="Sumar una unidad"
-                  class="w-8 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded transition-colors font-bold text-lg"
+                  class="w-8 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded transition-colors font-bold text-lg cursor-pointer"
                   type="button"
                 >
                   +
                 </button>
               </div>
               <button
-                class="flex-1 py-3 px-space-md bg-on-tertiary-container hover:bg-tertiary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm flex items-center justify-center gap-space-xs transition-colors active:scale-[0.99]"
+                (click)="agregarAlCarrito()"
+                class="flex-1 py-3 px-space-md bg-on-tertiary-container hover:bg-tertiary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm flex items-center justify-center gap-space-xs transition-colors active:scale-[0.99] cursor-pointer"
                 type="button"
               >
                 <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
                 Agregar al carrito
               </button>
               <button
-                class="py-3 px-space-md bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm transition-colors hidden sm:block"
+                (click)="agregarAlCarrito()"
+                class="py-3 px-space-md bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md rounded-lg shadow-sm transition-colors hidden sm:block cursor-pointer"
                 type="button"
               >
                 Comprar ahora

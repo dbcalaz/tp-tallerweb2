@@ -1,8 +1,8 @@
 import { Categoria } from '../../../../modules/productos/interfaces/categoria.interface';
-import { CategoriaRest } from './categoria.interface.rest';
+import { CategoriaRestDto } from '../../../dto/categoria.dto';
 
 export class CategoriaMapper {
-  static mapRestToFront(c: CategoriaRest): Categoria {
+  static mapRestToFront(c: CategoriaRestDto): Categoria {
     return {
       id: c.id,
       nombre: c.nombre,
@@ -11,7 +11,7 @@ export class CategoriaMapper {
     };
   }
 
-  static mapRestArrayToFront(lista: CategoriaRest[]): Categoria[] {
+  static mapRestArrayToFront(lista: CategoriaRestDto[]): Categoria[] {
     return lista.map((c) => CategoriaMapper.mapRestToFront(c));
   }
 }

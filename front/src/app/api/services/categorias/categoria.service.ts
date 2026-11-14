@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Categoria } from '../../../modules/productos/interfaces/categoria.interface';
-import { CategoriaRest } from './mapping/categoria.interface.rest';
+import { CategoriaRestDto } from '../../dto/categoria.dto';
 import { CategoriaMapper } from './mapping/categoria.mapper';
 
 @Injectable({ providedIn: 'root' })
@@ -12,7 +12,7 @@ export class CategoriasService {
 
   listCategorias(): Observable<Categoria[]> {
     return this.http
-      .get<CategoriaRest[]>(`${environment.API_URL}/categorias`)
+      .get<CategoriaRestDto[]>(`${environment.API_URL}/categorias`)
       .pipe(map((res) => CategoriaMapper.mapRestArrayToFront(res)));
   }
 }

@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { RegistroRequestDto } from '../../../../api/dto/usuario.dto';
 import { UsuariosService } from '../../../../api/services/usuarios/usuarios.service';
 import { finalize, timeout } from 'rxjs';
 import { Router } from '@angular/router';
@@ -72,7 +73,7 @@ export class RegistroComponent {
 
     this.isSubmitting = true;
     const { email, password, nombre, apellido, direccion } = this.form.getRawValue();
-    this.usersApi.register({ email, password, nombre, apellido, direccion }).pipe(
+    this.usersApi.register(new RegistroRequestDto(email, password, nombre, apellido, direccion)).pipe(
       timeout({ first: 10000 }),
       finalize(() => this.isSubmitting = false),
     ).subscribe({

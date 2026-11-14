@@ -47,7 +47,11 @@
           6 cuotas fijas de {{ cuota() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
         </span>
       </div>
-      <button class="w-full h-9 flex items-center justify-center gap-1.5 bg-on-tertiary-container text-on-primary font-label-md text-label-md rounded hover:bg-tertiary-container transition-colors" type="button">
+      <button
+        (click)="agregarAlCarrito($event)"
+        class="w-full h-9 flex items-center justify-center gap-1.5 bg-on-tertiary-container text-on-primary font-label-md text-label-md rounded hover:bg-tertiary-container transition-colors cursor-pointer"
+        type="button"
+      >
         <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
         <span>Agregar</span>
       </button>
