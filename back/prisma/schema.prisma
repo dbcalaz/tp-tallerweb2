@@ -46,6 +46,7 @@ model Categoria {
   nombre         String          @unique
   imagenUrl     String?          @map("imagen_url")
   tiposProducto  TipoProducto[]
+  activo Boolean @default(true)
 
   @@map("categorias")
 }
@@ -56,6 +57,7 @@ model TipoProducto {
   categoriaId  Int
   categoria    Categoria  @relation(fields: [categoriaId], references: [id])
   productos    Producto[]
+  activo Boolean @default(true)
 
   @@unique([nombre, categoriaId])
   @@map("tipos_productos")
@@ -65,6 +67,7 @@ model Marca {
   id         Int        @id @default(autoincrement())
   nombre     String     @unique
   productos  Producto[]
+  activo Boolean @default(true)
 
   @@map("marcas")
 }
