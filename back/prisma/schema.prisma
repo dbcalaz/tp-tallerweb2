@@ -11,6 +11,11 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Rol {
+  CLIENTE
+  ADMIN
+}
+
 model User {
   id Int @id @default(autoincrement())
   email        String   @unique
@@ -18,6 +23,7 @@ model User {
   nombre       String
   apellido     String
   direccion    String
+  rol          Rol      @default(CLIENTE)
   createdAt    DateTime @default(now())
 
   carrito      Carrito?
