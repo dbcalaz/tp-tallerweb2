@@ -1,58 +1,7 @@
 <div
   class="admin-theme bg-surface font-body-md text-body-md text-on-surface min-h-screen selection:bg-primary selection:text-on-primary"
 >
-  <header
-    class="fixed top-0 left-0 right-0 z-40 bg-surface-container-low/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.45)]"
-  >
-    <div
-      class="h-14 w-full px-4 sm:px-gutter-desktop flex items-center justify-between gap-space-sm"
-    >
-      <div class="flex items-center gap-space-md min-w-0">
-        <div class="flex items-center gap-space-sm min-w-0">
-          <span
-            class="font-headline-sm text-sm sm:text-headline-sm tracking-tight text-on-surface font-semibold truncate"
-            >Tecnova <span class="text-primary">•</span> Admin</span
-          ><span
-            class="hidden md:inline-block font-label-sm text-label-sm uppercase px-space-sm py-space-2xs bg-surface-container text-on-surface-variant rounded tracking-wider shrink-0"
-            >PANEL DE CONTROL</span
-          >
-        </div>
-      </div>
-      <div class="flex items-center gap-space-sm sm:gap-space-lg">
-        <nav
-          class="hidden sm:flex items-center gap-space-xs"
-          data-active-classes="bg-primary-container text-on-primary"
-        >
-          <a
-            aria-current="page"
-            class="px-space-md py-space-xs rounded font-label-md transition-colors bg-primary-container text-on-primary"
-            data-path="productos"
-            href="#"
-            >Productos</a
-          ><a
-            class="px-space-md py-space-xs rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
-            data-path="categorias"
-            href="#"
-            >Categorías</a
-          >
-        </nav>
-        <div class="flex items-center gap-space-xs sm:gap-space-md sm:pl-space-md">
-          <a
-            class="h-8 px-space-sm inline-flex items-center gap-space-xs text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors rounded font-label-md text-label-md"
-            data-path="login"
-            (click)="$event.preventDefault(); cerrarSesion()"
-            href="#"
-            title="Cerrar sesión"
-            ><span class="material-symbols-outlined text-[18px]">logout</span
-            ><span class="hidden lg:inline">Cerrar sesión</span></a
-          >
-          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+  <app-admin-header />
   <main class="w-full pt-14 px-4 sm:px-gutter-desktop min-h-screen bg-surface">
     <div class="flex flex-col w-full pb-space-2xl">
       <div class="w-full pt-space-lg pb-space-md flex flex-col gap-space-lg">

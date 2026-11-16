@@ -91,7 +91,10 @@ export class CarritoService {
             throw new BadRequestError("El carrito está vacío.");
         }
 
-        const inactivo = carrito.items.find((item) => !item.producto.activo);
+        const inactivo = carrito.items.find((item) => {
+            const p = item.producto;
+            return !p.activo || !p.marca.activo || !p.tipoProducto.activo || !p.tipoProducto.categoria.activo;
+        });
         if (inactivo) {
             throw new BadRequestError(
                 `"${inactivo.producto.nombre}" ya no está disponible. Quitalo del carrito para continuar.`,

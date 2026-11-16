@@ -1,53 +1,44 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, HostListener, OnInit, computed, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
-import { AuthSessionService } from '../../../../api/services/auth/auth-session.service';
 import { CategoriasService } from '../../../../api/services/categorias/categoria.service';
 import { ProductosAdminService } from '../../../../api/services/productos/productos-admin.service';
 import { ToastService } from '../../../../shared/toast.service';
 import { Categoria, TipoProducto } from '../../../productos/interfaces/categoria.interface';
+import { AdminHeaderComponent } from '../../components/admin-header/admin-header.component';
 import { PaginaProductosAdmin, ProductoAdmin } from '../../interfaces/producto-admin.interface';
 
 type EstadoFiltro = 'todos' | 'activos' | 'inactivos';
 
 @Component({
   selector: 'app-productos-admin',
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, AdminHeaderComponent],
   templateUrl: './productos-admin.component.html',
 })
 export class ProductosAdminComponent implements OnInit {
   private readonly productosAdmin = inject(ProductosAdminService);
   private readonly categoriasService = inject(CategoriasService);
-  private readonly authSession = inject(AuthSessionService);
-  private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
 
-  // Se usa para ignorar respuestas viejas si el admin cambia de filtro o de página muy rápido.
   private ultimoPedido = 0;
 
-  // Datos de la tabla
   protected readonly pagina = signal<PaginaProductosAdmin | null>(null);
   protected readonly cargando = signal(false);
   protected readonly guardando = signal(false);
   protected readonly error = signal('');
 
-  // Paginación
   protected readonly paginaActual = signal(1);
   protected readonly filasPorPagina = signal(12);
   protected readonly opcionesFilas = [12, 24, 48];
 
-  // Filtros (0 = todas / todos)
   protected readonly categorias = signal<Categoria[]>([]);
   protected readonly tipos = signal<TipoProducto[]>([]);
   protected readonly categoriaId = signal(0);
   protected readonly tipoId = signal(0);
   protected readonly estado = signal<EstadoFiltro>('todos');
 
-  // Producto para el que está abierto el modal de baja lógica
   protected readonly productoSeleccionado = signal<ProductoAdmin | null>(null);
 
-  // Si hay una categoría elegida, el select de tipos muestra solo los de esa categoría.
   protected readonly tiposVisibles = computed(() => {
     const categoria = this.categoriaId();
     return categoria === 0 ? this.tipos() : this.tipos().filter((t) => t.categoriaId === categoria);
@@ -62,7 +53,6 @@ export class ProductosAdminComponent implements OnInit {
     () => ({ todos: 'Todos', activos: 'Habilitados', inactivos: 'Deshabilitados' })[this.estado()],
   );
 
-  // Hasta 5 números de página alrededor de la actual.
   protected readonly paginasVisibles = computed(() => {
     const total = this.pagina()?.totalPaginas ?? 1;
     const inicio = Math.max(1, Math.min(this.paginaActual() - 2, total - 4));
@@ -98,8 +88,6 @@ export class ProductosAdminComponent implements OnInit {
       .subscribe({
         next: (pagina) => {
           if (pedido !== this.ultimoPedido) return;
-          // Si la página quedó vacía (por ejemplo, se deshabilitó el último producto de la última
-          // página con un filtro activo), se vuelve a la última página que tenga productos.
           if (pagina.items.length === 0 && this.paginaActual() > 1) {
             this.paginaActual.set(pagina.totalPaginas);
             this.cargar();
@@ -115,7 +103,6 @@ export class ProductosAdminComponent implements OnInit {
       });
   }
 
-  // ---- Paginación ----
   protected irAPagina(numero: number): void {
     const total = this.pagina()?.totalPaginas ?? 1;
     this.paginaActual.set(Math.min(Math.max(1, numero), total));
@@ -128,10 +115,9 @@ export class ProductosAdminComponent implements OnInit {
     this.cargar();
   }
 
-  // ---- Filtros: todos vuelven a la página 1 ----
   protected cambiarCategoria(id: number): void {
     this.categoriaId.set(id);
-    this.tipoId.set(0); // el tipo elegido puede no pertenecer a la nueva categoría
+    this.tipoId.set(0);
     this.paginaActual.set(1);
     this.cargar();
   }
@@ -148,7 +134,6 @@ export class ProductosAdminComponent implements OnInit {
     this.cargar();
   }
 
-  // ---- Modal y baja lógica ----
   protected abrirModal(producto: ProductoAdmin): void {
     this.productoSeleccionado.set(producto);
   }
@@ -167,7 +152,6 @@ export class ProductosAdminComponent implements OnInit {
     if (producto) this.cambiarActivo(producto, false);
   }
 
-  // Rehabilitar no pide confirmación.
   protected rehabilitar(producto: ProductoAdmin): void {
     this.cambiarActivo(producto, true);
   }
@@ -189,10 +173,5 @@ export class ProductosAdminComponent implements OnInit {
         },
         error: () => this.toast.showSuccess('No se pudo actualizar el producto. Intentá nuevamente.'),
       });
-  }
-
-  protected cerrarSesion(): void {
-    this.authSession.clear();
-    void this.router.navigateByUrl('/login');
   }
 }

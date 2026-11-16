@@ -1,4 +1,5 @@
 import { prisma } from "../prisma.config.js";
+import { PRODUCTO_VISIBLE } from "./producto-visible.js"
 
 const CARRITO_INCLUDE = {
     items: {
@@ -6,7 +7,7 @@ const CARRITO_INCLUDE = {
             producto: {
                 include: {
                     marca: true,
-                    tipoProducto: true,
+                    tipoProducto: { include: { categoria: true } },
                 },
             },
         },
@@ -40,7 +41,7 @@ export class CarritoRepository {
 
     async findProductoActivo(productoId: number) {
         return prisma.producto.findFirst({
-            where: { id: productoId, activo: true },
+           where: { id: productoId, ...PRODUCTO_VISIBLE },
         });
     }
 

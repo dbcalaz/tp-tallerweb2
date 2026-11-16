@@ -1,0 +1,322 @@
+<div class="admin-theme min-h-screen bg-surface text-on-surface font-body">
+  <app-admin-header />
+
+  <main class="w-full pt-20 px-4 md:px-6 pb-20 max-w-7xl mx-auto">
+
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+      <nav class="flex items-center gap-1.5 text-xs text-tertiary font-medium">
+        <span>Administración</span>
+        <span class="text-surface-container-highest">/</span>
+        <span>Catálogos</span>
+        <span class="text-surface-container-highest">/</span>
+        <span class="text-primary font-semibold">Gestión Taxonómica & Marcas</span>
+      </nav>
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-surface-container-high text-secondary text-xs">
+        <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+        <span>Baja lógica activa en todo el sistema (sin pérdida de registros)</span>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6">
+      <div>
+        <h1 class="font-display text-2xl md:text-3xl font-bold tracking-tight text-on-surface">
+          Gestión de categorías, tipos y marcas
+        </h1>
+        <p class="text-sm text-tertiary mt-1">
+          Estructurá la taxonomía de la tienda. Administrá categorías jerárquicas, tipos derivados y fabricantes oficiales con política estricta de baja lógica (soft delete).
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2 shrink-0">
+        <button type="button" class="h-9 px-3.5 inline-flex items-center gap-1.5 rounded bg-primary-container text-white hover:bg-primary hover:text-on-primary-container transition-colors text-xs font-semibold shadow-sm">
+          <span class="material-symbols-outlined text-[18px]">folder_special</span>
+          <span>Nueva categoría</span>
+        </button>
+      </div>
+    </div>
+
+    @if (cargando()) {
+      <p class="text-sm text-tertiary py-10 text-center">Cargando catálogo...</p>
+    } @else if (error()) {
+      <p class="text-sm text-error py-10 text-center">No se pudo cargar el catálogo. Intentá nuevamente.</p>
+    } @else {
+
+    <section class="space-y-4 mb-14" id="seccion-categorias">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-surface-container-high/60">
+        <div>
+          <h2 class="font-display text-xl font-bold text-on-surface">1. Categorías del catálogo</h2>
+          <p class="text-xs text-tertiary mt-0.5">Estructura jerárquica con tipos anidados y conteo de productos asociados.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-tertiary">Mostrando {{ categorias().length }} categorías</span>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        @for (cat of categorias(); track cat.id) {
+          @if (cat.activo) {
+            <div class="rounded-lg bg-surface-container-low border border-surface-container-high/50 overflow-hidden">
+              <div class="p-3.5 bg-surface-container flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3 flex-wrap">
+                  <button type="button" class="p-1 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-high transition-colors" (click)="alternar(cat.id)">
+                    <span class="material-symbols-outlined text-[20px] transition-transform duration-200" [class]="estaAbierta(cat.id) ? 'rotate-180' : ''">expand_more</span>
+                  </button>
+                  <div class="flex items-center gap-2">
+                    <span class="font-display text-base font-bold text-on-surface">{{ cat.nombre }}</span>
+                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] bg-secondary-container text-secondary font-medium">
+                      <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Activa
+                    </span>
+                  </div>
+                  <div class="flex items-center gap-1.5 text-xs text-tertiary">
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high">{{ cat.tipos.length }} tipos</span>
+                    <span>•</span>
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high">{{ cat.cantidadProductos }} productos asociados</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <button type="button" class="h-7 px-2.5 inline-flex items-center gap-1 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-high text-xs">
+                    <span class="material-symbols-outlined text-[15px]">edit</span>
+                    <span>Editar</span>
+                  </button>
+                  <button type="button" class="h-7 w-7 inline-flex items-center justify-center rounded text-tertiary hover:text-error hover:bg-surface-container-high" title="Deshabilitar categoría">
+                    <span class="material-symbols-outlined text-[16px]">delete</span>
+                  </button>
+                  <button type="button" class="h-7 px-2.5 inline-flex items-center gap-1 rounded bg-surface-container-high text-on-surface hover:bg-surface-container-highest text-xs font-semibold">
+                    <span class="material-symbols-outlined text-[15px]">add</span>
+                    <span>Tipo</span>
+                  </button>
+                </div>
+              </div>
+
+              @if (estaAbierta(cat.id)) {
+                <div class="p-3 space-y-1.5 bg-surface-container-low/40">
+                  @for (tipo of cat.tipos; track tipo.id) {
+                    @if (tipo.activo) {
+                      <div class="grid grid-cols-12 items-center px-3 py-2 rounded bg-surface-container hover:bg-surface-container-high text-xs transition-colors">
+                        <div class="col-span-5 sm:col-span-4 font-medium text-on-surface flex items-center gap-2">
+                          <span class="material-symbols-outlined text-[16px] text-tertiary">sell</span> {{ tipo.nombre }}
+                        </div>
+                        <div class="col-span-3"><span class="text-secondary font-medium">● Activo</span></div>
+                        <div class="col-span-2 sm:col-span-3 text-tertiary"><span class="font-semibold text-on-surface">{{ tipo.cantidadProductos }}</span> productos</div>
+                        <div class="col-span-2 flex items-center justify-end gap-1">
+                          <button type="button" class="p-1 rounded text-tertiary hover:text-on-surface"><span class="material-symbols-outlined text-[15px]">edit</span></button>
+                          <button type="button" class="p-1 rounded text-tertiary hover:text-error"><span class="material-symbols-outlined text-[15px]">delete</span></button>
+                        </div>
+                      </div>
+                    } @else {
+                      <div class="grid grid-cols-12 items-center px-3 py-2 rounded bg-surface-container/60 hover:bg-surface-container text-xs transition-colors">
+                        <div class="col-span-5 sm:col-span-4 font-medium text-tertiary flex items-center gap-2">
+                          <span class="material-symbols-outlined text-[16px] text-tertiary">sell</span> <span class="line-through">{{ tipo.nombre }}</span>
+                        </div>
+                        <div class="col-span-3"><span class="text-tertiary font-medium">● Deshabilitado</span></div>
+                        <div class="col-span-2 sm:col-span-3 text-tertiary">{{ tipo.cantidadProductos }} productos</div>
+                        <div class="col-span-2 flex items-center justify-end gap-1">
+                          <button type="button" class="h-6 px-2 inline-flex items-center gap-1 rounded bg-secondary-container/40 text-secondary hover:bg-secondary-container text-[11px]">
+                            <span class="material-symbols-outlined text-[13px]">refresh</span> Rehabilitar
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  } @empty {
+                    <p class="text-xs text-tertiary px-3 py-2">Esta categoría todavía no tiene tipos.</p>
+                  }
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="rounded-lg bg-surface-container-lowest/80 border border-surface-container-high/40 overflow-hidden opacity-90">
+              <div class="p-3.5 bg-surface-container-low flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3 flex-wrap">
+                  <button type="button" class="p-1 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-high transition-colors" (click)="alternar(cat.id)">
+                    <span class="material-symbols-outlined text-[20px] transition-transform duration-200" [class]="estaAbierta(cat.id) ? 'rotate-180' : ''">expand_more</span>
+                  </button>
+                  <div class="flex items-center gap-2">
+                    <span class="font-display text-base font-bold text-tertiary line-through">{{ cat.nombre }}</span>
+                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] bg-surface-container-high text-tertiary font-medium">
+                      <span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Deshabilitada
+                    </span>
+                  </div>
+                  <div class="flex items-center gap-1.5 text-xs text-tertiary">
+                    <span class="px-2 py-0.5 rounded bg-surface-container">{{ cat.tipos.length }} tipos inactivos</span>
+                    <span>•</span>
+                    <span class="px-2 py-0.5 rounded bg-surface-container">Historial protegido</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button type="button" class="h-7 px-3 inline-flex items-center gap-1 rounded bg-secondary-container text-secondary hover:bg-secondary hover:text-on-secondary transition-colors text-xs font-semibold">
+                    <span class="material-symbols-outlined text-[15px]">settings_backup_restore</span>
+                    <span>Habilitar categoría</span>
+                  </button>
+                </div>
+              </div>
+
+              @if (estaAbierta(cat.id)) {
+                <div class="p-3 space-y-1.5 bg-surface-container-lowest">
+                  <div class="p-2 rounded bg-surface-container text-xs text-tertiary flex items-center gap-2 mb-2">
+                    <span class="material-symbols-outlined text-[16px] text-primary">info</span>
+                    <span>Sus productos y tipos están ocultos en el catálogo público. Los pedidos históricos se conservan íntegros.</span>
+                  </div>
+                  @for (tipo of cat.tipos; track tipo.id) {
+                    <div class="grid grid-cols-12 items-center px-3 py-2 rounded bg-surface-container/40 text-xs">
+                      <div class="col-span-6 font-medium text-tertiary flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">sell</span> <span class="line-through">{{ tipo.nombre }}</span></div>
+                      <div class="col-span-6 text-right text-tertiary italic text-[11px]">Inactivo por categoría padre (No editable individualmente)</div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        } @empty {
+          <p class="text-sm text-tertiary">No hay categorías registradas.</p>
+        }
+      </div>
+    </section>
+
+    <section class="space-y-4 mb-14" id="seccion-tipos">
+      <div class="flex flex-row items-center justify-between gap-4 pb-2 border-b border-surface-container-high/60">
+        <div>
+          <h2 class="font-display text-xl font-bold text-on-surface">Tipos de productos</h2>
+          <p class="text-xs text-tertiary mt-0.5 hidden sm:block">Listado taxonómico plano de todos los tipos registrados, con estado y controles de baja lógica.</p>
+        </div>
+        <button type="button" class="h-9 px-4 inline-flex items-center gap-1.5 rounded bg-primary-container text-white hover:bg-primary hover:text-on-primary-container transition-colors text-xs font-semibold shrink-0 shadow-sm">
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          <span>Agregar tipo</span>
+        </button>
+      </div>
+
+      <div class="rounded-lg bg-surface-container-low border border-surface-container-high/60 overflow-hidden shadow-sm">
+        <div class="grid grid-cols-12 items-center px-4 py-2.5 bg-surface-container text-xs font-semibold uppercase tracking-wider text-tertiary border-b border-surface-container-high">
+          <div class="col-span-7 sm:col-span-6">Nombre del tipo</div>
+          <div class="col-span-3 sm:col-span-3">Estado</div>
+          <div class="col-span-2 sm:col-span-3 text-right">Acciones</div>
+        </div>
+
+        <div class="divide-y divide-surface-container-high/40 text-xs">
+          @for (tipo of tiposPlanos(); track tipo.id) {
+            @if (tipo.habilitado) {
+              <div class="grid grid-cols-12 items-center px-4 py-3 hover:bg-surface-container transition-colors">
+                <div class="col-span-7 sm:col-span-6 font-medium text-on-surface flex items-center gap-2 truncate pr-2">
+                  <span class="material-symbols-outlined text-[17px] text-tertiary shrink-0">sell</span>
+                  <span class="truncate">{{ tipo.nombre }}</span>
+                </div>
+                <div class="col-span-3 sm:col-span-3">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] bg-secondary-container text-secondary font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Activo
+                  </span>
+                </div>
+                <div class="col-span-2 sm:col-span-3 flex items-center justify-end gap-1 sm:gap-2">
+                  <button type="button" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar tipo">
+                    <span class="material-symbols-outlined text-[17px]">edit</span>
+                  </button>
+                  <button type="button" class="p-1.5 rounded text-tertiary hover:text-error hover:bg-surface-container-highest transition-colors" title="Deshabilitar tipo">
+                    <span class="material-symbols-outlined text-[17px]">delete</span>
+                  </button>
+                </div>
+              </div>
+            } @else {
+              <div class="grid grid-cols-12 items-center px-4 py-3 bg-surface-container/20 hover:bg-surface-container/40 transition-colors">
+                <div class="col-span-7 sm:col-span-6 font-medium text-tertiary flex items-center gap-2 truncate pr-2">
+                  <span class="material-symbols-outlined text-[17px] text-tertiary shrink-0">sell</span>
+                  <span class="line-through truncate">{{ tipo.nombre }}</span>
+                </div>
+                <div class="col-span-3 sm:col-span-3">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] bg-surface-container-high text-tertiary font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Deshabilitado
+                  </span>
+                </div>
+                <div class="col-span-2 sm:col-span-3 flex items-center justify-end gap-1 sm:gap-2">
+                  <button type="button" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar tipo">
+                    <span class="material-symbols-outlined text-[17px]">edit</span>
+                  </button>
+                  @if (tipo.activo) {
+                    <button type="button" class="p-1.5 rounded text-tertiary/40 hover:text-tertiary cursor-pointer" title="No puede habilitarse mientras la categoría padre esté inactiva">
+                      <span class="material-symbols-outlined text-[17px]">block</span>
+                    </button>
+                  } @else {
+                    <button type="button" class="h-6 px-2 inline-flex items-center gap-1 rounded bg-secondary-container/50 text-secondary hover:bg-secondary-container transition-colors text-[11px] font-semibold" title="Habilitar tipo">
+                      <span class="material-symbols-outlined text-[14px]">refresh</span>
+                      <span class="hidden sm:inline">Habilitar</span>
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+          } @empty {
+            <p class="px-4 py-6 text-tertiary">No hay tipos registrados.</p>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="space-y-4 mb-14" id="seccion-marcas">
+      <div class="flex flex-row items-center justify-between gap-4 pb-2 border-b border-surface-container-high/60">
+        <div>
+          <h2 class="font-display text-xl font-bold text-on-surface">Marcas</h2>
+          <p class="text-xs text-tertiary mt-0.5 hidden sm:block">Listado plano de fabricantes y sellos oficiales registrados en la tienda con política de baja lógica.</p>
+        </div>
+        <button type="button" class="h-9 px-4 inline-flex items-center gap-1.5 rounded bg-primary-container text-white hover:bg-primary hover:text-on-primary-container transition-colors text-xs font-semibold shrink-0 shadow-sm">
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          <span>Agregar marca</span>
+        </button>
+      </div>
+
+      <div class="rounded-lg bg-surface-container-low border border-surface-container-high/60 overflow-hidden shadow-sm">
+        <div class="grid grid-cols-12 items-center px-4 py-2.5 bg-surface-container text-xs font-semibold uppercase tracking-wider text-tertiary border-b border-surface-container-high">
+          <div class="col-span-7 sm:col-span-6">Marca</div>
+          <div class="col-span-3 sm:col-span-3">Estado</div>
+          <div class="col-span-2 sm:col-span-3 text-right">Acciones</div>
+        </div>
+
+        <div class="divide-y divide-surface-container-high/40 text-xs">
+          @for (marca of marcas(); track marca.id) {
+            @if (marca.activo) {
+              <div class="grid grid-cols-12 items-center px-4 py-3 hover:bg-surface-container transition-colors">
+                <div class="col-span-7 sm:col-span-6 font-medium text-on-surface flex items-center gap-2 truncate pr-2">
+                  <span class="material-symbols-outlined text-[17px] text-tertiary shrink-0">verified</span>
+                  <span class="truncate">{{ marca.nombre }}</span>
+                </div>
+                <div class="col-span-3 sm:col-span-3">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] bg-secondary-container text-secondary font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Activa
+                  </span>
+                </div>
+                <div class="col-span-2 sm:col-span-3 flex items-center justify-end gap-1 sm:gap-2">
+                  <button type="button" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar marca">
+                    <span class="material-symbols-outlined text-[17px]">edit</span>
+                  </button>
+                  <button type="button" class="p-1.5 rounded text-tertiary hover:text-error hover:bg-surface-container-highest transition-colors" title="Deshabilitar marca">
+                    <span class="material-symbols-outlined text-[17px]">delete</span>
+                  </button>
+                </div>
+              </div>
+            } @else {
+              <div class="grid grid-cols-12 items-center px-4 py-3 bg-surface-container/30 hover:bg-surface-container/60 transition-colors">
+                <div class="col-span-7 sm:col-span-6 font-medium text-tertiary flex items-center gap-2 truncate pr-2">
+                  <span class="material-symbols-outlined text-[17px] text-tertiary shrink-0">block</span>
+                  <span class="line-through truncate">{{ marca.nombre }}</span>
+                </div>
+                <div class="col-span-3 sm:col-span-3">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] bg-surface-container-high text-tertiary font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Deshabilitada
+                  </span>
+                </div>
+                <div class="col-span-2 sm:col-span-3 flex items-center justify-end gap-1 sm:gap-2">
+                  <button type="button" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar marca">
+                    <span class="material-symbols-outlined text-[17px]">edit</span>
+                  </button>
+                  <button type="button" class="h-6 px-2 inline-flex items-center gap-1 rounded bg-secondary-container/50 text-secondary hover:bg-secondary-container transition-colors text-[11px] font-semibold" title="Habilitar marca">
+                    <span class="material-symbols-outlined text-[14px]">refresh</span>
+                    <span class="hidden sm:inline">Habilitar</span>
+                  </button>
+                </div>
+              </div>
+            }
+          } @empty {
+            <p class="px-4 py-6 text-tertiary">No hay marcas registradas.</p>
+          }
+        </div>
+      </div>
+    </section>
+
+    }
+  </main>
+</div>

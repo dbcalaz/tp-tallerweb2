@@ -1,5 +1,6 @@
 import { prisma } from "../prisma.config.js";
 import type { FiltroProductoAdminDto } from "../dto/producto.dto.js";
+import { PRODUCTO_VISIBLE } from "./producto-visible.js";
 
 export class ProductoRepository {
 
@@ -8,7 +9,7 @@ export class ProductoRepository {
 
         const productos = await prisma.producto.findMany({
             where: {
-                activo: true,
+                ...PRODUCTO_VISIBLE,
                 AND: palabras.map((palabra) => {
                     const coincide = { contains: palabra, mode: "insensitive" as const };
                     return {
@@ -36,7 +37,7 @@ export class ProductoRepository {
 
     async getProductoPorId(id: number) {
         const producto = await prisma.producto.findUnique({
-            where: { id, activo: true },
+            where: { id, ...PRODUCTO_VISIBLE, },
             include: {
                 marca: true,
                 tipoProducto: {
