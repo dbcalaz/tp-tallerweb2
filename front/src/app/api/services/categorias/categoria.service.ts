@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { Categoria } from '../../../modules/productos/interfaces/categoria.interface';
+import { Categoria, TipoProducto } from '../../../modules/productos/interfaces/categoria.interface';
 import { CategoriaRestDto } from '../../dto/categoria.dto';
 import { CategoriaMapper } from './mapping/categoria.mapper';
 
@@ -14,5 +14,9 @@ export class CategoriasService {
     return this.http
       .get<CategoriaRestDto[]>(`${environment.API_URL}/categorias`)
       .pipe(map((res) => CategoriaMapper.mapRestArrayToFront(res)));
+  }
+
+  listTiposProducto(): Observable<TipoProducto[]> {
+    return this.http.get<TipoProducto[]>(`${environment.API_URL}/categorias/tipos`);
   }
 }

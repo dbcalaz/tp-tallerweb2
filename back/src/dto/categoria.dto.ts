@@ -30,3 +30,15 @@ export class CategoriaResponseDto {
     }
 }
 
+export class TipoProductoResponseDto {
+    constructor(
+        public readonly id: number,
+        public readonly nombre: string,
+        public readonly categoriaId: number,
+    ) {}
+
+    static fromEntityList(tipos: Array<{ id: number; nombre: string; categoriaId: number }>): TipoProductoResponseDto[] {
+        return tipos.map((t) => new TipoProductoResponseDto(t.id, t.nombre, t.categoriaId));
+    }
+}
+

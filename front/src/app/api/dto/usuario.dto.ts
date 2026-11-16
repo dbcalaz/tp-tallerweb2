@@ -37,6 +37,7 @@ export class UsuarioResponseDto implements AuthenticatedUser {
   email!: string;
   nombre!: string;
   apellido!: string;
+  rol!: 'CLIENTE' | 'ADMIN';
   direccion?: string;
   createdAt?: string;
 }
@@ -44,6 +45,7 @@ export class UsuarioResponseDto implements AuthenticatedUser {
 export class AuthResponseDto {
   message!: string;
   user!: UsuarioResponseDto;
+  token!: string;
 }
 
 export class DetalleCompraResponseDto implements DetalleCompraItem {

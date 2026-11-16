@@ -10,7 +10,7 @@ import { BadRequestError, NotFoundError } from "../errors/http.error.js";
 import type { CarritoRepository } from "../repository/carrito.repository.js";
 
 export class CarritoService {
-    constructor(private readonly carritoRepository: CarritoRepository) {}
+    constructor(private readonly carritoRepository: CarritoRepository) { }
 
     async obtenerCarrito(userId: number): Promise<CarritoResponseDto> {
         const carrito = await this.carritoRepository.findByUserId(userId);
@@ -89,6 +89,13 @@ export class CarritoService {
         const carrito = await this.carritoRepository.findOrCreateByUserId(userId);
         if (carrito.items.length === 0) {
             throw new BadRequestError("El carrito está vacío.");
+        }
+
+        const inactivo = carrito.items.find((item) => !item.producto.activo);
+        if (inactivo) {
+            throw new BadRequestError(
+                `"${inactivo.producto.nombre}" ya no está disponible. Quitalo del carrito para continuar.`,
+            );
         }
 
         const total = carrito.items.reduce(

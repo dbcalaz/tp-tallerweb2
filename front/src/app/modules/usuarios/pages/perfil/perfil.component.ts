@@ -88,7 +88,7 @@ export class PerfilComponent implements OnInit {
         next: (res) => {
           this.guardando.set(false);
           this.toast.showSuccess('Tus datos se actualizaron correctamente');
-          this.authSession.start({
+          this.authSession.updateUser({
             ...user,
             nombre: res.user.nombre,
             apellido: res.user.apellido,

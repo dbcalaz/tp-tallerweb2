@@ -1,11 +1,13 @@
-@if (authSession.isAuthenticated()) {
+@if (authSession.isAdmin()) {
+} @else if (authSession.isAuthenticated()) {
   <app-navbar />
 
-  <!-- Espacio para compensar el navbar fijo -->
   <div class="h-[94px]"></div>
 } @else {
   <header class="auth-topbar">
-    <a class="auth-brand" routerLink="/login" aria-label="Tecnova, ir al inicio">tecnova<span>.</span></a>
+    <a class="auth-brand" routerLink="/login" aria-label="Tecnova, ir al inicio"
+      >tecnova<span>.</span></a
+    >
   </header>
 }
 
@@ -19,6 +21,6 @@
   <router-outlet />
 </div>
 
-@if (authSession.isAuthenticated()) {
+@if (authSession.isAuthenticated() && !authSession.isAdmin()) {
   <app-footer />
 }

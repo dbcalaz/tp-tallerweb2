@@ -24,6 +24,7 @@ export class UsuarioController {
         return res.status(201).json({
             message: "Tu cuenta se creó correctamente.",
             user,
+            token: usuarioService.emitirToken(user), 
         });
     };
 
@@ -33,6 +34,7 @@ export class UsuarioController {
         return res.status(200).json({
             message: "Sesión iniciada correctamente.",
             user,
+            token: usuarioService.emitirToken(user), 
         });
     };
 

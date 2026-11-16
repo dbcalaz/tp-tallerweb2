@@ -35,8 +35,8 @@ export class LoginComponent {
       finalize(() => this.isSubmitting.set(false)),
     ).subscribe({
       next: (response) => {
-        this.authSession.start(response.user);
-        void this.router.navigateByUrl('/productos');
+        this.authSession.start(response.user, response.token);
+        void this.router.navigateByUrl(response.user.rol === 'ADMIN' ? '/admin/productos' : '/productos');
       },
       error: (error: unknown) => {
         const timedOut = error instanceof Error && error.name === 'TimeoutError';

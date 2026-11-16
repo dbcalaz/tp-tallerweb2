@@ -1,0 +1,470 @@
+<div
+  class="admin-theme bg-surface font-body-md text-body-md text-on-surface min-h-screen selection:bg-primary selection:text-on-primary"
+>
+  <header
+    class="fixed top-0 left-0 right-0 z-40 bg-surface-container-low/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.45)]"
+  >
+    <div
+      class="h-14 w-full px-4 sm:px-gutter-desktop flex items-center justify-between gap-space-sm"
+    >
+      <div class="flex items-center gap-space-md min-w-0">
+        <div class="flex items-center gap-space-sm min-w-0">
+          <span
+            class="font-headline-sm text-sm sm:text-headline-sm tracking-tight text-on-surface font-semibold truncate"
+            >Tecnova <span class="text-primary">•</span> Admin</span
+          ><span
+            class="hidden md:inline-block font-label-sm text-label-sm uppercase px-space-sm py-space-2xs bg-surface-container text-on-surface-variant rounded tracking-wider shrink-0"
+            >PANEL DE CONTROL</span
+          >
+        </div>
+      </div>
+      <div class="flex items-center gap-space-sm sm:gap-space-lg">
+        <nav
+          class="hidden sm:flex items-center gap-space-xs"
+          data-active-classes="bg-primary-container text-on-primary"
+        >
+          <a
+            aria-current="page"
+            class="px-space-md py-space-xs rounded font-label-md transition-colors bg-primary-container text-on-primary"
+            data-path="productos"
+            href="#"
+            >Productos</a
+          ><a
+            class="px-space-md py-space-xs rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
+            data-path="categorias"
+            href="#"
+            >Categorías</a
+          >
+        </nav>
+        <div class="flex items-center gap-space-xs sm:gap-space-md sm:pl-space-md">
+          <a
+            class="h-8 px-space-sm inline-flex items-center gap-space-xs text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors rounded font-label-md text-label-md"
+            data-path="login"
+            (click)="$event.preventDefault(); cerrarSesion()"
+            href="#"
+            title="Cerrar sesión"
+            ><span class="material-symbols-outlined text-[18px]">logout</span
+            ><span class="hidden lg:inline">Cerrar sesión</span></a
+          >
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="w-full pt-14 px-4 sm:px-gutter-desktop min-h-screen bg-surface">
+    <div class="flex flex-col w-full pb-space-2xl">
+      <div class="w-full pt-space-lg pb-space-md flex flex-col gap-space-lg">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+          <div class="flex flex-col">
+            <div class="flex items-center gap-space-sm mb-space-2xs">
+              <span
+                class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-semibold"
+                >Catálogo Maestro</span
+              >
+              <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+              <span class="font-label-sm text-label-sm text-on-surface-variant font-code-sm"
+                >v4.8.2 ARS</span
+              >
+            </div>
+            <h1
+              class="font-headline-lg text-headline-lg text-on-surface tracking-tight font-semibold"
+            >
+              Administración de productos
+            </h1>
+            <p class="font-body-md text-body-md text-on-surface-variant mt-space-2xs">
+              Gestioná el catálogo de productos de Tecnova
+            </p>
+          </div>
+          <div
+            class="flex items-center flex-wrap gap-space-sm sm:gap-space-md self-start sm:self-center"
+          >
+            <button
+              class="h-9 px-space-md sm:px-space-lg inline-flex items-center gap-space-xs bg-primary-container hover:bg-surface-tint text-on-primary font-semibold transition-all rounded font-label-md text-label-md shadow-md active:scale-[0.98]"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[18px]">add_circle</span>
+              <span>+ Agregar producto</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="w-full bg-surface-container-low p-space-md rounded shadow-sm flex flex-col gap-space-md my-space-md">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-space-md items-center">
+          <div class="sm:col-span-1 lg:col-span-3 relative">
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-space-sm text-tertiary text-[18px] pointer-events-none">category</span>
+              <select #selCategoria class="w-full h-9 pl-8 pr-8 bg-surface-container text-on-surface font-body-md text-body-md rounded appearance-none focus:outline-none focus:bg-surface-container-high cursor-pointer transition-colors" (change)="cambiarCategoria(+selCategoria.value)">
+                <option value="0" [selected]="categoriaId() === 0">Todas las categorías</option>
+                @for (c of categorias(); track c.id) {
+                  <option [value]="c.id" [selected]="c.id === categoriaId()">{{ c.nombre }}</option>
+                }
+              </select>
+              <span class="material-symbols-outlined absolute right-space-sm text-on-surface-variant text-[18px] pointer-events-none">expand_more</span>
+            </div>
+          </div>
+          <div class="sm:col-span-1 lg:col-span-3 relative">
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-space-sm text-tertiary text-[18px] pointer-events-none">tune</span>
+              <select #selTipo class="w-full h-9 pl-8 pr-8 bg-surface-container text-on-surface font-body-md text-body-md rounded appearance-none focus:outline-none focus:bg-surface-container-high cursor-pointer transition-colors" (change)="cambiarTipo(+selTipo.value)">
+                <option value="0" [selected]="tipoId() === 0">Todos los tipos</option>
+                @for (t of tiposVisibles(); track t.id) {
+                  <option [value]="t.id" [selected]="t.id === tipoId()">{{ t.nombre }}</option>
+                }
+              </select>
+              <span class="material-symbols-outlined absolute right-space-sm text-on-surface-variant text-[18px] pointer-events-none">expand_more</span>
+            </div>
+          </div>
+          <div class="sm:col-span-2 lg:col-span-2 relative">
+            <div class="relative flex items-center">
+              <select #selEstado class="w-full h-9 pl-space-md pr-8 bg-surface-container text-on-surface font-body-md text-body-md rounded appearance-none focus:outline-none focus:bg-surface-container-high cursor-pointer transition-colors" (change)="cambiarEstado(selEstado.value)">
+                <option value="todos" [selected]="estado() === 'todos'">Todos los estados</option>
+                <option value="activos" [selected]="estado() === 'activos'">Habilitados</option>
+                <option value="inactivos" [selected]="estado() === 'inactivos'">Deshabilitados</option>
+              </select>
+              <span class="material-symbols-outlined absolute right-space-sm text-on-surface-variant text-[18px] pointer-events-none">arrow_drop_down</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs">
+          <div class="flex items-center gap-space-xs flex-wrap">
+            <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mr-space-xs">Filtros activos:</span>
+            <span class="inline-flex items-center gap-space-2xs bg-surface-container-high px-space-sm py-space-2xs rounded font-label-sm text-label-sm text-on-surface">
+              <span>Categoría: {{ nombreCategoria() }}</span>
+              @if (categoriaId() !== 0) {
+                <button class="text-on-surface-variant hover:text-on-surface flex items-center" type="button" title="Quitar filtro" (click)="cambiarCategoria(0)">
+                <span class="material-symbols-outlined text-[14px]">close</span>
+              </button>
+              }
+            </span>
+            <span class="inline-flex items-center gap-space-2xs bg-surface-container-high px-space-sm py-space-2xs rounded font-label-sm text-label-sm text-on-surface">
+              <span>Tipo: {{ nombreTipo() }}</span>
+              @if (tipoId() !== 0) {
+                <button class="text-on-surface-variant hover:text-on-surface flex items-center" type="button" title="Quitar filtro" (click)="cambiarTipo(0)">
+                <span class="material-symbols-outlined text-[14px]">close</span>
+              </button>
+              }
+            </span>
+            <span class="inline-flex items-center gap-space-2xs bg-surface-container px-space-sm py-space-2xs rounded font-label-sm text-label-sm text-on-surface-variant">
+              <span>Estado: {{ nombreEstado() }}</span>
+              @if (estado() !== 'todos') {
+                <button class="text-on-surface-variant hover:text-on-surface flex items-center" type="button" title="Quitar filtro" (click)="cambiarEstado('todos')">
+                <span class="material-symbols-outlined text-[14px]">close</span>
+              </button>
+              }
+            </span>
+          </div>
+          <div class="flex items-center gap-space-sm font-label-sm text-label-sm text-on-surface-variant">
+            <span>Mostrando <strong>{{ pagina()?.items?.length ?? 0 }}</strong> de <strong>{{ pagina()?.total ?? 0 }}</strong> registros</span>
+            <button class="p-space-2xs hover:text-on-surface transition-colors" title="Actualizar datos" type="button" (click)="cargar()">
+              <span class="material-symbols-outlined text-[16px]">sync</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="w-full bg-surface-container-low rounded shadow-md overflow-hidden relative">
+        <div class="overflow-x-auto w-full">
+          <table class="w-full min-w-[760px] text-left border-collapse">
+            <thead>
+              <tr
+                class="bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider h-10 select-none"
+              >
+                <th class="px-space-sm py-space-sm w-16">Imagen</th>
+                <th class="px-space-md py-space-sm font-semibold text-on-surface">Nombre</th>
+                <th class="px-space-md py-space-sm">Categoría</th>
+                <th class="px-space-md py-space-sm">Tipo</th>
+                <th class="px-space-md py-space-sm font-semibold text-right">Precio ARS</th>
+                <th class="px-space-md py-space-sm text-center">Estado Catálogo / Stock</th>
+                <th class="px-space-md py-space-sm text-right pr-space-lg">Acciones</th>
+              </tr>
+            </thead>
+            <tbody
+              class="divide-y divide-surface-container font-body-md text-body-md text-on-surface"
+              [class.opacity-60]="cargando()"
+            >
+              @if (error()) {
+                <tr>
+                  <td colspan="7" class="px-space-md py-space-xl text-center text-error">
+                    {{ error() }}
+                  </td>
+                </tr>
+              } @else if (pagina(); as datos) {
+                @for (p of datos.items; track p.id) {
+                  <tr
+                    class="transition-colors group"
+                    [class]="
+                      p.activo
+                        ? 'bg-surface-container-low hover:bg-surface-container'
+                        : 'bg-surface-container-lowest/50 hover:bg-surface-container/60 relative opacity-90'
+                    "
+                  >
+                    <td class="px-space-sm py-space-sm">
+                      <div
+                        class="w-12 h-12 rounded bg-surface-container-lowest overflow-hidden flex items-center justify-center p-1 relative shadow-inner"
+                        [class.grayscale]="!p.activo"
+                        [class.opacity-80]="!p.activo"
+                      >
+                        <img
+                          class="w-full h-full object-contain"
+                          [src]="p.imagenUrl || 'images/placeholder.jpg'"
+                          [alt]="p.nombre"
+                        />
+                      </div>
+                    </td>
+                    <td class="px-space-md py-space-sm">
+                      <div class="flex flex-col">
+                        @if (p.activo) {
+                          <span
+                            class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors"
+                            >{{ p.nombre }}</span
+                          >
+                        } @else {
+                          <div class="flex items-center gap-space-xs">
+                            <span
+                              class="font-headline-sm text-headline-sm text-on-surface-variant line-through font-semibold group-hover:text-primary transition-colors"
+                              >{{ p.nombre }}</span
+                            >
+                            <span
+                              class="font-label-sm text-label-sm px-space-xs py-space-2xs bg-surface-container-highest text-on-surface-variant rounded border border-outline-variant/40"
+                              >Baja lógica</span
+                            >
+                          </div>
+                        }
+                        <div
+                          class="flex items-center gap-space-xs mt-space-2xs text-on-surface-variant font-code-sm text-[11px]"
+                        >
+                          <span>ID: {{ p.id }}</span>
+                          <span>•</span>
+                          <span>{{ p.marca }}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-space-md py-space-sm">
+                      <span
+                        class="font-label-sm text-label-sm px-space-xs py-space-2xs rounded bg-surface-container"
+                        [class]="p.activo ? 'text-tertiary' : 'text-on-surface-variant'"
+                        >{{ p.categoria }}</span
+                      >
+                    </td>
+                    <td class="px-space-md py-space-sm text-on-surface-variant">
+                      <span>{{ p.tipo }}</span>
+                    </td>
+                    <td
+                      class="px-space-md py-space-sm text-right font-code-sm text-body-md font-semibold"
+                      [class]="p.activo ? 'text-on-surface' : 'text-on-surface-variant'"
+                    >
+                      {{ p.precio | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
+                    </td>
+                    <td class="px-space-md py-space-sm text-center">
+                      @if (!p.activo) {
+                        <span
+                          class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs rounded font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant border border-outline-variant/30 font-medium"
+                        >
+                          <span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                          <span>● Deshabilitado</span>
+                        </span>
+                      } @else if (p.stock < 5) {
+                        <span
+                          class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs rounded font-label-sm text-label-sm bg-primary/15 text-primary-fixed font-medium"
+                        >
+                          <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+                          <span>{{ p.stock }} un. Stock bajo</span>
+                        </span>
+                      } @else {
+                        <span
+                          class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs rounded font-label-sm text-label-sm bg-secondary-container/40 text-secondary font-medium"
+                        >
+                          <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                          <span>{{ p.stock }} un. En stock</span>
+                        </span>
+                      }
+                    </td>
+                    <td class="px-space-md py-space-sm text-right pr-space-lg">
+                      <div class="inline-flex items-center gap-space-xs">
+                        <button
+                          class="h-8 px-space-sm inline-flex items-center gap-space-2xs bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md rounded transition-colors"
+                          title="Editar producto"
+                          type="button"
+                        >
+                          <span class="material-symbols-outlined text-[16px] text-tertiary"
+                            >edit</span
+                          >
+                          <span class="hidden sm:inline">Editar</span>
+                        </button>
+                        @if (p.activo) {
+                          <button
+                            class="h-8 px-space-sm inline-flex items-center gap-space-2xs bg-surface-container hover:bg-surface-bright text-on-surface-variant hover:text-primary rounded transition-colors"
+                            title="Deshabilitar producto"
+                            type="button"
+                            (click)="abrirModal(p)"
+                            [disabled]="guardando()"
+                          >
+                            <span class="material-symbols-outlined text-[16px]">toggle_off</span>
+                            <span class="hidden xl:inline">Deshabilitar</span>
+                          </button>
+                        } @else {
+                          <button
+                            class="h-8 px-space-sm inline-flex items-center gap-space-2xs bg-secondary-container/60 text-secondary hover:bg-secondary hover:text-on-secondary font-label-md text-label-md rounded transition-colors"
+                            title="Rehabilitar producto en catálogo"
+                            type="button"
+                            (click)="rehabilitar(p)"
+                            [disabled]="guardando()"
+                          >
+                            <span class="material-symbols-outlined text-[16px]">replay</span>
+                            <span>Rehabilitar</span>
+                          </button>
+                        }
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td
+                      colspan="7"
+                      class="px-space-md py-space-xl text-center text-on-surface-variant"
+                    >
+                      No hay productos para mostrar.
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+        @if (pagina(); as datos) {
+          <div
+            class="px-space-md py-space-md bg-surface-container-lowest flex flex-col md:flex-row items-center justify-between gap-space-md"
+          >
+            <div class="flex flex-wrap items-center justify-center gap-space-md">
+              <div
+                class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm"
+              >
+                <span>Filas por página:</span>
+                <select
+                  #filas
+                  class="bg-surface-container text-on-surface font-body-md text-body-md rounded px-space-xs py-1 focus:outline-none"
+                  (change)="cambiarFilas(+filas.value)"
+                >
+                  @for (n of opcionesFilas; track n) {
+                    <option [value]="n" [selected]="n === filasPorPagina()">{{ n }}</option>
+                  }
+                </select>
+              </div>
+              <span class="text-on-surface-variant font-label-sm text-label-sm text-center"
+                >Página {{ paginaActual() }} de {{ datos.totalPaginas }} ({{
+                  datos.total
+                }}
+                registros)</span
+              >
+            </div>
+            <div class="flex items-center gap-space-xs">
+              <button
+                class="w-8 h-8 rounded bg-surface-container text-on-surface-variant flex items-center justify-center transition-colors enabled:hover:bg-surface-container-high disabled:opacity-40 disabled:cursor-not-allowed"
+                type="button"
+                [disabled]="paginaActual() === 1"
+                (click)="irAPagina(1)"
+              >
+                <span class="material-symbols-outlined text-[18px]">first_page</span>
+              </button>
+              <button
+                class="w-8 h-8 rounded bg-surface-container text-on-surface-variant flex items-center justify-center transition-colors enabled:hover:bg-surface-container-high disabled:opacity-40 disabled:cursor-not-allowed"
+                type="button"
+                [disabled]="paginaActual() === 1"
+                (click)="irAPagina(paginaActual() - 1)"
+              >
+                <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+              </button>
+              <div class="flex items-center gap-space-2xs">
+                @for (n of paginasVisibles(); track n) {
+                  <button
+                    class="w-8 h-8 rounded font-code-sm flex items-center justify-center transition-colors"
+                    [class]="
+                      n === paginaActual()
+                        ? 'bg-primary-container text-on-primary font-semibold'
+                        : 'bg-surface-container hover:bg-surface-container-high text-on-surface'
+                    "
+                    type="button"
+                    (click)="irAPagina(n)"
+                  >
+                    {{ n }}
+                  </button>
+                }
+              </div>
+              <button
+                class="w-8 h-8 rounded bg-surface-container text-on-surface flex items-center justify-center transition-colors enabled:hover:bg-surface-container-high disabled:opacity-40 disabled:cursor-not-allowed"
+                type="button"
+                [disabled]="paginaActual() === datos.totalPaginas"
+                (click)="irAPagina(paginaActual() + 1)"
+              >
+                <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+              </button>
+              <button
+                class="w-8 h-8 rounded bg-surface-container text-on-surface flex items-center justify-center transition-colors enabled:hover:bg-surface-container-high disabled:opacity-40 disabled:cursor-not-allowed"
+                type="button"
+                [disabled]="paginaActual() === datos.totalPaginas"
+                (click)="irAPagina(datos.totalPaginas)"
+              >
+                <span class="material-symbols-outlined text-[18px]">last_page</span>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+      @if (productoSeleccionado(); as prod) {
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-gutter transition-opacity duration-300">
+          <div class="fixed inset-0 bg-surface-container-lowest/80 backdrop-blur-sm" (click)="cerrarModal()"></div>
+          <div class="relative w-full max-w-lg max-h-[90vh] flex flex-col bg-surface-container-high rounded-xl shadow-2xl overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-200">
+            <div class="h-1.5 w-full bg-gradient-to-r from-primary via-primary-container to-tertiary shrink-0"></div>
+            <div class="p-space-lg sm:p-space-xl flex flex-col gap-space-lg overflow-y-auto">
+              <div class="flex items-start gap-space-md">
+                <div class="w-12 h-12 rounded-full bg-primary-container/20 text-primary-fixed flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[26px]">block</span>
+                </div>
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-xs flex-wrap">
+                    <span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-semibold">Baja lógica de producto</span>
+                    <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant font-code-sm">ID: {{ prod.id }}</span>
+                  </div>
+                  <h3 class="font-headline-md text-headline-md font-semibold text-on-surface mt-space-2xs">¿Estás seguro de que querés deshabilitar este producto?</h3>
+                  <p class="font-body-md text-body-md text-on-surface-variant mt-space-sm leading-relaxed">
+                    Esta acción dará de baja lógica este producto del catálogo público de Tecnova. El registro y el historial de compras se conservarán intactos en la base de datos y podrás rehabilitarlo en cualquier momento.
+                  </p>
+                </div>
+              </div>
+              <div class="bg-surface-container-low p-space-md rounded flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm border border-outline-variant/20">
+                <div class="flex items-center gap-space-md">
+                  <div class="w-12 h-12 rounded bg-surface-container-lowest overflow-hidden flex items-center justify-center p-1 shrink-0">
+                    <img class="w-full h-full object-contain" [src]="prod.imagenUrl || 'images/placeholder.jpg'" [alt]="prod.nombre" />
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="font-headline-sm text-headline-sm text-on-surface font-medium">{{ prod.nombre }}</span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant">{{ prod.categoria }} • {{ prod.tipo }}</span>
+                  </div>
+                </div>
+                <div class="sm:text-right flex sm:flex-col justify-between items-center sm:items-end">
+                  <span class="font-code-sm text-body-md font-semibold text-on-surface">{{ prod.precio | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}</span>
+                  <span class="font-label-sm text-label-sm text-primary">Estado: A deshabilitar</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-space-sm bg-surface-container px-space-md py-space-sm rounded text-on-surface-variant text-body-sm">
+                <span class="material-symbols-outlined text-[18px] text-tertiary shrink-0">info</span>
+                <span>Podrás volver a publicar y activar este artículo usando el botón <strong>Rehabilitar</strong> en cualquier momento.</span>
+              </div>
+              <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-space-sm sm:gap-space-md pt-space-xs">
+                <button class="h-9 px-space-lg rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors text-center" type="button" [disabled]="guardando()" (click)="cerrarModal()">
+                  Cancelar
+                </button>
+                <button class="h-9 px-space-lg rounded font-label-md text-label-md font-semibold bg-primary-container text-on-primary hover:bg-surface-tint shadow-md flex items-center justify-center gap-space-xs transition-colors disabled:opacity-60" type="button" [disabled]="guardando()" (click)="confirmarDeshabilitar()">
+                  <span class="material-symbols-outlined text-[18px]">toggle_off</span>
+                  <span>Deshabilitar producto</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </main>
+</div>

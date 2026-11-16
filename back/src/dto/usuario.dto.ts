@@ -17,7 +17,7 @@ export class RegistroUsuarioDto {
         public readonly nombre: string,
         public readonly apellido: string,
         public readonly direccion: string,
-    ) {}
+    ) { }
 
     static fromBody(body: unknown): RegistroUsuarioDto {
         const raw = (body ?? {}) as Record<string, unknown>;
@@ -52,7 +52,7 @@ export class LoginUsuarioDto {
     constructor(
         public readonly email: string,
         public readonly password: string,
-    ) {}
+    ) { }
 
     static fromBody(body: unknown): LoginUsuarioDto {
         const raw = (body ?? {}) as Record<string, unknown>;
@@ -68,7 +68,7 @@ export class LoginUsuarioDto {
 }
 
 export class SolicitarRecuperacionDto {
-    constructor(public readonly email: string) {}
+    constructor(public readonly email: string) { }
 
     static fromBody(body: unknown): SolicitarRecuperacionDto {
         const raw = (body ?? {}) as Record<string, unknown>;
@@ -86,7 +86,7 @@ export class RestablecerPasswordDto {
     constructor(
         public readonly token: string,
         public readonly password: string,
-    ) {}
+    ) { }
 
     static fromBody(body: unknown): RestablecerPasswordDto {
         const raw = (body ?? {}) as Record<string, unknown>;
@@ -113,7 +113,7 @@ export class ActualizarPerfilDto {
         public readonly nombre: string,
         public readonly apellido: string,
         public readonly direccion: string,
-    ) {}
+    ) { }
 
     static fromBody(body: unknown): ActualizarPerfilDto {
         const raw = (body ?? {}) as Record<string, unknown>;
@@ -135,15 +135,17 @@ export class UsuarioResponseDto {
         public readonly email: string,
         public readonly nombre: string,
         public readonly apellido: string,
+        public readonly rol: "CLIENTE" | "ADMIN",
         public readonly direccion?: string,
         public readonly createdAt?: Date,
-    ) {}
+    ) { }
 
     static fromEntity(user: {
         id: number;
         email: string;
         nombre: string;
         apellido: string;
+        rol: "CLIENTE" | "ADMIN";
         direccion?: string;
         createdAt?: Date;
     }): UsuarioResponseDto {
@@ -152,6 +154,7 @@ export class UsuarioResponseDto {
             user.email,
             user.nombre,
             user.apellido,
+            user.rol,
             user.direccion,
             user.createdAt,
         );
@@ -171,7 +174,7 @@ export class DetalleCompraResponseDto {
             imagenUrl: string | null;
             precio: number;
         },
-    ) {}
+    ) { }
 
     static fromEntity(detalle: {
         id: number;
@@ -211,7 +214,7 @@ export class CompraResponseDto {
         public readonly direccionEnvio: string | null,
         public readonly createdAt: Date,
         public readonly detalles: DetalleCompraResponseDto[],
-    ) {}
+    ) { }
 
     static fromEntity(compra: {
         id: number;
@@ -243,7 +246,7 @@ export class PerfilUsuarioResponseDto {
         public readonly direccion: string,
         public readonly createdAt: Date,
         public readonly compras: CompraResponseDto[],
-    ) {}
+    ) { }
 
     static fromEntity(user: {
         id: number;

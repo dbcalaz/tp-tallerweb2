@@ -3,6 +3,7 @@ export interface AuthenticatedUser {
   email: string;
   nombre: string;
   apellido: string;
+  rol: 'CLIENTE' | 'ADMIN';
   direccion?: string;
 }
 
@@ -17,6 +18,7 @@ export interface SignupData {
 export interface SignupResponse {
   message: string;
   user: AuthenticatedUser;
+  token: string;
 }
 
 export interface LoginData {

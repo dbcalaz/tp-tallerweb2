@@ -4,3 +4,9 @@ export interface Categoria {
   imagenUrl: string;
   cantidadProductos: number;
 }
+
+export interface TipoProducto {
+  id: number;
+  nombre: string;
+  categoriaId: number;
+}

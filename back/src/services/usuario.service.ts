@@ -12,6 +12,7 @@ import {
 import { BadRequestError, ConflictError, NotFoundError, UnauthorizedError } from "../errors/http.error.js";
 import type { UsuarioRepository } from "../repository/usuario.repository.js";
 import { EmailService } from "./email.service.js";
+import jwt from "jsonwebtoken";
 
 const scrypt = promisify(scryptCallback);
 
@@ -19,7 +20,18 @@ export class UsuarioService {
     constructor(
         private readonly usuarioRepository: UsuarioRepository,
         private readonly emailService = new EmailService(),
-    ) {}
+    ) { }
+
+    emitirToken(user: UsuarioResponseDto): string {
+        const secret = process.env.JWT_SECRET;
+        if (!secret) {
+            throw new Error("Falta configurar JWT_SECRET en back/.env.");
+        }
+        return jwt.sign({ rol: user.rol }, secret, {
+            subject: String(user.id),
+            expiresIn: "8h",
+        });
+    }
 
     async registrar(dto: RegistroUsuarioDto): Promise<UsuarioResponseDto> {
         const salt = randomBytes(16).toString("hex");

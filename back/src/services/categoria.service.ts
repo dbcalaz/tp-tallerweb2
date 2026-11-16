@@ -1,9 +1,9 @@
-import { CategoriaResponseDto } from "../dto/categoria.dto.js";
+import { CategoriaResponseDto, TipoProductoResponseDto } from "../dto/categoria.dto.js";
 import { NotFoundError } from "../errors/http.error.js";
 import type { CategoriaRepository } from "../repository/categoria.repository.js";
 
 export class CategoriaService {
-    constructor(private readonly categoriaRepository: CategoriaRepository) {}
+    constructor(private readonly categoriaRepository: CategoriaRepository) { }
 
     async obtenerCategorias(): Promise<CategoriaResponseDto[]> {
         const categorias = await this.categoriaRepository.getCategorias();
@@ -13,5 +13,10 @@ export class CategoriaService {
         }
 
         return CategoriaResponseDto.fromEntityList(categorias);
+    }
+
+    async obtenerTiposProducto(): Promise<TipoProductoResponseDto[]> {
+        const tipos = await this.categoriaRepository.getTiposProducto();
+        return TipoProductoResponseDto.fromEntityList(tipos);
     }
 }

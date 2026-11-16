@@ -16,5 +16,9 @@ export const routes: Routes = [
     path: '',
     loadChildren: () => import('./modules/carrito/carrito.routes').then((m) => m.carritoRoutes),
   },
+  {
+    path: '',
+    loadChildren: () => import('./modules/admin/admin.routes').then((m) => m.adminRoutes),
+  },
   { path: '**', redirectTo: 'login' },
 ];

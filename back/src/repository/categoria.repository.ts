@@ -16,4 +16,8 @@ export class CategoriaRepository {
 
         return categorias;
     }
+
+    async getTiposProducto() {
+        return prisma.tipoProducto.findMany({ orderBy: { nombre: "asc" } });
+    }
 }

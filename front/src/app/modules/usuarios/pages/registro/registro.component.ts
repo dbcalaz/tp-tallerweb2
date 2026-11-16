@@ -78,7 +78,7 @@ export class RegistroComponent {
       finalize(() => this.isSubmitting.set(false)),
     ).subscribe({
       next: (response) => {
-        this.authSession.start(response.user);
+        this.authSession.start(response.user, response.token);
         this.form.reset();
         this.toast.showSuccess('Te registraste correctamente.');
         void this.router.navigateByUrl('/productos');

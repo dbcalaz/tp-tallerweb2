@@ -4,6 +4,7 @@ import localeEsAr from '@angular/common/locales/es-AR';
 import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
+import { authInterceptor } from './core/auth.interceptor';
 import { httpLoggerInterceptor } from './core/http-logger.interceptor';
 
 registerLocaleData(localeEsAr);
@@ -11,6 +12,7 @@ registerLocaleData(localeEsAr);
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    provideHttpClient(withInterceptors([authInterceptor, httpLoggerInterceptor])),
     provideHttpClient(withInterceptors([httpLoggerInterceptor])),
     provideRouter(
       routes,

@@ -10,4 +10,9 @@ export class CategoriaController {
         const categorias = await categoriaService.obtenerCategorias();
         return res.status(200).json(categorias);
     };
+
+    public getTiposProducto = async (_req: Request, res: Response) => {
+        const tipos = await categoriaService.obtenerTiposProducto();
+        return res.status(200).json(tipos);
+    };
 }
