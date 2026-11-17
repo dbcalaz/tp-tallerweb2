@@ -6,7 +6,14 @@ import { AppRoutes } from "./routes/routes.js";
 
 export const app = express();
 
-app.use(express.json());
+// Los endpoints de la API devuelven datos dinámicos y Angular necesita el JSON completo.
+// Evitamos respuestas 304 sin cuerpo en llamadas HttpClient.
+app.disable("etag");
+app.use("/api", (_req, res, next) => {
+    res.setHeader("Cache-Control", "no-store");
+    next();
+});
+app.use(express.json({ limit: "10mb" }));
 app.use(cors());
 app.use(requestLogger);
 app.use(AppRoutes.routes);

@@ -13,7 +13,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([authInterceptor, httpLoggerInterceptor])),
-    provideHttpClient(withInterceptors([httpLoggerInterceptor])),
     provideRouter(
       routes,
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }), // Esto es para que cuando navegue, vuelva al tope de la página,

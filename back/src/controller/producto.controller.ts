@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { IdParamDto } from "../dto/params.dto.js";
 import { ProductoRepository } from "../repository/producto.repository.js";
 import { ProductoService } from "../services/producto.service.js";
-import { FiltroProductoAdminDto, FiltroProductoDto, ActualizarActivoDto } from "../dto/producto.dto.js";
+import { FiltroProductoAdminDto, FiltroProductoDto, ActualizarActivoDto, GuardarProductoAdminDto } from "../dto/producto.dto.js";
 
 const productoRepository = new ProductoRepository();
 const productoService = new ProductoService(productoRepository);
@@ -31,5 +31,21 @@ export class ProductoController {
         const dto = ActualizarActivoDto.fromBody(req.body);
         const producto = await productoService.cambiarActivo(id, dto);
         return res.status(200).json(producto);
+    };
+
+    public getProductoAdminPorId = async (req: Request, res: Response) => {
+        const id = IdParamDto.parse(req.params.id, "ID de producto");
+        return res.status(200).json(await productoService.obtenerProductoAdminPorId(id));
+    };
+
+    public crearProductoAdmin = async (req: Request, res: Response) => {
+        const dto = GuardarProductoAdminDto.fromBody(req.body);
+        return res.status(201).json(await productoService.crearProductoAdmin(dto));
+    };
+
+    public editarProductoAdmin = async (req: Request, res: Response) => {
+        const id = IdParamDto.parse(req.params.id, "ID de producto");
+        const dto = GuardarProductoAdminDto.fromBody(req.body);
+        return res.status(200).json(await productoService.editarProductoAdmin(id, dto));
     };
 }

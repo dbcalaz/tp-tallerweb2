@@ -6,13 +6,14 @@ import { ProductosAdminService } from '../../../../api/services/productos/produc
 import { ToastService } from '../../../../shared/toast.service';
 import { Categoria, TipoProducto } from '../../../productos/interfaces/categoria.interface';
 import { AdminHeaderComponent } from '../../components/admin-header/admin-header.component';
+import { RouterLink } from '@angular/router';
 import { PaginaProductosAdmin, ProductoAdmin } from '../../interfaces/producto-admin.interface';
 
 type EstadoFiltro = 'todos' | 'activos' | 'inactivos';
 
 @Component({
   selector: 'app-productos-admin',
-  imports: [CurrencyPipe, AdminHeaderComponent],
+  imports: [CurrencyPipe, AdminHeaderComponent, RouterLink],
   templateUrl: './productos-admin.component.html',
 })
 export class ProductosAdminComponent implements OnInit {

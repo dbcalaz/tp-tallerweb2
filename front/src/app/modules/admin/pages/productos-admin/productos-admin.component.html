@@ -30,6 +30,7 @@
             class="flex items-center flex-wrap gap-space-sm sm:gap-space-md self-start sm:self-center"
           >
             <button
+              routerLink="/admin/productos/nuevo"
               class="h-9 px-space-md sm:px-space-lg inline-flex items-center gap-space-xs bg-primary-container hover:bg-surface-tint text-on-primary font-semibold transition-all rounded font-label-md text-label-md shadow-md active:scale-[0.98]"
               type="button"
             >
@@ -232,6 +233,7 @@
                     <td class="px-space-md py-space-sm text-right pr-space-lg">
                       <div class="inline-flex items-center gap-space-xs">
                         <button
+                          [routerLink]="['/admin/productos', p.id, 'editar']"
                           class="h-8 px-space-sm inline-flex items-center gap-space-2xs bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md rounded transition-colors"
                           title="Editar producto"
                           type="button"

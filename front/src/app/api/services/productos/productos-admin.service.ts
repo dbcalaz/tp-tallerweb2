@@ -8,6 +8,12 @@ import {
 } from '../../../modules/admin/interfaces/producto-admin.interface';
 import { PaginaProductosAdminRestDto } from '../../dto/producto-admin.dto';
 import { ProductoMapper } from './mapping/producto.mapper';
+import { ProductoRestDto } from '../../dto/producto.dto';
+
+export interface ProductoAdminPayload {
+  nombre: string; descripcion: string; precio: number; stock: number;
+  imagenUrl: string | null; marcaId: number; tipoProductoId: number; activo: boolean;
+}
 
 @Injectable({ providedIn: 'root' })
 export class ProductosAdminService {
@@ -34,5 +40,17 @@ export class ProductosAdminService {
     return this.http
       .patch(`${environment.API_URL}/admin/productos/${id}/activo`, { activo })
       .pipe(map(() => undefined));
+  }
+
+  obtenerPorId(id: number): Observable<ProductoRestDto> {
+    return this.http.get<ProductoRestDto>(`${environment.API_URL}/admin/productos/${id}`);
+  }
+
+  crear(payload: ProductoAdminPayload): Observable<ProductoRestDto> {
+    return this.http.post<ProductoRestDto>(`${environment.API_URL}/admin/productos`, payload);
+  }
+
+  actualizar(id: number, payload: ProductoAdminPayload): Observable<ProductoRestDto> {
+    return this.http.patch<ProductoRestDto>(`${environment.API_URL}/admin/productos/${id}`, payload);
   }
 }

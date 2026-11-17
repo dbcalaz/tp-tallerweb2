@@ -27,7 +27,7 @@
         </p>
       </div>
       <div class="flex flex-wrap items-center gap-2 shrink-0">
-        <button type="button" class="h-9 px-3.5 inline-flex items-center gap-1.5 rounded bg-primary-container text-white hover:bg-primary hover:text-on-primary-container transition-colors text-xs font-semibold shadow-sm">
+        <button type="button" (click)="abrirModal('categoria')" class="h-9 px-3.5 inline-flex items-center gap-1.5 rounded bg-primary-container text-white hover:bg-primary hover:text-on-primary-container transition-colors text-xs font-semibold shadow-sm">
           <span class="material-symbols-outlined text-[18px]">folder_special</span>
           <span>Nueva categoría</span>
         </button>
@@ -73,16 +73,12 @@
                   </div>
                 </div>
                 <div class="flex items-center gap-1.5">
-                  <button type="button" class="h-7 px-2.5 inline-flex items-center gap-1 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-high text-xs">
+                  <button type="button" (click)="abrirModal('categoria', cat)" class="h-7 px-2.5 inline-flex items-center gap-1 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-high text-xs">
                     <span class="material-symbols-outlined text-[15px]">edit</span>
                     <span>Editar</span>
                   </button>
-                  <button type="button" class="h-7 w-7 inline-flex items-center justify-center rounded text-tertiary hover:text-error hover:bg-surface-container-high" title="Deshabilitar categoría">
+                  <button type="button" (click)="cambiarEstado('categoria', cat.id, cat.activo)" class="h-7 w-7 inline-flex items-center justify-center rounded text-tertiary hover:text-error hover:bg-surface-container-high" title="Deshabilitar categoría">
                     <span class="material-symbols-outlined text-[16px]">delete</span>
-                  </button>
-                  <button type="button" class="h-7 px-2.5 inline-flex items-center gap-1 rounded bg-surface-container-high text-on-surface hover:bg-surface-container-highest text-xs font-semibold">
-                    <span class="material-symbols-outlined text-[15px]">add</span>
-                    <span>Tipo</span>
                   </button>
                 </div>
               </div>
@@ -98,8 +94,7 @@
                         <div class="col-span-3"><span class="text-secondary font-medium">● Activo</span></div>
                         <div class="col-span-2 sm:col-span-3 text-tertiary"><span class="font-semibold text-on-surface">{{ tipo.cantidadProductos }}</span> productos</div>
                         <div class="col-span-2 flex items-center justify-end gap-1">
-                          <button type="button" class="p-1 rounded text-tertiary hover:text-on-surface"><span class="material-symbols-outlined text-[15px]">edit</span></button>
-                          <button type="button" class="p-1 rounded text-tertiary hover:text-error"><span class="material-symbols-outlined text-[15px]">delete</span></button>
+                          <span class="col-span-2"></span>
                         </div>
                       </div>
                     } @else {
@@ -110,7 +105,7 @@
                         <div class="col-span-3"><span class="text-tertiary font-medium">● Deshabilitado</span></div>
                         <div class="col-span-2 sm:col-span-3 text-tertiary">{{ tipo.cantidadProductos }} productos</div>
                         <div class="col-span-2 flex items-center justify-end gap-1">
-                          <button type="button" class="h-6 px-2 inline-flex items-center gap-1 rounded bg-secondary-container/40 text-secondary hover:bg-secondary-container text-[11px]">
+                          <button type="button" (click)="cambiarEstado('tipo', tipo.id, tipo.activo)" class="h-6 px-2 inline-flex items-center gap-1 rounded bg-secondary-container/40 text-secondary hover:bg-secondary-container text-[11px]">
                             <span class="material-symbols-outlined text-[13px]">refresh</span> Rehabilitar
                           </button>
                         </div>
@@ -142,7 +137,7 @@
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
-                  <button type="button" class="h-7 px-3 inline-flex items-center gap-1 rounded bg-secondary-container text-secondary hover:bg-secondary hover:text-on-secondary transition-colors text-xs font-semibold">
+                  <button type="button" (click)="cambiarEstado('categoria', cat.id, cat.activo)" class="h-7 px-3 inline-flex items-center gap-1 rounded bg-secondary-container text-secondary hover:bg-secondary hover:text-on-secondary transition-colors text-xs font-semibold">
                     <span class="material-symbols-outlined text-[15px]">settings_backup_restore</span>
                     <span>Habilitar categoría</span>
                   </button>
@@ -177,7 +172,7 @@
           <h2 class="font-display text-xl font-bold text-on-surface">Tipos de productos</h2>
           <p class="text-xs text-tertiary mt-0.5 hidden sm:block">Listado taxonómico plano de todos los tipos registrados, con estado y controles de baja lógica.</p>
         </div>
-        <button type="button" class="h-9 px-4 inline-flex items-center gap-1.5 rounded bg-primary-container text-white hover:bg-primary hover:text-on-primary-container transition-colors text-xs font-semibold shrink-0 shadow-sm">
+        <button type="button" (click)="abrirModal('tipo')" class="h-9 px-4 inline-flex items-center gap-1.5 rounded bg-primary-container text-white hover:bg-primary hover:text-on-primary-container transition-colors text-xs font-semibold shrink-0 shadow-sm">
           <span class="material-symbols-outlined text-[18px]">add</span>
           <span>Agregar tipo</span>
         </button>
@@ -204,10 +199,10 @@
                   </span>
                 </div>
                 <div class="col-span-2 sm:col-span-3 flex items-center justify-end gap-1 sm:gap-2">
-                  <button type="button" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar tipo">
+                  <button type="button" (click)="abrirModal('tipo', tipo)" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar tipo">
                     <span class="material-symbols-outlined text-[17px]">edit</span>
                   </button>
-                  <button type="button" class="p-1.5 rounded text-tertiary hover:text-error hover:bg-surface-container-highest transition-colors" title="Deshabilitar tipo">
+                  <button type="button" (click)="cambiarEstado('tipo', tipo.id, tipo.activo)" class="p-1.5 rounded text-tertiary hover:text-error hover:bg-surface-container-highest transition-colors" title="Deshabilitar tipo">
                     <span class="material-symbols-outlined text-[17px]">delete</span>
                   </button>
                 </div>
@@ -224,7 +219,7 @@
                   </span>
                 </div>
                 <div class="col-span-2 sm:col-span-3 flex items-center justify-end gap-1 sm:gap-2">
-                  <button type="button" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar tipo">
+                  <button type="button" (click)="abrirModal('tipo', tipo)" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar tipo">
                     <span class="material-symbols-outlined text-[17px]">edit</span>
                   </button>
                   @if (tipo.activo) {
@@ -232,7 +227,7 @@
                       <span class="material-symbols-outlined text-[17px]">block</span>
                     </button>
                   } @else {
-                    <button type="button" class="h-6 px-2 inline-flex items-center gap-1 rounded bg-secondary-container/50 text-secondary hover:bg-secondary-container transition-colors text-[11px] font-semibold" title="Habilitar tipo">
+                    <button type="button" (click)="cambiarEstado('tipo', tipo.id, tipo.activo)" class="h-6 px-2 inline-flex items-center gap-1 rounded bg-secondary-container/50 text-secondary hover:bg-secondary-container transition-colors text-[11px] font-semibold" title="Habilitar tipo">
                       <span class="material-symbols-outlined text-[14px]">refresh</span>
                       <span class="hidden sm:inline">Habilitar</span>
                     </button>
@@ -253,7 +248,7 @@
           <h2 class="font-display text-xl font-bold text-on-surface">Marcas</h2>
           <p class="text-xs text-tertiary mt-0.5 hidden sm:block">Listado plano de fabricantes y sellos oficiales registrados en la tienda con política de baja lógica.</p>
         </div>
-        <button type="button" class="h-9 px-4 inline-flex items-center gap-1.5 rounded bg-primary-container text-white hover:bg-primary hover:text-on-primary-container transition-colors text-xs font-semibold shrink-0 shadow-sm">
+        <button type="button" (click)="abrirModal('marca')" class="h-9 px-4 inline-flex items-center gap-1.5 rounded bg-primary-container text-white hover:bg-primary hover:text-on-primary-container transition-colors text-xs font-semibold shrink-0 shadow-sm">
           <span class="material-symbols-outlined text-[18px]">add</span>
           <span>Agregar marca</span>
         </button>
@@ -280,10 +275,10 @@
                   </span>
                 </div>
                 <div class="col-span-2 sm:col-span-3 flex items-center justify-end gap-1 sm:gap-2">
-                  <button type="button" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar marca">
+                  <button type="button" (click)="abrirModal('marca', marca)" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar marca">
                     <span class="material-symbols-outlined text-[17px]">edit</span>
                   </button>
-                  <button type="button" class="p-1.5 rounded text-tertiary hover:text-error hover:bg-surface-container-highest transition-colors" title="Deshabilitar marca">
+                  <button type="button" (click)="cambiarEstado('marca', marca.id, marca.activo)" class="p-1.5 rounded text-tertiary hover:text-error hover:bg-surface-container-highest transition-colors" title="Deshabilitar marca">
                     <span class="material-symbols-outlined text-[17px]">delete</span>
                   </button>
                 </div>
@@ -300,10 +295,10 @@
                   </span>
                 </div>
                 <div class="col-span-2 sm:col-span-3 flex items-center justify-end gap-1 sm:gap-2">
-                  <button type="button" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar marca">
+                  <button type="button" (click)="abrirModal('marca', marca)" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar marca">
                     <span class="material-symbols-outlined text-[17px]">edit</span>
                   </button>
-                  <button type="button" class="h-6 px-2 inline-flex items-center gap-1 rounded bg-secondary-container/50 text-secondary hover:bg-secondary-container transition-colors text-[11px] font-semibold" title="Habilitar marca">
+                  <button type="button" (click)="cambiarEstado('marca', marca.id, marca.activo)" class="h-6 px-2 inline-flex items-center gap-1 rounded bg-secondary-container/50 text-secondary hover:bg-secondary-container transition-colors text-[11px] font-semibold" title="Habilitar marca">
                     <span class="material-symbols-outlined text-[14px]">refresh</span>
                     <span class="hidden sm:inline">Habilitar</span>
                   </button>
@@ -319,4 +314,16 @@
 
     }
   </main>
+  @if (modalKind) {
+    <div class="fixed inset-0 z-[100] grid place-items-center bg-black/60 p-4" (click)="cerrarModal()">
+      <section class="w-full max-w-lg rounded-lg border border-surface-container-high bg-surface-container-lowest p-6 shadow-2xl" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+        <div class="mb-5 flex items-start justify-between"><div><h2 class="font-display text-xl font-bold">{{ editId ? 'Editar' : 'Agregar' }} {{ modalKind === 'categoria' ? 'categoría' : modalKind === 'tipo' ? 'tipo' : 'marca' }}</h2><p class="mt-1 text-sm text-tertiary">Completá los datos y guardá los cambios.</p></div><button type="button" (click)="cerrarModal()" aria-label="Cerrar" class="rounded p-1 text-tertiary hover:bg-surface-container-high"><span class="material-symbols-outlined">close</span></button></div>
+        <label class="mb-4 flex flex-col gap-2 text-sm font-semibold">Nombre<input [(ngModel)]="nombre" maxlength="80" class="rounded border border-surface-container-high bg-surface px-3 py-2 font-normal outline-none focus:border-primary" placeholder="Ingresá un nombre" /></label>
+        @if (modalKind === 'tipo') { <label class="mb-4 flex flex-col gap-2 text-sm font-semibold">Categoría<select [(ngModel)]="categoriaSeleccionada" class="rounded border border-surface-container-high bg-surface px-3 py-2 font-normal">@for (cat of categorias(); track cat.id) { <option [ngValue]="cat.id">{{ cat.nombre }}</option> }</select></label> }
+        @if (modalKind === 'categoria') { <label class="mb-3 flex flex-col gap-2 text-sm font-semibold">Imagen de categoría <span class="text-xs font-normal text-tertiary">Opcional · PNG, JPG, GIF o WebP · máximo 5 MB</span><input type="file" accept="image/png,image/jpeg,image/webp,image/gif" (change)="seleccionarImagen($event)" class="rounded border border-dashed border-surface-container-high p-2 text-xs" /></label>@if (imagenUrl) { <div class="mb-3 flex items-center gap-3 rounded bg-surface p-2"><img [src]="imagenUrl" alt="Vista previa" class="h-12 w-12 rounded object-cover" /><span class="flex-1 truncate text-xs">{{ imagenNombre }}</span><button type="button" class="text-xs text-error" (click)="imagenUrl = null; imagenNombre = ''">Quitar</button></div> } }
+        @if (errorFormulario) { <p class="mb-3 rounded bg-error-container p-2 text-sm text-error" role="alert">{{ errorFormulario }}</p> }
+        <div class="mt-6 flex justify-end gap-2"><button type="button" (click)="cerrarModal()" class="rounded bg-surface-container-high px-4 py-2 text-sm">Cancelar</button><button type="button" (click)="guardar()" [disabled]="guardando" class="rounded bg-primary-container px-4 py-2 text-sm font-semibold text-white disabled:opacity-50">{{ guardando ? 'Guardando…' : 'Guardar' }}</button></div>
+      </section>
+    </div>
+  }
 </div>
