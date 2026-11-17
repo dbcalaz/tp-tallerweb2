@@ -125,3 +125,37 @@ export class ActualizarActivoDto {
     }
 }
 
+export class GuardarProductoAdminDto {
+    constructor(
+        public readonly nombre: string,
+        public readonly descripcion: string,
+        public readonly precio: number,
+        public readonly stock: number,
+        public readonly imagenUrl: string | null,
+        public readonly marcaId: number,
+        public readonly tipoProductoId: number,
+        public readonly activo: boolean,
+    ) {}
+
+    static fromBody(body: unknown): GuardarProductoAdminDto {
+        const raw = (body ?? {}) as Record<string, unknown>;
+        const nombre = typeof raw.nombre === "string" ? raw.nombre.trim() : "";
+        const descripcion = typeof raw.descripcion === "string" ? raw.descripcion.trim() : "";
+        const precio = Number(raw.precio);
+        const stock = Number(raw.stock);
+        const marcaId = Number(raw.marcaId);
+        const tipoProductoId = Number(raw.tipoProductoId);
+        const imagenUrl = raw.imagenUrl == null ? null : raw.imagenUrl;
+        const activo = typeof raw.activo === "boolean" ? raw.activo : true;
+        const errors: Record<string, string> = {};
+        if (!nombre || nombre.length > 120) errors.nombre = "El nombre es obligatorio y admite hasta 120 caracteres.";
+        if (!Number.isFinite(precio) || precio <= 0) errors.precio = "Ingresá un precio mayor a cero.";
+        if (!Number.isInteger(stock) || stock < 0) errors.stock = "El stock debe ser un número entero igual o mayor a cero.";
+        if (!Number.isInteger(marcaId) || marcaId < 1) errors.marcaId = "Seleccioná una marca.";
+        if (!Number.isInteger(tipoProductoId) || tipoProductoId < 1) errors.tipoProductoId = "Seleccioná un tipo de producto.";
+        if (imagenUrl !== null && (typeof imagenUrl !== "string" || imagenUrl.length > 7_000_000 || !(/^https?:\/\//i.test(imagenUrl) || /^data:image\/(png|jpeg|webp|gif);base64,/i.test(imagenUrl)))) errors.imagenUrl = "La imagen debe ser PNG, JPG, GIF o WebP de hasta 5 MB.";
+        if (Object.keys(errors).length) throw new BadRequestError("Revisá los campos del producto.", errors);
+        return new GuardarProductoAdminDto(nombre, descripcion, precio, stock, imagenUrl as string | null, marcaId, tipoProductoId, activo);
+    }
+}
+

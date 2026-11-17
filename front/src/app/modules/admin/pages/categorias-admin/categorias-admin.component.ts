@@ -1,6 +1,8 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { AdminHeaderComponent } from '../../components/admin-header/admin-header.component';
 import { CatalogoAdminService } from '../../../../api/services/catalogo/catalogo-admin.service';
+import { FormsModule } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   CatalogoAdminRestDto,
   CategoriaAdminRestDto,
@@ -15,7 +17,7 @@ interface TipoPlano extends TipoAdminRestDto {
 @Component({
   selector: 'app-categorias-admin',
   standalone: true,
-  imports: [AdminHeaderComponent],
+  imports: [AdminHeaderComponent, FormsModule],
   templateUrl: './categoria-admin.component.html',
 })
 export class CategoriasAdminComponent implements OnInit {
@@ -25,6 +27,14 @@ export class CategoriasAdminComponent implements OnInit {
   readonly cargando = signal(true);
   readonly error = signal(false);
   readonly abiertas = signal<ReadonlySet<number>>(new Set());
+  modalKind: 'categoria' | 'tipo' | 'marca' | null = null;
+  editId: number | null = null;
+  categoriaSeleccionada = 0;
+  nombre = '';
+  imagenUrl: string | null = null;
+  imagenNombre = '';
+  errorFormulario = '';
+  guardando = false;
 
   readonly categorias = computed(() => this.catalogo()?.categorias ?? []);
   readonly marcas = computed(() => this.catalogo()?.marcas ?? []);
@@ -60,6 +70,11 @@ export class CategoriasAdminComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.recargar();
+  }
+
+  recargar(): void {
+    this.cargando.set(true);
     this.catalogoService.obtener().subscribe({
       next: (data) => {
         this.catalogo.set(data);
@@ -70,6 +85,37 @@ export class CategoriasAdminComponent implements OnInit {
         this.cargando.set(false);
       },
     });
+  }
+
+  abrirModal(kind: 'categoria' | 'tipo' | 'marca', record?: CategoriaAdminRestDto | TipoAdminRestDto | { id: number; nombre: string }, parentId?: number): void {
+    this.modalKind = kind; this.editId = record?.id ?? null; this.nombre = record?.nombre ?? ''; this.errorFormulario = '';
+    this.categoriaSeleccionada = kind === 'tipo' ? (parentId ?? (record as TipoAdminRestDto | undefined)?.categoriaId ?? this.categorias()[0]?.id ?? 0) : 0;
+    this.imagenUrl = kind === 'categoria' ? (record as CategoriaAdminRestDto | undefined)?.imagenUrl ?? null : null;
+    this.imagenNombre = this.imagenUrl ? 'Imagen actual' : '';
+  }
+
+  cerrarModal(): void { this.modalKind = null; this.guardando = false; }
+
+  seleccionarImagen(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0]; if (!file) return;
+    if (!['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(file.type) || file.size > 5 * 1024 * 1024) { this.errorFormulario = 'Elegí PNG, JPG, GIF o WebP de hasta 5 MB.'; return; }
+    const reader = new FileReader(); reader.onload = () => { this.imagenUrl = String(reader.result); this.imagenNombre = file.name; this.errorFormulario = ''; }; reader.readAsDataURL(file);
+  }
+
+  guardar(): void {
+    if (!this.modalKind || !this.nombre.trim()) { this.errorFormulario = 'El nombre es obligatorio.'; return; }
+    const kind = this.modalKind; const name = this.nombre.trim(); this.guardando = true; this.errorFormulario = '';
+    const request = kind === 'categoria'
+      ? (this.editId ? this.catalogoService.editarCategoria(this.editId, { nombre: name, imagenUrl: this.imagenUrl }) : this.catalogoService.crearCategoria({ nombre: name, imagenUrl: this.imagenUrl }))
+      : kind === 'tipo'
+        ? (this.editId ? this.catalogoService.editarTipo(this.editId, { nombre: name, categoriaId: this.categoriaSeleccionada }) : this.catalogoService.crearTipo({ nombre: name, categoriaId: this.categoriaSeleccionada }))
+        : (this.editId ? this.catalogoService.editarMarca(this.editId, { nombre: name }) : this.catalogoService.crearMarca({ nombre: name }));
+    request.subscribe({ next: () => { this.cerrarModal(); this.recargar(); }, error: (e: HttpErrorResponse) => { this.guardando = false; this.errorFormulario = e.error?.message ?? 'No se pudo guardar.'; } });
+  }
+
+  cambiarEstado(kind: 'categoria' | 'tipo' | 'marca', id: number, activo: boolean): void {
+    const request = kind === 'categoria' ? this.catalogoService.estadoCategoria(id, !activo) : kind === 'tipo' ? this.catalogoService.estadoTipo(id, !activo) : this.catalogoService.estadoMarca(id, !activo);
+    request.subscribe({ next: () => this.recargar(), error: (e: HttpErrorResponse) => { this.error.set(true); console.error(e); } });
   }
 
   estaAbierta(id: number): boolean {

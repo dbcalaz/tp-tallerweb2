@@ -73,6 +73,18 @@ export class ProductoRepository {
         return { items, total };
     }
 
+    async getProductoAdminPorId(id: number) {
+        return prisma.producto.findUnique({ where: { id }, include: { marca: true, tipoProducto: { include: { categoria: true } } } });
+    }
+
+    async crearProductoAdmin(data: { nombre: string; descripcion: string; precio: number; stock: number; imagenUrl: string | null; marcaId: number; tipoProductoId: number; activo: boolean }) {
+        return prisma.producto.create({ data, include: { marca: true, tipoProducto: { include: { categoria: true } } } });
+    }
+
+    async editarProductoAdmin(id: number, data: { nombre: string; descripcion: string; precio: number; stock: number; imagenUrl: string | null; marcaId: number; tipoProductoId: number; activo: boolean }) {
+        return prisma.producto.update({ where: { id }, data, include: { marca: true, tipoProducto: { include: { categoria: true } } } });
+    }
+
     async actualizarActivo(id: number, activo: boolean) {
         return prisma.producto.update({
             where: { id },
