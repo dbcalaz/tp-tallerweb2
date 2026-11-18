@@ -44,11 +44,13 @@
               </div>
               <div class="absolute top-space-md right-space-md z-10">
                 <button
-                  aria-label="Guardar en favoritos"
+                  [attr.aria-label]="favoritosService.esFavorito(productoActual.id) ? 'Quitar de favoritos' : 'Guardar en favoritos'"
+                  [attr.aria-pressed]="favoritosService.esFavorito(productoActual.id)"
+                  (click)="alternarFavorito()"
                   class="w-9 h-9 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-primary flex items-center justify-center shadow-sm transition-transform active:scale-95"
                   type="button"
                 >
-                  <span class="material-symbols-outlined text-[18px]">favorite</span>
+                  <span class="material-symbols-outlined text-[18px]" [class.text-red-600]="favoritosService.esFavorito(productoActual.id)">{{ favoritosService.esFavorito(productoActual.id) ? 'favorite' : 'favorite_border' }}</span>
                 </button>
               </div>
               @if (productoActual.imagenUrl) {

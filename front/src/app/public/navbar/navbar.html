@@ -1,27 +1,27 @@
 <div class="fixed top-0 left-0 right-0 z-50 bg-[#ffffff] shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
   <div
-    class="flex items-center justify-center gap-3 bg-[#202b36] px-4 py-1.5 text-center text-[10px] font-bold uppercase tracking-wider text-white"
+    class="flex items-center justify-center gap-2 bg-[#202b36] px-2 py-1.5 text-center text-[9px] font-bold uppercase tracking-wider text-white sm:gap-3 sm:px-4 sm:text-[10px]"
   >
     <span class="flex items-center gap-1">
       <span class="material-symbols-outlined text-sm">local_shipping</span>
-      Envíos a todo el país
+      <span class="sm:hidden">Envíos</span><span class="hidden sm:inline">Envíos a todo el país</span>
     </span>
     <span class="opacity-40">•</span>
     <span class="flex items-center gap-1">
       <span class="material-symbols-outlined text-sm">credit_card</span>
-      3 y 6 Cuotas fijas
+      <span class="sm:hidden">3 y 6 cuotas</span><span class="hidden sm:inline">3 y 6 Cuotas fijas</span>
     </span>
     <span class="opacity-40">•</span>
     <span class="flex items-center gap-1">
       <span class="material-symbols-outlined text-sm">verified</span>
-      Garantía oficial directa
+      <span class="sm:hidden">Garantía</span><span class="hidden sm:inline">Garantía oficial directa</span>
     </span>
   </div>
   <header class="h-16 w-full">
-    <div class="mx-auto flex h-full max-w-[1360px] items-center justify-between gap-5 px-6">
+    <div class="mx-auto flex h-full max-w-[1360px] items-center justify-between gap-2 px-3 sm:gap-5 sm:px-6">
       <div class="flex shrink-0 items-center gap-3">
         <a routerLink="/productos" class="flex items-center gap-2">
-          <span class="hidden text-xl font-semibold tracking-tight text-[#0b1721] sm:inline">
+          <span class="text-lg font-semibold tracking-tight text-[#0b1721] sm:text-xl">
             Tecnova
           </span>
         </a>
@@ -40,7 +40,7 @@
           <span class="rounded bg-[#e1e9f5] px-2 py-0.5 text-[10px] text-[#44474b]"> ⌘K </span>
         </div>
       </div>
-      <div class="flex shrink-0 items-center gap-5">
+      <div class="relative flex shrink-0 items-center gap-2 sm:gap-5">
         <nav class="hidden items-center gap-5 lg:flex">
           <a
             routerLink="/productos"
@@ -58,6 +58,18 @@
             Catálogo
           </a>
         </nav>
+        <button type="button" (click)="alternarMenuNavegacion($event)" [attr.aria-expanded]="menuNavegacionAbierto" aria-label="Abrir navegación" class="flex h-10 w-10 items-center justify-center rounded-lg text-[#141c25] hover:bg-[#edf4ff] lg:hidden">
+          <span class="material-symbols-outlined">{{ menuNavegacionAbierto ? 'close' : 'menu' }}</span>
+        </button>
+        @if (menuNavegacionAbierto) {
+          <nav (click)="$event.stopPropagation()" class="absolute right-0 top-full z-50 mt-2 flex w-52 flex-col rounded-lg border border-[#e1e9f5] bg-white p-2 shadow-lg lg:hidden" aria-label="Navegación móvil">
+            <a routerLink="/productos" (click)="cerrarMenuNavegacion()" class="rounded px-3 py-3 text-sm text-[#141c25] hover:bg-[#edf4ff]">Inicio</a>
+            <a routerLink="/catalogo" (click)="cerrarMenuNavegacion()" class="rounded px-3 py-3 text-sm text-[#141c25] hover:bg-[#edf4ff]">Catálogo</a>
+            @if (authSession.isAuthenticated()) {
+              <a routerLink="/perfil" (click)="cerrarMenuNavegacion()" class="rounded px-3 py-3 text-sm text-[#141c25] hover:bg-[#edf4ff]">Mi perfil</a>
+            }
+          </nav>
+        }
         <div class="flex items-center gap-3 border-l border-[#e1e9f5] pl-3">
           @if (authSession.currentUser(); as user) {
             <div class="relative">

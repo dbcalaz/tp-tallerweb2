@@ -28,6 +28,7 @@ model User {
 
   carrito      Carrito?
   compras      Compra[]
+  favoritos    Favorito[]
   passwordResetTokens PasswordResetToken[]
 
   @@map("users")
@@ -93,8 +94,23 @@ model Producto {
   marca           Marca        @relation(fields: [marcaId], references: [id])
   carritoProductos CarritoProducto[]
   detallesCompras  DetalleCompra[]
+  favoritos        Favorito[]
 
   @@map("productos")
+}
+
+model Favorito {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  productoId Int
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  producto Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productoId])
+  @@index([userId, createdAt])
+  @@map("favoritos")
 }
 
 model Carrito {

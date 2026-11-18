@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { CarritoService } from '../../../../api/services/carrito/carrito.service';
 import { ProductosService } from '../../../../api/services/productos/productos.service';
+import { FavoritosService } from '../../../../api/services/productos/favoritos.service';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -17,6 +18,7 @@ export class DetalleProductoComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly productosService = inject(ProductosService);
   private readonly carritoService = inject(CarritoService);
+  protected readonly favoritosService = inject(FavoritosService);
 
   readonly cantidad = signal(1);
 
@@ -85,5 +87,10 @@ export class DetalleProductoComponent {
     const prod = this.producto();
     if (!prod || !this.puedeAgregar()) return;
     this.carritoService.agregarProducto(prod, this.cantidad());
+  }
+
+  alternarFavorito(): void {
+    const producto = this.producto();
+    if (producto) this.favoritosService.alternar(producto);
   }
 }

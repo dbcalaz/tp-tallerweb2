@@ -10,8 +10,13 @@ import { AuthSessionService } from '../../../../api/services/auth/auth-session.s
 export class AdminHeaderComponent {
   private readonly authSession = inject(AuthSessionService);
   private readonly router = inject(Router);
+  protected menuAbierto = false;
+
+  protected toggleMenu(): void { this.menuAbierto = !this.menuAbierto; }
+  protected cerrarMenu(): void { this.menuAbierto = false; }
 
   protected cerrarSesion(): void {
+    this.cerrarMenu();
     this.authSession.clear();
     void this.router.navigateByUrl('/login');
   }

@@ -1,5 +1,5 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -8,17 +8,20 @@ import { AuthSessionService } from '../../../../api/services/auth/auth-session.s
 import { CarritoService } from '../../../../api/services/carrito/carrito.service';
 import { UsuariosService } from '../../../../api/services/usuarios/usuarios.service';
 import { ToastService } from '../../../../shared/toast.service';
+import { FavoritosService } from '../../../../api/services/productos/favoritos.service';
+import { CardProductoComponent } from '../../../productos/components/card-producto/card-producto.component';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, CurrencyPipe, DatePipe],
+  imports: [ReactiveFormsModule, RouterLink, CurrencyPipe, DatePipe, CardProductoComponent],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css',
 })
 export class PerfilComponent implements OnInit {
   protected readonly authSession = inject(AuthSessionService);
   protected readonly carritoService = inject(CarritoService);
+  protected readonly favoritosService = inject(FavoritosService);
   private readonly usuariosService = inject(UsuariosService);
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly router = inject(Router);
@@ -28,7 +31,25 @@ export class PerfilComponent implements OnInit {
   readonly perfil = signal<PerfilUsuarioResponseDto | null>(null);
   readonly cargando = signal(true);
   readonly guardando = signal(false);
-  readonly seccionActiva = signal<'datos' | 'compras'>('datos');
+  readonly seccionActiva = signal<'datos' | 'compras' | 'favoritos'>('datos');
+  readonly paginaFavoritos = signal(1);
+  readonly favoritosPorPagina = 6;
+  readonly totalPaginasFavoritos = computed(() => Math.max(1, Math.ceil(this.favoritosService.productos().length / this.favoritosPorPagina)));
+  readonly paginaFavoritosActual = computed(() => Math.min(this.paginaFavoritos(), this.totalPaginasFavoritos()));
+  readonly paginasFavoritos = computed(() => {
+    const total = this.totalPaginasFavoritos();
+    const current = this.paginaFavoritosActual();
+    const start = Math.max(1, Math.min(current - 2, total - 4));
+    return Array.from({ length: Math.min(5, total) }, (_, index) => start + index);
+  });
+  readonly productosFavoritosPagina = computed(() => {
+    const inicio = (this.paginaFavoritosActual() - 1) * this.favoritosPorPagina;
+    return this.favoritosService.productos().slice(inicio, inicio + this.favoritosPorPagina);
+  });
+
+  cambiarPaginaFavoritos(pagina: number): void {
+    this.paginaFavoritos.set(Math.max(1, Math.min(pagina, this.totalPaginasFavoritos())));
+  }
 
   readonly form = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(2)]],

@@ -12,5 +12,11 @@
     "db:deploy": "npm --prefix back run db:deploy",
     "build:front": "npm --prefix front run build",
     "build:back": "npm --prefix back run build"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^8.0.2"
+  },
+  "dependencies": {
+    "nodemailer": "^10.5.0"
   }
 }

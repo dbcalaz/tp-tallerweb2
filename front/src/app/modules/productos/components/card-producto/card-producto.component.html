@@ -25,6 +25,15 @@
           [src]="producto().imagenUrl"
           [alt]="producto().nombre"
         />
+        <button
+          type="button"
+          (click)="alternarFavorito($event)"
+          [attr.aria-label]="favoritosService.esFavorito(producto().id) ? 'Quitar de favoritos' : 'Guardar en favoritos'"
+          [attr.aria-pressed]="favoritosService.esFavorito(producto().id)"
+          class="absolute right-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-600 shadow hover:text-red-600"
+        >
+          <span class="material-symbols-outlined" [class.text-red-600]="favoritosService.esFavorito(producto().id)">{{ favoritosService.esFavorito(producto().id) ? 'favorite' : 'favorite_border' }}</span>
+        </button>
       </div>
       <div>
         <p class="font-label-xs text-label-xs uppercase tracking-wider text-secondary">

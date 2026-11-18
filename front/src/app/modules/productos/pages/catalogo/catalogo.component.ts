@@ -23,6 +23,10 @@ export class CatalogoComponent {
 
   protected readonly texto = this.busqueda.texto;
   protected readonly cargando = signal(true);
+  protected readonly mobileFiltersOpen = signal(false);
+  protected readonly cantidadFiltrosActivos = computed(() => this.categoriasSel().length + this.tiposSel().length + this.marcasSel().length);
+
+  protected cerrarFiltrosMobile(): void { this.mobileFiltersOpen.set(false); }
 
   protected readonly productos = toSignal(
     toObservable(this.texto).pipe(
