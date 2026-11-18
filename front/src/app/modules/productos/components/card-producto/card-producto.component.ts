@@ -3,6 +3,7 @@ import { Component, computed, inject, input } from '@angular/core';
 import { Producto } from '../../interfaces/producto.interface';
 import { RouterLink } from '@angular/router';
 import { CarritoService } from '../../../../api/services/carrito/carrito.service';
+import { FavoritosService } from '../../../../api/services/productos/favoritos.service';
 
 @Component({
   selector: 'app-card-producto',
@@ -12,6 +13,7 @@ import { CarritoService } from '../../../../api/services/carrito/carrito.service
 })
 export class CardProductoComponent {
   private readonly carritoService = inject(CarritoService);
+  protected readonly favoritosService = inject(FavoritosService);
 
   producto = input.required<Producto>();
 
@@ -39,5 +41,11 @@ export class CardProductoComponent {
     event.stopPropagation();
     if (this.sinStockDisponible()) return;
     this.carritoService.agregarProducto(this.producto());
+  }
+
+  alternarFavorito(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.favoritosService.alternar(this.producto());
   }
 }
