@@ -11,7 +11,7 @@
         <span class="text-surface-container-highest">/</span>
         <span class="text-primary font-semibold">Gestión Taxonómica & Marcas</span>
       </nav>
-      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-surface-container-high text-secondary text-xs">
+      <div class="inline-flex max-w-full flex-wrap items-center gap-2 px-2.5 py-1 rounded bg-surface-container-high text-secondary text-xs">
         <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
         <span>Baja lógica activa en todo el sistema (sin pérdida de registros)</span>
       </div>
@@ -167,7 +167,7 @@
     </section>
 
     <section class="space-y-4 mb-14" id="seccion-tipos">
-      <div class="flex flex-row items-center justify-between gap-4 pb-2 border-b border-surface-container-high/60">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-surface-container-high/60">
         <div>
           <h2 class="font-display text-xl font-bold text-on-surface">Tipos de productos</h2>
           <p class="text-xs text-tertiary mt-0.5 hidden sm:block">Listado taxonómico plano de todos los tipos registrados, con estado y controles de baja lógica.</p>
@@ -243,7 +243,7 @@
     </section>
 
     <section class="space-y-4 mb-14" id="seccion-marcas">
-      <div class="flex flex-row items-center justify-between gap-4 pb-2 border-b border-surface-container-high/60">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-surface-container-high/60">
         <div>
           <h2 class="font-display text-xl font-bold text-on-surface">Marcas</h2>
           <p class="text-xs text-tertiary mt-0.5 hidden sm:block">Listado plano de fabricantes y sellos oficiales registrados en la tienda con política de baja lógica.</p>
@@ -316,7 +316,7 @@
   </main>
   @if (modalKind) {
     <div class="fixed inset-0 z-[100] grid place-items-center bg-black/60 p-4" (click)="cerrarModal()">
-      <section class="w-full max-w-lg rounded-lg border border-surface-container-high bg-surface-container-lowest p-6 shadow-2xl" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <section class="max-h-[calc(100dvh-2rem)] w-full max-w-lg overflow-y-auto rounded-lg border border-surface-container-high bg-surface-container-lowest p-4 shadow-2xl sm:p-6" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
         <div class="mb-5 flex items-start justify-between"><div><h2 class="font-display text-xl font-bold">{{ editId ? 'Editar' : 'Agregar' }} {{ modalKind === 'categoria' ? 'categoría' : modalKind === 'tipo' ? 'tipo' : 'marca' }}</h2><p class="mt-1 text-sm text-tertiary">Completá los datos y guardá los cambios.</p></div><button type="button" (click)="cerrarModal()" aria-label="Cerrar" class="rounded p-1 text-tertiary hover:bg-surface-container-high"><span class="material-symbols-outlined">close</span></button></div>
         <label class="mb-4 flex flex-col gap-2 text-sm font-semibold">Nombre<input [(ngModel)]="nombre" maxlength="80" class="rounded border border-surface-container-high bg-surface px-3 py-2 font-normal outline-none focus:border-primary" placeholder="Ingresá un nombre" /></label>
         @if (modalKind === 'tipo') { <label class="mb-4 flex flex-col gap-2 text-sm font-semibold">Categoría<select [(ngModel)]="categoriaSeleccionada" class="rounded border border-surface-container-high bg-surface px-3 py-2 font-normal">@for (cat of categorias(); track cat.id) { <option [ngValue]="cat.id">{{ cat.nombre }}</option> }</select></label> }

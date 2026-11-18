@@ -19,6 +19,7 @@ export class Navbar {
   protected readonly authSession = inject(AuthSessionService);
   protected readonly carritoService = inject(CarritoService);
   protected menuUsuarioAbierto = false;
+  protected menuNavegacionAbierto = false;
   protected readonly busqueda = inject(BusquedaService);
 
   constructor() {
@@ -41,6 +42,13 @@ export class Navbar {
       void this.router.navigateByUrl('/catalogo');
     }
   }
+
+  protected alternarMenuNavegacion(event: MouseEvent): void {
+    event.stopPropagation();
+    this.menuNavegacionAbierto = !this.menuNavegacionAbierto;
+  }
+
+  protected cerrarMenuNavegacion(): void { this.menuNavegacionAbierto = false; }
 
   @ViewChild(CarritoComponent)
   private cartDrawer!: CarritoComponent;
@@ -68,6 +76,7 @@ export class Navbar {
   @HostListener('document:click')
   protected alHacerClickEnDocumento(): void {
     this.cerrarMenuUsuario();
+    this.cerrarMenuNavegacion();
   }
 
   @HostListener('document:keydown.escape')
