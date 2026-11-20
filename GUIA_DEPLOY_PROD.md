@@ -22,7 +22,8 @@ Un único **Web Service en Render** compila y sirve tanto el **Frontend (Angular
    - `DIRECT_URL`: URL directa de Neon (sin `-pooler`, opcional para `prisma migrate deploy`).
    - `JWT_SECRET`: clave secreta aleatoria larga (se autogenera con Blueprint).
    - `MP_ACCESS_TOKEN`: Access Token de Mercado Pago (del mismo par que `mpPublicKey` del front).
-   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`: credenciales SMTP (para comprobantes de compra y recuperación de contraseña).
+   - `EMAIL_WEBHOOK_URL`: URL del Web App de Google Apps Script (`/exec`) para enviar correos por HTTPS (puerto 443, ya que Render Free bloquea los puertos SMTP salientes 25/465/587).
+   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`: alternativa SMTP (para entorno local o planes pagos).
    *(No hace falta configurar `FRONTEND_URL` ni `API_URL`: Express usa `RENDER_EXTERNAL_URL` automáticamente y Angular usa `/api`).*
 5. Al finalizar el deploy, tu aplicación completa estará online en `https://<tu-servicio>.onrender.com`.
 

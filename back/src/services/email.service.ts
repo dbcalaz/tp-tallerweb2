@@ -1,17 +1,51 @@
 import nodemailer from "nodemailer";
 
+interface EmailPayload {
+    to: string;
+    subject: string;
+    text: string;
+    html: string;
+}
+
 export class EmailService {
-    private async createTransporter() {
-        const host = process.env.SMTP_HOST?.trim();
+    private getSenderString(): string | undefined {
         const smtpFrom = process.env.SMTP_FROM?.trim();
         const smtpUser = process.env.SMTP_USER?.trim();
-        const from = smtpFrom || (smtpUser ? `"Tecnova" <${smtpUser}>` : undefined);
+        return smtpFrom || (smtpUser ? `"Tecnova" <${smtpUser}>` : undefined);
+    }
 
+    private async sendEmail(payload: EmailPayload): Promise<void> {
+        if (process.env.EMAIL_SIMULATE === "true") {
+            console.info(`[SIMULATE] Email para ${payload.to}: ${payload.subject} -> ${payload.text}`);
+            return;
+        }
+
+        // Webhook HTTPS (ej. Google Apps Script con Gmail sobre puerto 443, ya que Render Free bloquea SMTP)
+        const webhookUrl = process.env.EMAIL_WEBHOOK_URL?.trim();
+        if (webhookUrl) {
+            const response = await fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+                signal: AbortSignal.timeout(8000),
+            });
+
+            if (!response.ok) {
+                const detail = await response.text();
+                throw new Error(`Error al enviar correo por webhook (${response.status}): ${detail}`);
+            }
+            return;
+        }
+
+        // SMTP tradicional (para entorno local o servidores con puertos SMTP habilitados)
+        const host = process.env.SMTP_HOST?.trim();
+        const from = this.getSenderString();
         if (!host || !from) {
             if (process.env.NODE_ENV === "production") {
-                throw new Error("Falta configurar SMTP_HOST y SMTP_FROM para enviar correos.");
+                throw new Error("Falta configurar EMAIL_WEBHOOK_URL o SMTP_HOST/SMTP_FROM para enviar correos.");
             }
-            return null;
+            console.info(`[DEV] Email para ${payload.to}: ${payload.subject} -> ${payload.text}`);
+            return;
         }
 
         const port = Number(process.env.SMTP_PORT || 587);
@@ -22,22 +56,23 @@ export class EmailService {
             host,
             port,
             secure,
+            connectionTimeout: 5000,
+            greetingTimeout: 5000,
+            socketTimeout: 5000,
             ...(user && pass ? { auth: { user, pass } } : {}),
         });
 
-        return { transporter, from };
+        await transporter.sendMail({
+            from,
+            to: payload.to,
+            subject: payload.subject,
+            text: payload.text,
+            html: payload.html,
+        });
     }
 
     async enviarEnlaceRecuperacion(destination: string, resetUrl: string): Promise<void> {
-        const config = await this.createTransporter();
-        if (!config) {
-            console.info(`[DEV] Enlace de recuperación: ${resetUrl}`);
-            return;
-        }
-
-        const { transporter, from } = config;
-        await transporter.sendMail({
-            from,
+        await this.sendEmail({
             to: destination,
             subject: "Restablecé tu contraseña de Tecnova",
             text: `Recibimos un pedido para cambiar tu contraseña. Abrí este enlace dentro de los próximos 30 minutos: ${resetUrl}\n\nSi no pediste el cambio, podés ignorar este correo.`,
@@ -55,20 +90,13 @@ export class EmailService {
         total: number,
         direccionEnvio: string,
     ): Promise<void> {
-        const config = await this.createTransporter();
-        if (!config) {
-            console.info(`[DEV] Comprobante de compra #${orderId} para ${destination}`);
-            return;
-        }
-
-        const { transporter, from } = config;
         const productosHtml = productos
             .map(
                 (p) => `
                 <tr>
                     <td style="padding: 8px; border-bottom: 1px solid #eee;">${p.nombre}</td>
                     <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center;">${p.cantidad}</td>
-                    <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right;">$${p.subtotal.toLocaleString('es-AR')}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right;">$${p.subtotal.toLocaleString("es-AR")}</td>
                 </tr>
             `,
             )
@@ -103,8 +131,8 @@ export class EmailService {
                 </table>
 
                 <div style="background: #edf4ff; padding: 16px; border-radius: 8px; margin: 16px 0;">
-                    <p><strong>Plan de pago:</strong> ${cuotasTexto}${installments > 1 ? ` de $${cuotaMonto.toLocaleString('es-AR')} ARS` : ''}</p>
-                    <p><strong>Total abonado:</strong> $${total.toLocaleString('es-AR')} ARS</p>
+                    <p><strong>Plan de pago:</strong> ${cuotasTexto}${installments > 1 ? ` de $${cuotaMonto.toLocaleString("es-AR")} ARS` : ""}</p>
+                    <p><strong>Total abonado:</strong> $${total.toLocaleString("es-AR")} ARS</p>
                     <p><strong>Dirección de entrega:</strong> ${direccionEnvio}</p>
                 </div>
 
@@ -118,11 +146,10 @@ export class EmailService {
             </div>
         `;
 
-        await transporter.sendMail({
-            from,
+        await this.sendEmail({
             to: destination,
             subject: `Comprobante de compra ${orderId} - Tecnova`,
-            text: `¡Hola ${compradorNombre}! Tu compra #${orderId} se realizó con éxito. Total: $${total.toLocaleString('es-AR')} ARS.`,
+            text: `¡Hola ${compradorNombre}! Tu compra #${orderId} se realizó con éxito. Total: $${total.toLocaleString("es-AR")} ARS.`,
             html,
         });
     }
