@@ -1,7 +1,7 @@
 @if (producto(); as productoActual) {
   <main class="w-full min-h-[calc(100vh-280px)] bg-surface">
     <div class="flex flex-col w-full">
-      <section class="max-w-[1360px] mx-auto px-margin-desktop w-full py-space-md">
+      <section class="max-w-[1360px] mx-auto px-margin-desktop w-full py-space-xl">
         <nav
           aria-label="Ruta de navegación"
           class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant mb-space-md"
@@ -123,16 +123,22 @@
                     Precio de lista
                   </span>
 
-                  <div class="flex items-baseline gap-space-xs">
+                  <div class="flex items-baseline gap-space-xs flex-wrap">
                     <span
                       class="font-price-display text-price-display text-on-tertiary-container text-[32px] leading-tight"
                     >
-                      {{ producto()?.precio ?? 0 | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
+                      {{ precioFinal() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
                     </span>
 
                     <span class="font-body-sm text-body-sm text-on-surface-variant font-medium">
                       ARS
                     </span>
+
+                    @if (precioUsd(); as usd) {
+                      <span class="ml-1 text-xs font-semibold text-emerald-700">
+                        (US$ {{ usd | number: '1.0-0' }})
+                      </span>
+                    }
                   </div>
                 </div>
                 <span
@@ -141,8 +147,8 @@
                   Envío Bonificado
                 </span>
               </div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-xs pt-space-xs">
-                <div class="p-space-xs rounded bg-surface-container-low flex flex-col">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-space-sm">
+                <div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-1">
                   <span
                     class="font-price-installment text-price-installment text-primary font-bold"
                   >
@@ -153,7 +159,7 @@
                   </span>
                 </div>
 
-                <div class="p-space-xs rounded bg-secondary-container/40 flex flex-col">
+                <div class="p-space-md rounded-lg bg-secondary-container/40 flex flex-col gap-1">
                   <span
                     class="font-price-installment text-price-installment text-primary font-bold"
                   >
@@ -171,12 +177,18 @@
                   Almacenamiento NVMe PCIe 4.0
                 </label>
                 <span class="font-body-sm text-body-sm text-on-surface-variant">
-                  1TB Seleccionado
+                  {{ almacenamiento() }} Seleccionado
                 </span>
               </div>
-              <div class="grid grid-cols-2 gap-space-xs">
+              <div class="grid grid-cols-2 gap-space-sm">
                 <button
-                  class="p-space-sm rounded-lg text-left bg-surface-container-lowest ring-2 ring-primary flex flex-col justify-between transition-all"
+                  (click)="seleccionarAlmacenamiento('1TB')"
+                  class="p-space-md rounded-lg text-left flex flex-col justify-between transition-all cursor-pointer"
+                  [class]="
+                    almacenamiento() === '1TB'
+                      ? 'bg-surface-container-lowest ring-2 ring-primary shadow-sm'
+                      : 'bg-surface-container-low opacity-80 hover:opacity-100'
+                  "
                   type="button"
                 >
                   <div class="flex justify-between items-center w-full">
@@ -184,27 +196,41 @@
                       1TB SSD NVMe
                     </span>
 
-                    <span class="material-symbols-outlined text-[16px] text-primary">
-                      check_circle
-                    </span>
+                    @if (almacenamiento() === '1TB') {
+                      <span class="material-symbols-outlined text-[16px] text-primary">
+                        check_circle
+                      </span>
+                    }
                   </div>
                   <span class="font-body-sm text-body-sm text-on-surface-variant mt-1">
                     Configuración base de fábrica
                   </span>
                 </button>
                 <button
-                  class="p-space-sm rounded-lg text-left bg-surface-container-low opacity-80 hover:opacity-100 flex flex-col justify-between transition-all"
+                  (click)="seleccionarAlmacenamiento('2TB')"
+                  class="p-space-md rounded-lg text-left flex flex-col justify-between transition-all cursor-pointer"
+                  [class]="
+                    almacenamiento() === '2TB'
+                      ? 'bg-surface-container-lowest ring-2 ring-primary shadow-sm'
+                      : 'bg-surface-container-low opacity-80 hover:opacity-100'
+                  "
                   type="button"
                 >
                   <div class="flex justify-between items-center w-full">
                     <span class="font-label-md text-label-md text-primary font-bold">
                       2TB SSD NVMe
                     </span>
-                    <span
-                      class="font-label-xs text-label-xs text-on-tertiary-container font-semibold"
-                    >
-                      +$350.000
-                    </span>
+                    @if (almacenamiento() === '2TB') {
+                      <span class="material-symbols-outlined text-[16px] text-primary">
+                        check_circle
+                      </span>
+                    } @else {
+                      <span
+                        class="font-label-xs text-label-xs text-on-tertiary-container font-semibold"
+                      >
+                        +$350.000
+                      </span>
+                    }
                   </div>
                   <span class="font-body-sm text-body-sm text-on-surface-variant mt-1">
                     Alta velocidad 7000 MB/s
@@ -321,16 +347,34 @@
               <h2 class="font-headline-md text-headline-md text-primary">Descripción</h2>
             </div>
           </div>
-          <div class="p-space-sm rounded-lg bg-surface-container-low">
-            <p
-              class="font-body-md text-body-md text-on-surface leading-relaxed whitespace-pre-line"
-            >
-              {{
-                productoActual.descripcion ||
-                  'Este producto todavía no tiene una descripción disponible.'
-              }}
-            </p>
-          </div>
+          @if (especificaciones().length > 0) {
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+              @for (item of especificaciones(); track $index) {
+                <div
+                  class="flex items-start gap-2.5 p-space-md rounded-lg bg-surface-container-low"
+                  [class.md:col-span-2]="especificaciones().length % 2 === 1 && $last"
+                >
+                  <span class="material-symbols-outlined text-[18px] text-on-tertiary-container shrink-0 mt-0.5">
+                    check_circle
+                  </span>
+                  <span class="font-body-md text-body-md text-on-surface leading-relaxed">
+                    {{ item }}
+                  </span>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="p-space-md rounded-lg bg-surface-container-low">
+              <p
+                class="font-body-md text-body-md text-on-surface leading-relaxed whitespace-pre-line"
+              >
+                {{
+                  productoActual.descripcion ||
+                    'Este producto todavía no tiene una descripción disponible.'
+                }}
+              </p>
+            </div>
+          }
         </div>
       </section>
       <!-- PRODUCTOS RELACIONADOS

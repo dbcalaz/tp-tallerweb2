@@ -1,8 +1,18 @@
-import { Component, HostListener, inject, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  DestroyRef,
+  ElementRef,
+  HostListener,
+  inject,
+  ViewChild,
+} from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/router';
 import { AuthSessionService } from '../../api/services/auth/auth-session.service';
 import { CarritoComponent } from '../../modules/carrito/pages/carrito/carrito.component';
 import { CarritoService } from '../../api/services/carrito/carrito.service';
+import { DolarService } from '../../api/services/dolar/dolar.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
 import { BusquedaService } from '../../api/services/busqueda/busqueda.service';
@@ -13,14 +23,49 @@ import { BusquedaService } from '../../api/services/busqueda/busqueda.service';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar {
+export class Navbar implements AfterViewInit {
   private readonly router = inject(Router);
+  private readonly dolarService = inject(DolarService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  @ViewChild('marqueeTrack')
+  private marqueeTrack?: ElementRef<HTMLDivElement>;
+
+  private animationFrameId: number | null = null;
+  private lastTimestamp = 0;
+  private offsetX = 0;
+  private isDragging = false;
+  private dragStartX = 0;
+  private dragStartOffset = 0;
 
   protected readonly authSession = inject(AuthSessionService);
   protected readonly carritoService = inject(CarritoService);
   protected menuUsuarioAbierto = false;
   protected menuNavegacionAbierto = false;
   protected readonly busqueda = inject(BusquedaService);
+
+  private readonly anunciosBase = [
+    { icon: 'local_shipping', text: 'Envíos gratis a todo el país' },
+    { icon: 'credit_card', text: '3 y 6 cuotas fijas' },
+    { icon: 'verified', text: 'Garantía oficial directa 12 meses' },
+    { icon: 'account_balance', text: '10% OFF pagando con transferencia' },
+    { icon: 'bolt', text: 'Despacho en el día para AMBA' },
+    { icon: 'receipt_long', text: 'Emitimos Factura A y B' },
+    { icon: 'support_agent', text: 'Soporte técnico especializado' },
+    { icon: 'security', text: 'Compra protegida con Mercado Pago' },
+  ];
+
+  protected readonly anuncios = computed(() => {
+    const cotizacion = this.dolarService.venta();
+    if (!cotizacion) {
+      return this.anunciosBase;
+    }
+    const valorFormateado = cotizacion.toLocaleString('es-AR', { maximumFractionDigits: 0 });
+    return [
+      ...this.anunciosBase,
+      { icon: 'attach_money', text: `Dólar: $${valorFormateado}` },
+    ];
+  });
 
   constructor() {
     this.router.events
@@ -33,6 +78,71 @@ export class Navbar {
           this.busqueda.limpiar();
         }
       });
+
+    this.destroyRef.onDestroy(() => {
+      if (this.animationFrameId !== null) {
+        cancelAnimationFrame(this.animationFrameId);
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    if (typeof requestAnimationFrame === 'undefined') return;
+    const step = (timestamp: number) => {
+      if (this.lastTimestamp === 0) {
+        this.lastTimestamp = timestamp;
+      }
+      const dt = Math.min((timestamp - this.lastTimestamp) / 1000, 0.1);
+      this.lastTimestamp = timestamp;
+
+      if (!this.isDragging) {
+        this.offsetX -= 48 * dt;
+        this.applyMarqueeOffset();
+      }
+
+      this.animationFrameId = requestAnimationFrame(step);
+    };
+    this.animationFrameId = requestAnimationFrame(step);
+  }
+
+  protected onMarqueePointerDown(event: PointerEvent): void {
+    const target = event.currentTarget as HTMLElement | null;
+    this.isDragging = true;
+    this.dragStartX = event.clientX;
+    this.dragStartOffset = this.offsetX;
+    target?.setPointerCapture?.(event.pointerId);
+  }
+
+  protected onMarqueePointerMove(event: PointerEvent): void {
+    if (!this.isDragging) return;
+    this.offsetX = this.dragStartOffset + (event.clientX - this.dragStartX);
+    this.applyMarqueeOffset();
+  }
+
+  protected onMarqueePointerUp(event: PointerEvent): void {
+    if (!this.isDragging) return;
+    this.isDragging = false;
+    const target = event.currentTarget as HTMLElement | null;
+    if (target?.hasPointerCapture?.(event.pointerId)) {
+      target.releasePointerCapture(event.pointerId);
+    }
+  }
+
+  private applyMarqueeOffset(): void {
+    const track = this.marqueeTrack?.nativeElement;
+    if (!track) return;
+    const halfWidth = track.scrollWidth / 2;
+    if (halfWidth > 0) {
+      while (this.offsetX <= -halfWidth) {
+        this.offsetX += halfWidth;
+        this.dragStartOffset += halfWidth;
+      }
+      while (this.offsetX > 0) {
+        this.offsetX -= halfWidth;
+        this.dragStartOffset -= halfWidth;
+      }
+    }
+    track.style.transform = `translate3d(${this.offsetX}px, 0, 0)`;
   }
 
   protected alBuscar(valor: string): void {

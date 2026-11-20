@@ -52,9 +52,16 @@
     </div>
     <div class="mt-space-md pt-space-xs space-y-space-xs">
       <div>
-        <span class="font-price-display text-price-display text-on-tertiary-container block">
-          {{ producto().precio | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
-        </span>
+        <div class="flex items-baseline gap-2 flex-wrap">
+          <span class="font-price-display text-price-display text-on-tertiary-container">
+            {{ producto().precio | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
+          </span>
+          @if (precioUsd(); as usd) {
+            <span class="text-[11px] font-semibold text-emerald-700">
+              US$ {{ usd | number: '1.0-0' }}
+            </span>
+          }
+        </div>
         <span class="font-price-installment text-price-installment text-secondary">
           6 cuotas fijas de {{ cuota() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
         </span>
