@@ -12,34 +12,51 @@
     } @else {
       @if (errorMessage()) { <div class="notice error" role="alert" aria-live="assertive">{{ errorMessage() }}</div> }
       @if (successMessage()) {
-        <div class="success-toast" role="status" aria-live="polite">{{ successMessage() }} <a routerLink="/login">Iniciar sesión</a></div>
-      }
-
-      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-        <div class="field">
-          <label for="password">Nueva contraseña</label>
-          <input id="password" type="password" formControlName="password" autocomplete="new-password" aria-describedby="password-error">
-          @if (form.controls.password.touched && form.controls.password.hasError('required')) {
-            <small id="password-error" class="field-error">Ingresá una contraseña.</small>
-          } @else if (form.controls.password.touched && form.controls.password.hasError('passwordComplexity')) {
-            <small id="password-error" class="field-error">Usá al menos 8 caracteres, con mayúscula, minúscula, número y símbolo.</small>
-          }
+        <div
+          class="mb-4 flex items-start gap-2.5 rounded-md border border-[#b7e4c7] bg-[#eaf8ef] p-3.5 text-[13.5px] leading-snug text-[#21643b]"
+          role="status"
+          aria-live="polite"
+        >
+          <span class="material-symbols-outlined shrink-0 text-[20px]" aria-hidden="true">check_circle</span>
+          <div>
+            <strong class="block text-[14px] font-bold mb-0.5">¡Listo!</strong>
+            <span>{{ successMessage() }}</span>
+          </div>
         </div>
-        <div class="field">
-          <label for="confirmation">Confirmá la nueva contraseña</label>
-          <input id="confirmation" type="password" formControlName="confirmation" autocomplete="new-password" aria-describedby="confirmation-error">
-          @if (form.controls.confirmation.touched && form.controls.confirmation.hasError('required')) {
-            <small id="confirmation-error" class="field-error">Confirmá tu contraseña.</small>
-          } @else if (form.controls.confirmation.touched && form.hasError('passwordMismatch')) {
-            <small id="confirmation-error" class="field-error">Las contraseñas no coinciden.</small>
-          }
-        </div>
-        <button type="submit" [disabled]="isSubmitting() || !!successMessage()">
-          {{ isSubmitting() ? 'Actualizando contraseña...' : 'Guardar nueva contraseña' }}
+        <a
+          routerLink="/login"
+          class="mt-2 flex min-h-[2.9rem] w-full items-center justify-center gap-2 rounded-[5px] bg-[#db7953] text-sm font-bold text-white no-underline transition-colors hover:bg-[#c96641]"
+        >
+          Iniciar sesión
           <span aria-hidden="true">→</span>
-        </button>
-      </form>
-      <p class="auth-switch"><a routerLink="/login">Volver a iniciar sesión</a></p>
+        </a>
+      } @else {
+        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+          <div class="field">
+            <label for="password">Nueva contraseña</label>
+            <input id="password" type="password" formControlName="password" autocomplete="new-password" aria-describedby="password-error">
+            @if (form.controls.password.touched && form.controls.password.hasError('required')) {
+              <small id="password-error" class="field-error">Ingresá una contraseña.</small>
+            } @else if (form.controls.password.touched && form.controls.password.hasError('passwordComplexity')) {
+              <small id="password-error" class="field-error">Usá al menos 8 caracteres, con mayúscula, minúscula, número y símbolo.</small>
+            }
+          </div>
+          <div class="field">
+            <label for="confirmation">Confirmá la nueva contraseña</label>
+            <input id="confirmation" type="password" formControlName="confirmation" autocomplete="new-password" aria-describedby="confirmation-error">
+            @if (form.controls.confirmation.touched && form.controls.confirmation.hasError('required')) {
+              <small id="confirmation-error" class="field-error">Confirmá tu contraseña.</small>
+            } @else if (form.controls.confirmation.touched && form.hasError('passwordMismatch')) {
+              <small id="confirmation-error" class="field-error">Las contraseñas no coinciden.</small>
+            }
+          </div>
+          <button type="submit" [disabled]="isSubmitting()">
+            {{ isSubmitting() ? 'Actualizando contraseña...' : 'Guardar nueva contraseña' }}
+            <span aria-hidden="true">→</span>
+          </button>
+        </form>
+        <p class="auth-switch"><a routerLink="/login">Volver a iniciar sesión</a></p>
+      }
     }
   </section>
 </main>

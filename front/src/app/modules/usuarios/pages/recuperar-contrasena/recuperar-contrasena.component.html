@@ -7,7 +7,19 @@
     </div>
 
     @if (errorMessage()) { <div class="notice error" role="alert" aria-live="assertive">{{ errorMessage() }}</div> }
-    @if (successMessage()) { <div class="success-toast" role="status" aria-live="polite">{{ successMessage() }}</div> }
+    @if (successMessage()) {
+      <div
+        class="mb-4 flex items-start gap-2.5 rounded-md border border-[#b7e4c7] bg-[#eaf8ef] p-3.5 text-[13.5px] leading-snug text-[#21643b]"
+        role="status"
+        aria-live="polite"
+      >
+        <span class="material-symbols-outlined shrink-0 text-[20px]" aria-hidden="true">mark_email_read</span>
+        <div>
+          <strong class="block text-[14px] font-bold mb-0.5">¡Correo enviado!</strong>
+          <span>{{ successMessage() }} Revisá tu bandeja de entrada o carpeta de spam.</span>
+        </div>
+      </div>
+    }
 
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
       <div class="field">

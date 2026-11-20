@@ -4,6 +4,7 @@ import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validatio
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { finalize, timeout } from 'rxjs';
 import { UsuariosService } from '../../../../api/services/usuarios/usuarios.service';
+import { ToastService } from '../../../../shared/toast.service';
 
 const passwordComplexity: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = String(control.value ?? '');
@@ -21,6 +22,7 @@ const passwordComplexity: ValidatorFn = (control: AbstractControl): ValidationEr
 })
 export class RestablecerContrasenaComponent {
   private readonly usersApi = inject(UsuariosService);
+  private readonly toast = inject(ToastService);
   protected readonly token = inject(ActivatedRoute).snapshot.queryParamMap.get('token') ?? '';
   protected readonly form = new FormGroup({
     password: new FormControl('', { nonNullable: true, validators: [Validators.required, passwordComplexity] }),
@@ -51,7 +53,10 @@ export class RestablecerContrasenaComponent {
       timeout({ first: 20000 }),
       finalize(() => this.isSubmitting.set(false)),
     ).subscribe({
-      next: (response) => this.successMessage.set(response.message),
+      next: (response) => {
+        this.successMessage.set(response.message);
+        this.toast.showSuccess(response.message);
+      },
       error: (error: unknown) => {
         const timedOut = error instanceof Error && error.name === 'TimeoutError';
         const httpError = error instanceof HttpErrorResponse ? error : null;

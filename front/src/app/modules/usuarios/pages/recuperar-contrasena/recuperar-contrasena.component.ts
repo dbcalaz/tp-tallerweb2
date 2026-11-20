@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterLink } from '@angular/router';
 import { finalize, timeout } from 'rxjs';
 import { UsuariosService } from '../../../../api/services/usuarios/usuarios.service';
+import { ToastService } from '../../../../shared/toast.service';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
@@ -13,6 +14,7 @@ import { UsuariosService } from '../../../../api/services/usuarios/usuarios.serv
 })
 export class RecuperarContrasenaComponent {
   private readonly usersApi = inject(UsuariosService);
+  private readonly toast = inject(ToastService);
   protected readonly form = new FormGroup({
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
   });
@@ -33,7 +35,11 @@ export class RecuperarContrasenaComponent {
       timeout({ first: 20000 }),
       finalize(() => this.isSubmitting.set(false)),
     ).subscribe({
-      next: (response) => this.successMessage.set(response.message),
+      next: (response) => {
+        const msg = response.message || 'Correo enviado. Revisá tu bandeja de entrada o carpeta de spam.';
+        this.successMessage.set(msg);
+        this.toast.showSuccess('¡Correo de recuperación enviado!');
+      },
       error: (error: unknown) => {
         const timedOut = error instanceof Error && error.name === 'TimeoutError';
         const httpError = error instanceof HttpErrorResponse ? error : null;
