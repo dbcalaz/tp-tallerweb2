@@ -52,6 +52,13 @@ export class CarritoService {
 
   readonly cuotas = computed(() => Math.round(this.subtotal() / 6));
 
+  private readonly deliveryDataKey = 'checkout_delivery_data';
+  private readonly ultimaCompraKey = 'checkout_ultima_compra';
+  private readonly ultimoPagoMetaKey = 'checkout_ultimo_pago_meta';
+  readonly deliveryData = signal<Record<string, string> | null>(this.readDeliveryData());
+  readonly ultimaCompra = signal<any | null>(this.readUltimaCompra());
+  readonly ultimoPagoMeta = signal<{ installments: number; paymentMethodId: string; payerEmail: string } | null>(this.readUltimoPagoMeta());
+
   constructor() {
     try {
       localStorage.removeItem(this.legacyStorageKey);
@@ -239,21 +246,97 @@ export class CarritoService {
     }
   }
 
-  checkout(direccionEnvio?: string): Observable<CheckoutResponseDto> {
+  checkout(direccionEnvio?: string, paymentData?: {
+    token: string;
+    paymentMethodId: string;
+    issuerId?: string | number;
+    installments?: number;
+    payerEmail: string;
+    identificationType?: string;
+    identificationNumber: string;
+  }): Observable<CheckoutResponseDto> {
     const user = this.authSession.currentUser();
     if (!user?.id) {
       throw new Error('Debes iniciar sesión para finalizar la compra.');
     }
 
-    const body = new CheckoutRequestDto(direccionEnvio);
+    const body = new CheckoutRequestDto(
+      direccionEnvio,
+      paymentData?.token,
+      paymentData?.paymentMethodId,
+      paymentData?.issuerId,
+      paymentData?.installments,
+      paymentData?.payerEmail,
+      paymentData?.identificationType,
+      paymentData?.identificationNumber,
+    );
     return this.http
       .post<CheckoutResponseDto>(`${environment.API_URL}/carrito/${user.id}/checkout`, body)
       .pipe(
-        tap(() => {
+        tap((res) => {
           this.items.set([]);
+          this.deliveryData.set(null);
+          this.ultimaCompra.set(res.compra);
+          const meta = {
+            installments: Number(paymentData?.installments) || 1,
+            paymentMethodId: paymentData?.paymentMethodId || '',
+            payerEmail: paymentData?.payerEmail || '',
+          };
+          this.ultimoPagoMeta.set(meta);
+          try {
+            sessionStorage.removeItem(this.deliveryDataKey);
+            sessionStorage.setItem(this.ultimaCompraKey, JSON.stringify(res.compra));
+            sessionStorage.setItem(this.ultimoPagoMetaKey, JSON.stringify(meta));
+          } catch {}
           this.toastService.showSuccess('¡Tu compra se realizó con éxito!');
         }),
       );
+  }
+
+  setDeliveryData(data: Record<string, string>): void {
+    this.deliveryData.set(data);
+    try {
+      sessionStorage.setItem(this.deliveryDataKey, JSON.stringify(data));
+    } catch {}
+  }
+
+  private readDeliveryData(): Record<string, string> | null {
+    try {
+      const raw = sessionStorage.getItem(this.deliveryDataKey);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return typeof parsed === 'object' && parsed !== null ? (parsed as Record<string, string>) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private readUltimaCompra(): any | null {
+    try {
+      const raw = sessionStorage.getItem(this.ultimaCompraKey);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+
+  private readUltimoPagoMeta(): { installments: number; paymentMethodId: string; payerEmail: string } | null {
+    try {
+      const raw = sessionStorage.getItem(this.ultimoPagoMetaKey);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (typeof parsed === 'object' && parsed !== null) {
+        return {
+          installments: Number(parsed.installments) || 1,
+          paymentMethodId: parsed.paymentMethodId || '',
+          payerEmail: parsed.payerEmail || '',
+        };
+      }
+      return null;
+    } catch {
+      return null;
+    }
   }
 
   private syncBackendAdd(userId: string | number, productoId: number, cantidad: number): void {

@@ -1,0 +1,410 @@
+<div class="max-w-[1360px] mx-auto px-margin-desktop py-space-xl w-full">
+  <!-- Top Bar: Navigation link & Stepper -->
+  <div class="mb-space-xl flex flex-col md:flex-row md:items-center justify-between gap-space-lg">
+    <a
+      routerLink="/catalogo"
+      class="inline-flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"
+    >
+      <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+      <span>Volver al carrito</span>
+    </a>
+
+    <!-- Checkout Stepper -->
+    <div class="flex items-center gap-space-md sm:gap-space-lg">
+      <div class="flex items-center gap-space-sm">
+        <div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-[12px] font-bold shadow-sm">
+          1
+        </div>
+        <span class="font-title-md text-title-md text-primary font-semibold">1. Datos de entrega</span>
+      </div>
+      <div class="w-12 sm:w-16 h-0.5 bg-on-tertiary-container"></div>
+      <div class="flex items-center gap-space-sm opacity-60">
+        <div class="w-7 h-7 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-headline-sm text-[12px] font-medium">
+          2
+        </div>
+        <span class="font-body-md text-body-md text-on-surface-variant font-medium">2. Pago y confirmación</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main 2-Column Checkout Layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
+    <!-- LEFT COLUMN: Checkout Form (7 of 12 cols, ~60-65%) -->
+    <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-space-lg">
+      <!-- Section A: Información Personal -->
+      <section class="bg-surface-container-lowest p-space-lg sm:p-space-xl rounded-xl shadow-sm">
+        <div class="flex items-center justify-between gap-space-md mb-space-sm pb-space-sm">
+          <div class="flex items-center gap-space-sm">
+            <span class="material-symbols-outlined text-primary-container text-[22px]">badge</span>
+            <div>
+              <h2 class="font-headline-sm text-headline-sm text-primary tracking-tight">Información personal</h2>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">Comprobante de compra, facturación A/B y notificaciones del despacho</p>
+            </div>
+          </div>
+          <span class="hidden sm:inline-block font-label-xs text-label-xs uppercase tracking-wider text-on-primary-container px-space-xs py-1 rounded bg-surface-container-low font-semibold">Paso 1.1</span>
+        </div>
+
+        <form [formGroup]="form" class="grid grid-cols-1 sm:grid-cols-2 gap-x-gutter-desktop gap-y-space-md mt-space-md">
+          <!-- Nombre -->
+          <div class="flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-nombre">
+              Nombre <span class="text-on-tertiary-container">*</span>
+            </label>
+            <input
+              id="checkout-nombre"
+              formControlName="nombre"
+              class="h-[38px] px-space-sm bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
+              placeholder="Ej. Belén"
+              type="text"
+            />
+            @if (form.get('nombre')?.invalid && form.get('nombre')?.touched) {
+              <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
+            }
+          </div>
+
+          <!-- Apellido -->
+          <div class="flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-apellido">
+              Apellido <span class="text-on-tertiary-container">*</span>
+            </label>
+            <input
+              id="checkout-apellido"
+              formControlName="apellido"
+              class="h-[38px] px-space-sm bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
+              placeholder="Ej. Rossi"
+              type="text"
+            />
+            @if (form.get('apellido')?.invalid && form.get('apellido')?.touched) {
+              <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
+            }
+          </div>
+
+          <!-- DNI / CUIT -->
+          <div class="flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-dni">
+              DNI o CUIT <span class="text-on-tertiary-container">*</span>
+            </label>
+            <input
+              id="checkout-dni"
+              formControlName="dni"
+              class="h-[38px] px-space-sm bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
+              placeholder="Ej. 34.567.890"
+              type="text"
+            />
+            <span class="font-body-sm text-[11px] text-on-surface-variant">Requerido para emisión de factura fiscal legal</span>
+            @if (form.get('dni')?.invalid && form.get('dni')?.touched) {
+              <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
+            }
+          </div>
+
+          <!-- Teléfono -->
+          <div class="flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-tel">
+              Teléfono / Móvil <span class="text-on-tertiary-container">*</span>
+            </label>
+            <input
+              id="checkout-tel"
+              formControlName="telefono"
+              class="h-[38px] px-space-sm bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
+              placeholder="+54 9 11 4567-8901"
+              type="tel"
+            />
+            <span class="font-body-sm text-[11px] text-on-surface-variant">Para coordinación de entrega por mensajería</span>
+            @if (form.get('telefono')?.invalid && form.get('telefono')?.touched) {
+              <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
+            }
+          </div>
+
+          <!-- Correo Electrónico (Full Width) -->
+          <div class="sm:col-span-2 flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-email">
+              Correo electrónico <span class="text-on-tertiary-container">*</span>
+            </label>
+            <div class="relative flex items-center">
+              <input
+                id="checkout-email"
+                formControlName="email"
+                class="w-full h-[38px] pl-space-sm pr-9 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
+                placeholder="belen.rossi@empresa.com.ar"
+                type="email"
+              />
+              <span class="material-symbols-outlined absolute right-space-sm text-[18px] text-secondary">mail</span>
+            </div>
+            <p class="font-body-sm text-[11px] text-on-surface-variant flex items-center gap-1 mt-0.5">
+              <span class="material-symbols-outlined text-[14px] text-primary">verified</span>
+              Se enviará el enlace de seguimiento en tiempo real y la factura electrónica.
+            </p>
+            @if (form.get('email')?.invalid && form.get('email')?.touched) {
+              <span class="font-body-sm text-[11px] text-error">Email inválido</span>
+            }
+          </div>
+        </form>
+      </section>
+
+      <!-- Section B: Dirección de entrega -->
+      <section class="bg-surface-container-lowest p-space-lg sm:p-space-xl rounded-xl shadow-sm">
+        <div class="flex items-center justify-between gap-space-md mb-space-sm pb-space-sm">
+          <div class="flex items-center gap-space-sm">
+            <span class="material-symbols-outlined text-primary-container text-[22px]">pin_drop</span>
+            <div>
+              <h2 class="font-headline-sm text-headline-sm text-primary tracking-tight">Dirección de entrega</h2>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">Indica el domicilio exacto donde recibirás los equipos</p>
+            </div>
+          </div>
+          <span class="hidden sm:inline-block font-label-xs text-label-xs uppercase tracking-wider text-on-primary-container px-space-xs py-1 rounded bg-surface-container-low font-semibold">Paso 1.2</span>
+        </div>
+
+        <form [formGroup]="form" class="grid grid-cols-1 sm:grid-cols-6 gap-x-gutter-desktop gap-y-space-md mt-space-md">
+          <!-- Provincia -->
+          <div class="sm:col-span-3 flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-provincia">
+              Provincia <span class="text-on-tertiary-container">*</span>
+            </label>
+            <div class="relative flex items-center">
+              <select
+                id="checkout-provincia"
+                formControlName="provincia"
+                class="w-full h-[38px] px-space-sm bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface focus:outline-none appearance-none cursor-pointer pr-8"
+              >
+                <option value="CABA">Ciudad Autónoma de Buenos Aires (CABA)</option>
+                <option value="BA">Buenos Aires (GBA / Interior)</option>
+                <option value="CBA">Córdoba</option>
+                <option value="SF">Santa Fe</option>
+                <option value="MZA">Mendoza</option>
+                <option value="TUC">Tucumán</option>
+                <option value="OTR">Otra provincia...</option>
+              </select>
+              <span class="material-symbols-outlined pointer-events-none absolute right-2 text-on-surface-variant text-[20px]">expand_more</span>
+            </div>
+          </div>
+
+          <!-- Localidad / Barrio -->
+          <div class="sm:col-span-3 flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-localidad">
+              Localidad / Barrio <span class="text-on-tertiary-container">*</span>
+            </label>
+            <input
+              id="checkout-localidad"
+              formControlName="localidad"
+              class="h-[38px] px-space-sm bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
+              placeholder="Ej. Palermo"
+              type="text"
+            />
+            @if (form.get('localidad')?.invalid && form.get('localidad')?.touched) {
+              <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
+            }
+          </div>
+
+          <!-- Calle -->
+          <div class="sm:col-span-3 flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-calle">
+              Calle <span class="text-on-tertiary-container">*</span>
+            </label>
+            <input
+              id="checkout-calle"
+              formControlName="calle"
+              class="h-[38px] px-space-sm bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
+              placeholder="Ej. Av. Santa Fe"
+              type="text"
+            />
+            @if (form.get('calle')?.invalid && form.get('calle')?.touched) {
+              <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
+            }
+          </div>
+
+          <!-- Altura / Número -->
+          <div class="sm:col-span-1 flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-altura">
+              Altura <span class="text-on-tertiary-container">*</span>
+            </label>
+            <input
+              id="checkout-altura"
+              formControlName="altura"
+              class="h-[38px] px-space-sm bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
+              placeholder="3420"
+              type="text"
+            />
+            @if (form.get('altura')?.invalid && form.get('altura')?.touched) {
+              <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
+            }
+          </div>
+
+          <!-- Piso (Opcional) -->
+          <div class="sm:col-span-1 flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-piso">
+              Piso <span class="font-normal text-on-surface-variant">(Opc.)</span>
+            </label>
+            <input
+              id="checkout-piso"
+              formControlName="piso"
+              class="h-[38px] px-space-sm bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
+              placeholder="Ej. 6"
+              type="text"
+            />
+          </div>
+
+          <!-- Departamento (Opcional) -->
+          <div class="sm:col-span-1 flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-depto">
+              Depto <span class="font-normal text-on-surface-variant">(Opc.)</span>
+            </label>
+            <input
+              id="checkout-depto"
+              formControlName="depto"
+              class="h-[38px] px-space-sm bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
+              placeholder="Ej. B"
+              type="text"
+            />
+          </div>
+
+          <!-- Código Postal -->
+          <div class="sm:col-span-2 flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-cp">
+              Código Postal <span class="text-on-tertiary-container">*</span>
+            </label>
+            <input
+              id="checkout-cp"
+              formControlName="codigoPostal"
+              class="h-[38px] px-space-sm bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
+              placeholder="Ej. C1425"
+              type="text"
+            />
+            @if (form.get('codigoPostal')?.invalid && form.get('codigoPostal')?.touched) {
+              <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
+            }
+          </div>
+
+          <!-- Modalidad de Despacho Seleccionada -->
+          <div class="sm:col-span-4 flex items-center bg-surface-container-low rounded-lg p-space-sm gap-space-sm self-end h-[38px]">
+            <span class="material-symbols-outlined text-[18px] text-on-tertiary-container">local_shipping</span>
+            <div class="flex items-center justify-between w-full">
+              <span class="font-body-sm text-body-sm text-on-surface font-medium">Austral Direct Express (24-48 hs hábiles)</span>
+              <span class="font-label-xs text-label-xs text-primary font-bold bg-surface-container-high px-1.5 py-0.5 rounded">Bonificado</span>
+            </div>
+          </div>
+
+          <!-- Referencias Adicionales (Textarea) -->
+          <div class="sm:col-span-6 flex flex-col gap-space-xs">
+            <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-refs">
+              Indicaciones para la entrega <span class="font-normal text-on-surface-variant">(Opcional)</span>
+            </label>
+            <textarea
+              id="checkout-refs"
+              formControlName="indicaciones"
+              class="p-space-sm bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)] resize-none"
+              placeholder="Ej. Timbre 6B, portón negro entre calles Scalabrini Ortiz y Malabia. Dejar en recepción de conserjería si no responde."
+              rows="3"
+            ></textarea>
+          </div>
+        </form>
+      </section>
+
+      <!-- CTA & Actions Footer -->
+      <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-space-md py-space-sm">
+        <a
+          routerLink="/catalogo"
+          class="w-full sm:w-auto px-space-lg py-2.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md text-center hover:bg-surface-container-high transition-colors"
+        >
+          Volver al carrito
+        </a>
+        <button
+          (click)="continuarAlPago()"
+          [disabled]="enviando()"
+          class="w-full sm:w-auto px-space-xl py-3 rounded-lg bg-on-tertiary-container text-on-primary font-title-md text-title-md font-bold tracking-tight shadow-md hover:bg-tertiary-container transition-all flex items-center justify-center gap-space-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          type="button"
+        >
+          @if (enviando()) {
+            <span class="material-symbols-outlined text-[20px] animate-spin">refresh</span>
+            <span>Procesando...</span>
+          } @else {
+            <span>Continuar al pago</span>
+            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+          }
+        </button>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Order Summary Aside (5 of 12 cols, ~35-40%) -->
+    <aside class="lg:col-span-5 xl:col-span-4 sticky top-[100px] flex flex-col gap-space-md">
+      <!-- Summary Box -->
+      <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
+        <div class="flex items-center justify-between pb-space-sm mb-space-md">
+          <h3 class="font-headline-sm text-headline-sm text-primary tracking-tight">Resumen preliminar</h3>
+          <span class="font-label-xs text-label-xs bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded font-semibold">
+            {{ totalItems() }} {{ totalItems() === 1 ? 'producto' : 'productos' }}
+          </span>
+        </div>
+
+        <!-- Product Items -->
+        @for (item of items(); track item.productoId) {
+          <div class="flex gap-space-md pb-space-md mb-space-md">
+            <div class="w-16 h-16 rounded-lg bg-surface-container-low p-1.5 shrink-0 flex items-center justify-center overflow-hidden">
+              <img
+                [src]="item.producto.imagenUrl"
+                [alt]="item.producto.nombre"
+                class="w-full h-full object-contain"
+              />
+            </div>
+            <div class="flex-1 min-w-0">
+              <h4 class="font-title-md text-title-md text-on-surface font-semibold leading-snug truncate">
+                {{ item.producto.nombre }}
+              </h4>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">{{ item.producto.marca }} • {{ item.producto.tipo }}</p>
+              <div class="flex items-center justify-between mt-1">
+                <span class="font-label-xs text-label-xs text-on-surface-variant font-medium">Cant: {{ item.cantidad }}</span>
+                <span class="font-headline-sm text-[15px] font-bold text-primary">
+                  {{ (item.producto.precio * item.cantidad) | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Calculation Breakdowns -->
+        <div class="flex flex-col gap-space-xs pt-space-xs">
+          <div class="flex justify-between items-center font-body-md text-body-md text-on-surface-variant">
+            <span>Subtotal productos</span>
+            <span class="font-semibold text-on-surface">{{ subtotal() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}</span>
+          </div>
+          <div class="flex justify-between items-center font-body-md text-body-md">
+            <span class="text-on-surface-variant">Costo de entrega</span>
+            <span class="text-on-primary-fixed-variant font-semibold flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">check_circle</span>
+              Bonificado (Express)
+            </span>
+          </div>
+          <div class="flex justify-between items-center font-body-md text-body-md text-on-surface-variant">
+            <span>Seguro de transporte</span>
+            <span class="text-on-surface font-semibold">Incluido</span>
+          </div>
+          <div class="flex justify-between items-center pt-space-xs border-t border-outline-variant mt-space-xs">
+            <span class="font-headline-sm text-headline-sm text-primary font-semibold">Total a abonar</span>
+            <span class="font-headline-sm text-[22px] font-bold text-on-tertiary-container">
+              {{ subtotal() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
+            </span>
+          </div>
+          <p class="font-body-sm text-[11px] text-on-surface-variant text-right mt-1">
+            Hasta 6 cuotas fijas en el siguiente paso
+          </p>
+        </div>
+      </div>
+
+      <!-- Trust Badge -->
+      <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center gap-space-sm">
+        <span class="material-symbols-outlined text-[20px] text-primary">verified_user</span>
+        <div>
+          <p class="font-body-sm text-body-sm text-on-surface font-semibold">Compra 100% Protegida</p>
+          <p class="font-body-sm text-[11px] text-on-surface-variant">Transacciones seguras con encriptación SSL y garantía oficial en todos los productos.</p>
+        </div>
+      </div>
+
+      <!-- Support Link -->
+      <div class="text-center">
+        <a href="#" class="font-body-sm text-body-sm text-on-tertiary-container hover:underline flex items-center justify-center gap-1">
+          <span class="material-symbols-outlined text-[14px]">support_agent</span>
+          ¿Dudas con tu entrega?
+        </a>
+      </div>
+    </aside>
+  </div>
+</div>

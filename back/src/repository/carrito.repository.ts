@@ -1,4 +1,5 @@
 import { prisma } from "../prisma.config.js";
+import { BadRequestError } from "../errors/http.error.js";
 import { PRODUCTO_VISIBLE } from "./producto-visible.js"
 
 const CARRITO_INCLUDE = {
@@ -101,6 +102,23 @@ export class CarritoRepository {
         items: Array<{ productoId: number; cantidad: number; precioUnitario: unknown }>;
     }) {
         return prisma.$transaction(async (tx) => {
+            for (const item of params.items) {
+                const result = await tx.producto.updateMany({
+                    where: { id: item.productoId, stock: { gte: item.cantidad } },
+                    data: { stock: { decrement: item.cantidad } },
+                });
+
+                if (result.count === 0) {
+                    const producto = await tx.producto.findUnique({
+                        where: { id: item.productoId },
+                        select: { nombre: true },
+                    });
+                    throw new BadRequestError(
+                        `Stock insuficiente para "${producto?.nombre ?? `producto ${item.productoId}`}".`,
+                    );
+                }
+            }
+
             const nuevaCompra = await tx.compra.create({
                 data: {
                     userId: params.userId,

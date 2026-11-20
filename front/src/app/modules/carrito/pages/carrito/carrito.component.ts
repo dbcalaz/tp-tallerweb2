@@ -1,6 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthSessionService } from '../../../../api/services/auth/auth-session.service';
 import { CarritoService } from '../../../../api/services/carrito/carrito.service';
@@ -18,9 +17,6 @@ export class CarritoComponent {
   readonly authSession = inject(AuthSessionService);
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
-  private readonly destroyRef = inject(DestroyRef);
-
-  readonly procesandoCompra = signal(false);
 
   // Getter de compatibilidad con llamados directos
   get isOpen() {
@@ -63,21 +59,7 @@ export class CarritoComponent {
       return;
     }
 
-    this.procesandoCompra.set(true);
-    this.carritoService
-      .checkout()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-      next: () => {
-        this.procesandoCompra.set(false);
-        this.closeCart();
-        void this.router.navigateByUrl('/perfil');
-      },
-      error: (err) => {
-        this.procesandoCompra.set(false);
-        const msg = err?.error?.message || 'Hubo un error al procesar tu compra.';
-        this.toast.showSuccess(msg);
-      }
-    });
+    this.closeCart();
+    void this.router.navigateByUrl('/checkout/entrega');
   }
 }

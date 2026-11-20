@@ -1,0 +1,402 @@
+<div class="w-full max-w-[1240px] mx-auto px-margin md:px-margin-desktop py-space-md md:py-space-lg">
+  <!-- Breadcrumb & Workflow Tracker -->
+  <div class="flex flex-col gap-space-sm mb-space-lg">
+    <nav class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
+      <a routerLink="/catalogo" class="hover:text-primary transition-colors">Inicio</a>
+      <span class="opacity-40">/</span>
+      <a routerLink="/catalogo" class="hover:text-primary transition-colors">Carrito</a>
+      <span class="opacity-40">/</span>
+      <a routerLink="/checkout/entrega" class="hover:text-primary transition-colors">Entrega</a>
+      <span class="opacity-40">/</span>
+      <span class="text-primary font-semibold">Pago y Confirmación</span>
+    </nav>
+
+    <!-- Visual Stepper Strip -->
+    <div class="bg-surface-container-lowest rounded-xl p-space-sm md:p-space-md shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-md">
+      <!-- Step 1 (Completed) -->
+      <a routerLink="/checkout/entrega" class="group flex items-center gap-space-sm w-full sm:w-auto">
+        <div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-xs text-label-xs shrink-0 shadow-sm">
+          <span class="material-symbols-outlined text-[16px]">check</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-space-xs">
+            <span class="font-title-md text-title-md text-primary font-medium group-hover:underline">1. Datos de entrega</span>
+            <span class="font-label-xs text-label-xs text-on-surface-variant font-normal">(Completado)</span>
+          </div>
+          @if (deliveryData(); as d) {
+            <span class="font-body-sm text-body-sm text-on-surface-variant">
+              {{ d['calle'] }} {{ d['altura'] }}, {{ d['localidad'] }}, {{ d['provincia'] }}
+            </span>
+          }
+        </div>
+      </a>
+
+      <!-- Stepper Separator (Desktop) -->
+      <div class="hidden sm:flex flex-1 mx-space-lg h-0.5 bg-surface-container-highest relative overflow-hidden">
+        <div class="absolute inset-0 bg-primary-container w-full"></div>
+      </div>
+
+      <!-- Step 2 (Active) -->
+      <div class="flex items-center gap-space-sm w-full sm:w-auto">
+        <div class="w-7 h-7 rounded-full bg-on-tertiary-container text-on-primary flex items-center justify-center font-label-xs text-label-xs font-bold shrink-0 shadow-sm ring-2 ring-on-tertiary-container/20">
+          2
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-space-xs">
+            <span class="font-title-md text-title-md text-primary font-semibold">2. Pago y resumen de compra</span>
+            <span class="font-label-xs text-label-xs uppercase tracking-wider text-on-tertiary-container bg-tertiary-fixed px-1.5 py-0.5 rounded font-bold">Activo</span>
+          </div>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">Transacción encriptada TLS 1.3</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Two-Column Layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
+    <!-- LEFT COLUMN: Payment Methods (~62% = 7 cols) -->
+    <section class="lg:col-span-7 flex flex-col gap-space-md">
+      <!-- Header Section -->
+      <div class="bg-surface-container-lowest p-space-md md:p-space-lg rounded-xl shadow-sm flex flex-col gap-space-xs">
+        <div class="flex items-center justify-between flex-wrap gap-space-xs">
+          <h1 class="font-headline-md text-headline-md text-primary flex items-center gap-space-xs">
+            <span class="material-symbols-outlined text-primary text-[26px]">credit_card</span>
+            Método de pago
+          </h1>
+          <div class="flex items-center gap-space-xs px-2.5 py-1 bg-surface-container-low rounded-lg text-on-surface-variant font-label-xs text-label-xs">
+            <span class="material-symbols-outlined text-[15px] text-primary">lock</span>
+            <span>Checkout seguro 256-bit</span>
+          </div>
+        </div>
+        <p class="font-body-md text-body-md text-on-surface-variant">
+          Seleccioná cómo deseás abonar tu compra. Todas las transacciones son procesadas bajo normativas PCI-DSS de máxima seguridad financiera.
+        </p>
+      </div>
+
+      <!-- Payment Form -->
+      <form [formGroup]="form" class="flex flex-col gap-space-sm">
+        <!-- Credit Card Option -->
+        <div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden transition-all duration-200">
+          <div class="p-space-md md:p-space-lg">
+            <div class="flex items-start justify-between gap-space-sm">
+              <div class="flex items-center gap-space-sm">
+                <input type="radio" checked class="w-4 h-4 text-primary bg-surface-container focus:ring-0 cursor-pointer" />
+                <div>
+                  <span class="font-title-md text-title-md text-primary font-semibold block">Tarjeta de crédito</span>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant">Visa, Mastercard, Cabal o American Express</span>
+                </div>
+              </div>
+              <span class="font-label-xs text-label-xs uppercase px-2 py-1 rounded bg-secondary-container text-on-secondary-container font-bold tracking-wider shrink-0">
+                Hasta 6 cuotas fijas
+              </span>
+            </div>
+
+            <!-- Brand Logos Strip -->
+            <div class="flex items-center gap-space-xs mt-space-sm pl-7">
+              <span class="px-2 py-0.5 rounded bg-surface-container-high font-label-xs text-label-xs font-bold text-on-surface">VISA</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container-high font-label-xs text-label-xs font-bold text-on-surface">MASTERCARD</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container-high font-label-xs text-label-xs font-bold text-on-surface">AMEX</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container-high font-label-xs text-label-xs font-bold text-on-surface">CABAL</span>
+            </div>
+          </div>
+
+          <!-- Credit Card Form Fields -->
+          <div class="px-space-md md:px-space-lg pb-space-lg pt-space-xs flex flex-col gap-space-md bg-surface-container-low">
+            <div class="h-px bg-surface-container-high w-full"></div>
+
+            <!-- Card Number -->
+            <div class="flex flex-col gap-1">
+              <label class="font-label-md text-label-md text-on-surface flex items-center justify-between" for="cardNumber">
+                <span>Número de tarjeta</span>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Débito y crédito nacional</span>
+              </label>
+              <div class="relative flex items-center">
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant absolute left-3 pointer-events-none">payment</span>
+                <input
+                  id="cardNumber"
+                  formControlName="cardNumber"
+                  class="w-full h-10 pl-10 pr-3 rounded bg-surface-container-low font-body-md text-body-md text-primary tracking-widest placeholder:text-on-surface-variant/60 focus:bg-surface-container-lowest focus:outline-none transition-colors"
+                  maxlength="24"
+                  placeholder="•••• •••• •••• 4018"
+                  type="text"
+                  (input)="onCardNumberChange($event.target.value)"
+                />
+                @if (cardBrand()) {
+                  <span class="absolute right-3 px-1.5 py-0.5 rounded bg-surface-container-high font-label-xs text-label-xs font-semibold text-primary uppercase">
+                    {{ cardBrand() }}
+                  </span>
+                }
+              </div>
+              @if (form.get('cardNumber')?.invalid && form.get('cardNumber')?.touched) {
+                <span class="font-body-sm text-[11px] text-error">Número de tarjeta inválido</span>
+              }
+            </div>
+
+            <!-- Holder Name -->
+            <div class="flex flex-col gap-1">
+              <label class="font-label-md text-label-md text-on-surface" for="cardholderName">Nombre y apellido del titular</label>
+              <input
+                id="cardholderName"
+                formControlName="cardholderName"
+                class="w-full h-10 px-3 rounded bg-surface-container-low font-body-md text-body-md text-primary uppercase placeholder:text-on-surface-variant/60 focus:bg-surface-container-lowest focus:outline-none transition-colors"
+                placeholder="TAL CUAL FIGURA EN EL PLÁSTICO"
+                type="text"
+              />
+              @if (form.get('cardholderName')?.invalid && form.get('cardholderName')?.touched) {
+                <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
+              }
+            </div>
+
+            <!-- Expiry & CVV -->
+            <div class="grid grid-cols-2 gap-space-md">
+              <div class="flex flex-col gap-1">
+                <label class="font-label-md text-label-md text-on-surface" for="cardExpirationMonth">Vencimiento (MM/AA)</label>
+                <div class="flex gap-2">
+                  <input
+                    id="cardExpirationMonth"
+                    formControlName="cardExpirationMonth"
+                    class="w-full h-10 px-3 rounded bg-surface-container-low font-body-md text-body-md text-primary placeholder:text-on-surface-variant/60 focus:bg-surface-container-lowest focus:outline-none transition-colors"
+                    maxlength="2"
+                    placeholder="MM"
+                    type="text"
+                  />
+                  <input
+                    id="cardExpirationYear"
+                    formControlName="cardExpirationYear"
+                    class="w-full h-10 px-3 rounded bg-surface-container-low font-body-md text-body-md text-primary placeholder:text-on-surface-variant/60 focus:bg-surface-container-lowest focus:outline-none transition-colors"
+                    maxlength="2"
+                    placeholder="AA"
+                    type="text"
+                  />
+                </div>
+                @if ((form.get('cardExpirationMonth')?.invalid || form.get('cardExpirationYear')?.invalid) && (form.get('cardExpirationMonth')?.touched || form.get('cardExpirationYear')?.touched)) {
+                  <span class="font-body-sm text-[11px] text-error">Vencimiento inválido</span>
+                }
+              </div>
+              <div class="flex flex-col gap-1">
+                <div class="flex items-center justify-between">
+                  <label class="font-label-md text-label-md text-on-surface" for="securityCode">Código CVV</label>
+                  <span class="material-symbols-outlined text-[16px] text-on-surface-variant cursor-help" title="3 o 4 dígitos al dorso del plástico">info</span>
+                </div>
+                <input
+                  id="securityCode"
+                  formControlName="securityCode"
+                  class="w-full h-10 px-3 rounded bg-surface-container-low font-body-md text-body-md text-primary placeholder:text-on-surface-variant/60 focus:bg-surface-container-lowest focus:outline-none transition-colors"
+                  maxlength="4"
+                  placeholder="3 dígitos"
+                  type="password"
+                />
+                @if (form.get('securityCode')?.invalid && form.get('securityCode')?.touched) {
+                  <span class="font-body-sm text-[11px] text-error">CVV inválido</span>
+                }
+              </div>
+            </div>
+
+            <!-- DNI del titular -->
+            <div class="flex flex-col gap-1">
+              <label class="font-label-md text-label-md text-on-surface" for="identificationNumber">DNI del titular</label>
+              <input
+                id="identificationNumber"
+                formControlName="identificationNumber"
+                class="w-full h-10 px-3 rounded bg-surface-container-low font-body-md text-body-md text-primary placeholder:text-on-surface-variant/60 focus:bg-surface-container-lowest focus:outline-none transition-colors"
+                placeholder="DNI sin puntos"
+                type="text"
+              />
+              @if (form.get('identificationNumber')?.invalid && form.get('identificationNumber')?.touched) {
+                <span class="font-body-sm text-[11px] text-error">DNI inválido</span>
+              }
+            </div>
+
+            <!-- Installments Selector -->
+            <div class="flex flex-col gap-1 pt-space-xs">
+              <label class="font-label-md text-label-md text-on-surface flex items-center justify-between" for="installments">
+                <span>Plan de cuotas fijas</span>
+                <span class="font-label-xs text-label-xs text-on-tertiary-container font-bold">Cuotas fijas garantizadas</span>
+              </label>
+              <div class="relative">
+                <select
+                  id="installments"
+                  formControlName="installments"
+                  class="w-full h-11 px-3 pr-8 rounded bg-surface-container-low font-body-md text-body-md text-primary appearance-none focus:bg-surface-container-lowest focus:outline-none cursor-pointer font-medium"
+                >
+                  <option [value]="6">6 cuotas fijas de {{ (subtotal() / 6) | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }} ARS (Recomendado)</option>
+                  <option [value]="3">3 cuotas fijas de {{ (subtotal() / 3) | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }} ARS</option>
+                  <option [value]="1">1 pago contado de {{ subtotal() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }} ARS</option>
+                </select>
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">expand_more</span>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">CFT: 0,00% • Tasa Nominal Anual: 0,00% para planes de 3 y 6 pagos.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Other payment options (disabled for now) -->
+        <div class="bg-surface-container-lowest rounded-xl shadow-sm opacity-50 cursor-not-allowed">
+          <div class="p-space-md md:p-space-lg">
+            <div class="flex items-start justify-between gap-space-sm">
+              <div class="flex items-center gap-space-sm">
+                <input type="radio" disabled class="w-4 h-4 text-primary bg-surface-container focus:ring-0 cursor-not-allowed" />
+                <div>
+                  <span class="font-title-md text-title-md text-primary font-semibold block">Tarjeta de débito</span>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant">Próximamente</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-xl shadow-sm opacity-50 cursor-not-allowed">
+          <div class="p-space-md md:p-space-lg">
+            <div class="flex items-start justify-between gap-space-sm">
+              <div class="flex items-center gap-space-sm">
+                <input type="radio" disabled class="w-4 h-4 text-primary bg-surface-container focus:ring-0 cursor-not-allowed" />
+                <div>
+                  <span class="font-title-md text-title-md text-primary font-semibold block">Transferencia bancaria directa</span>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant">Próximamente</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Return to delivery step action -->
+        <div class="pt-space-xs flex items-center justify-between">
+          <a
+            routerLink="/checkout/entrega"
+            class="inline-flex items-center gap-space-xs font-label-md text-label-md text-on-surface hover:text-primary transition-colors py-2"
+          >
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span>Modificar datos de entrega</span>
+          </a>
+          <span class="font-label-xs text-label-xs text-on-surface-variant flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">shield</span>
+            Servidor seguro Austral
+          </span>
+        </div>
+      </form>
+    </section>
+
+    <!-- RIGHT COLUMN: Purchase Summary (~38% = 5 cols) -->
+    <aside class="lg:col-span-5 lg:sticky lg:top-24 flex flex-col gap-space-md">
+      <!-- Summary Box -->
+      <div class="bg-surface-container-lowest rounded-xl shadow-md p-space-md md:p-space-lg flex flex-col gap-space-md">
+        <!-- Summary Header -->
+        <div class="flex items-center justify-between pb-space-sm border-b border-surface-container-high">
+          <div class="flex items-center gap-space-xs">
+            <h2 class="font-headline-sm text-headline-sm text-primary">Resumen de compra</h2>
+            <span class="font-label-xs text-label-xs px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-semibold">
+              {{ totalItems() }} {{ totalItems() === 1 ? 'item' : 'items' }}
+            </span>
+          </div>
+          <a routerLink="/catalogo" class="font-label-xs text-label-xs text-on-surface-variant hover:text-primary transition-colors">Editar carrito</a>
+        </div>
+
+        <!-- Itemised Product List -->
+        <div class="flex flex-col gap-space-md">
+          @for (item of items(); track item.productoId) {
+            <div class="flex items-start gap-space-sm group">
+              <div class="w-16 h-16 rounded bg-surface-container-low p-1.5 shrink-0 overflow-hidden flex items-center justify-center">
+                <img [src]="item.producto.imagenUrl" [alt]="item.producto.nombre" class="w-full h-full object-contain mix-blend-multiply" />
+              </div>
+              <div class="flex-1 min-w-0 flex flex-col justify-between h-full">
+                <div class="flex flex-col">
+                  <h3 class="font-title-md text-title-md text-primary font-semibold line-clamp-1 truncate" [title]="item.producto.nombre">
+                    {{ item.producto.nombre }}
+                  </h3>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant">{{ item.producto.marca }} • {{ item.producto.tipo }}</span>
+                </div>
+                <div class="flex items-center justify-between mt-1">
+                  <span class="font-label-xs text-label-xs text-on-surface-variant bg-surface-container-low px-1.5 py-0.5 rounded">Cant: {{ item.cantidad }}</span>
+                  <span class="font-title-md text-title-md text-primary font-semibold">
+                    {{ (item.producto.precio * item.cantidad) | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="h-px bg-surface-container-high w-full"></div>
+          }
+        </div>
+
+        <!-- Totals -->
+        <div class="flex flex-col gap-space-xs pt-space-xs">
+          <div class="flex justify-between items-center font-body-md text-body-md text-on-surface-variant">
+            <span>Subtotal productos ({{ totalItems() }})</span>
+            <span class="font-semibold text-on-surface">{{ subtotal() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}</span>
+          </div>
+          <div class="flex justify-between items-center font-body-md text-body-md">
+            <span class="text-on-surface-variant">Envío a domicilio</span>
+            <span class="text-on-primary-fixed-variant font-semibold flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">check_circle</span>
+              BONIFICADO $0
+            </span>
+          </div>
+          <div class="flex justify-between items-center font-body-md text-body-md text-on-surface-variant">
+            <span>Descuento de catálogo</span>
+            <span class="text-on-surface font-semibold">-$0</span>
+          </div>
+          <div class="flex justify-between items-center pt-space-xs border-t border-surface-container-high mt-space-xs">
+            <span class="font-headline-sm text-headline-sm text-primary font-semibold">Total a pagar</span>
+            <span class="font-headline-sm text-[22px] font-bold text-on-tertiary-container">
+              {{ subtotal() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
+            </span>
+          </div>
+          <p class="font-body-sm text-[11px] text-on-surface-variant text-right mt-1">
+            @if (installments() === 1) {
+              <span>1 pago de {{ subtotal() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }} ARS</span>
+            } @else {
+              <span>o en {{ installments() }} cuotas fijas de {{ cuotasSeleccionadas() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }} ARS</span>
+            }
+          </p>
+        </div>
+
+        <!-- Confirm Button -->
+        <button
+          (click)="confirmarCompra()"
+          [disabled]="isProcessing() || !mpReady()"
+          class="w-full py-3 px-4 rounded-lg bg-on-tertiary-container text-on-primary font-title-md text-title-md font-bold tracking-tight shadow-md hover:bg-tertiary-container transition-all flex items-center justify-center gap-space-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          type="button"
+        >
+          @if (isProcessing()) {
+            <span class="material-symbols-outlined text-[20px] animate-spin">refresh</span>
+            <span>Procesando pago...</span>
+          } @else {
+            <span>Confirmar compra</span>
+            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+          }
+        </button>
+
+        <!-- Terms -->
+        <p class="font-body-sm text-[11px] text-on-surface-variant text-center">
+          Al confirmar la orden, aceptas los Términos del Servicio y políticas de garantía de Austral Tecnología S.R.L.
+        </p>
+      </div>
+
+      <!-- Trust Badges -->
+      <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col gap-space-sm">
+        <div class="flex items-center gap-space-sm">
+          <span class="material-symbols-outlined text-[20px] text-primary">local_shipping</span>
+          <div>
+            <p class="font-body-sm text-body-sm text-on-surface font-semibold">Envío asegurado en tránsito</p>
+            <p class="font-body-sm text-[11px] text-on-surface-variant">Seguro de transporte incluido en todos los envíos.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-space-sm">
+          <span class="material-symbols-outlined text-[20px] text-primary">verified_user</span>
+          <div>
+            <p class="font-body-sm text-body-sm text-on-surface font-semibold">12 Meses Garantía Oficial</p>
+            <p class="font-body-sm text-[11px] text-on-surface-variant">Garantía de fábrica directa con todos los productos.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- AFIP Invoice -->
+      <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center gap-space-sm">
+        <span class="material-symbols-outlined text-[20px] text-primary">receipt_long</span>
+        <div>
+          <p class="font-body-sm text-body-sm text-on-surface font-semibold">Facturación Automática AFIP</p>
+          <p class="font-body-sm text-[11px] text-on-surface-variant">Recibirás tu factura electrónica en el email registrado al finalizar la compra.</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

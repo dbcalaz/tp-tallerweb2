@@ -18,6 +18,10 @@ export const routes: Routes = [
   },
   {
     path: '',
+    loadChildren: () => import('./modules/checkout/checkout.routes').then((m) => m.checkoutRoutes),
+  },
+  {
+    path: '',
     loadChildren: () => import('./modules/admin/admin.routes').then((m) => m.adminRoutes),
   },
   { path: '**', redirectTo: 'login' },

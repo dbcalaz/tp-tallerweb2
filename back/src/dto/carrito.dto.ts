@@ -36,15 +36,44 @@ export class ActualizarCantidadDto {
 }
 
 export class CheckoutDto {
-    constructor(public readonly direccionEnvio?: string) {}
+    constructor(
+        public readonly direccionEnvio?: string,
+        public readonly token?: string,
+        public readonly paymentMethodId?: string,
+        public readonly issuerId?: string | number,
+        public readonly installments?: number,
+        public readonly payerEmail?: string,
+        public readonly identificationType?: string,
+        public readonly identificationNumber?: string,
+    ) {}
 
     static fromBody(body: unknown): CheckoutDto {
         const raw = (body ?? {}) as Record<string, unknown>;
         const direccionEnvio = typeof raw.direccionEnvio === "string" && raw.direccionEnvio.trim()
             ? raw.direccionEnvio.trim()
             : undefined;
+        const token = typeof raw.token === "string" ? raw.token : undefined;
+        const paymentMethodId = typeof raw.paymentMethodId === "string" ? raw.paymentMethodId : undefined;
+        const issuerId = raw.issuerId !== undefined && raw.issuerId !== null ? (raw.issuerId as string | number) : undefined;
+        const installments = raw.installments !== undefined ? Number(raw.installments) : 1;
+        const payerEmail = typeof raw.payerEmail === "string" ? raw.payerEmail : undefined;
+        const identificationType = typeof raw.identificationType === "string" ? raw.identificationType : undefined;
+        const identificationNumber = typeof raw.identificationNumber === "string" ? raw.identificationNumber : undefined;
 
-        return new CheckoutDto(direccionEnvio);
+        if (!token || !paymentMethodId || !payerEmail || !identificationNumber) {
+            throw new BadRequestError("Faltan datos de pago. Se requiere token, paymentMethodId, payerEmail e identificationNumber.");
+        }
+
+        return new CheckoutDto(
+            direccionEnvio,
+            token,
+            paymentMethodId,
+            issuerId,
+            installments,
+            payerEmail,
+            identificationType,
+            identificationNumber,
+        );
     }
 }
 

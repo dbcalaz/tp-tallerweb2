@@ -181,16 +181,10 @@
             <button
               type="button"
               (click)="procederAlPago()"
-              [disabled]="procesandoCompra()"
-              class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-[#4f1800] hover:bg-[#2d0a00] disabled:opacity-50 text-white text-[13px] font-semibold rounded-lg transition-colors shadow-sm cursor-pointer"
+              class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-[#4f1800] hover:bg-[#2d0a00] text-white text-[13px] font-semibold rounded-lg transition-colors shadow-sm cursor-pointer"
             >
-              @if (procesandoCompra()) {
-                <span class="material-symbols-outlined text-[16px] animate-spin">refresh</span>
-                <span>Procesando compra...</span>
-              } @else {
-                <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
-                <span>{{ authSession.isAuthenticated() ? 'Finalizar compra' : 'Iniciar sesión para comprar' }}</span>
-              }
+              <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+              <span>{{ authSession.isAuthenticated() ? 'Finalizar compra' : 'Iniciar sesión para comprar' }}</span>
             </button>
             <button
               type="button"

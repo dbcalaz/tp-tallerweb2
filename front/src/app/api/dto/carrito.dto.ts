@@ -10,7 +10,16 @@ export class ActualizarCantidadCarritoDto {
 }
 
 export class CheckoutRequestDto {
-  constructor(public readonly direccionEnvio?: string) {}
+  constructor(
+    public readonly direccionEnvio?: string,
+    public readonly token?: string,
+    public readonly paymentMethodId?: string,
+    public readonly issuerId?: string | number,
+    public readonly installments?: number,
+    public readonly payerEmail?: string,
+    public readonly identificationType?: string,
+    public readonly identificationNumber?: string,
+  ) {}
 }
 
 export class CarritoProductoDto {
