@@ -47,10 +47,13 @@
                   [attr.aria-label]="favoritosService.esFavorito(productoActual.id) ? 'Quitar de favoritos' : 'Guardar en favoritos'"
                   [attr.aria-pressed]="favoritosService.esFavorito(productoActual.id)"
                   (click)="alternarFavorito()"
-                  class="w-9 h-9 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-primary flex items-center justify-center shadow-sm transition-transform active:scale-95"
+                  class="group/fav w-9 h-9 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-red-600 hover:bg-red-50 hover:scale-110 hover:shadow-md flex items-center justify-center shadow-sm transition-all duration-200 active:scale-90 cursor-pointer"
                   type="button"
                 >
-                  <span class="material-symbols-outlined text-[18px]" [class.text-red-600]="favoritosService.esFavorito(productoActual.id)">{{ favoritosService.esFavorito(productoActual.id) ? 'favorite' : 'favorite_border' }}</span>
+                  <span
+                    class="material-symbols-outlined text-[18px] transition-transform duration-200 group-hover/fav:scale-110"
+                    [class.text-red-600]="favoritosService.esFavorito(productoActual.id)"
+                  >{{ favoritosService.esFavorito(productoActual.id) ? 'favorite' : 'favorite_border' }}</span>
                 </button>
               </div>
               @if (productoActual.imagenUrl) {

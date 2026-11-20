@@ -25,6 +25,10 @@ export class HomeComponent implements OnInit {
   protected readonly cargandoCategorias = signal(true);
   protected readonly cargandoProductos = signal(true);
 
+  protected readonly categoriasPrincipales = computed(() =>
+    this.categorias().slice(0, 6),
+  );
+
   protected readonly destacados = computed(() =>
     this.productos()
       .filter((p) => p.stock > 0)

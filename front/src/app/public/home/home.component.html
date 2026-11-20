@@ -1,6 +1,6 @@
 <main class="w-full min-h-[calc(100vh-280px)] bg-surface">
   <div class="flex flex-col w-full">
-    <div class="max-w-[1360px] w-full mx-auto px-margin-desktop py-space-md space-y-space-lg">
+    <div class="max-w-[1360px] w-full mx-auto px-margin-desktop py-space-xl space-y-12">
       <section
         class="relative overflow-hidden rounded-xl bg-primary-container text-on-primary shadow-sm"
       >
@@ -70,7 +70,7 @@
           </div>
         </div>
       </section>
-      <section class="space-y-space-sm">
+      <section class="space-y-space-md">
         <div class="flex items-end justify-between">
           <div>
             <span class="font-label-xs text-label-xs uppercase tracking-wider text-secondary">
@@ -97,13 +97,13 @@
               </div>
             }
           } @else {
-            @for (categoria of categorias(); track categoria.id) {
+            @for (categoria of categoriasPrincipales(); track categoria.id) {
               <app-card-categoria [categoria]="categoria" />
             }
           }
         </div>
       </section>
-      <section class="space-y-space-sm">
+      <section class="space-y-space-md">
         <div class="flex items-center justify-between">
           <div class="space-y-0.5">
             <div class="flex items-center gap-space-xs">

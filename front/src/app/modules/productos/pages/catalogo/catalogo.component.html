@@ -162,8 +162,8 @@
         </section>
       </div>
       @if (mobileFiltersOpen()) {
-        <div class="fixed inset-0 z-[100] bg-black/45 lg:hidden" (click)="cerrarFiltrosMobile()">
-          <section role="dialog" aria-modal="true" aria-label="Filtros del catálogo" class="h-full w-[min(90vw,24rem)] overflow-y-auto bg-surface p-4 shadow-2xl" (click)="$event.stopPropagation()">
+        <div class="fixed inset-0 z-[100] bg-black/45 cursor-pointer lg:hidden" (click)="cerrarFiltrosMobile()">
+          <section role="dialog" aria-modal="true" aria-label="Filtros del catálogo" class="h-full w-[min(90vw,24rem)] overflow-y-auto bg-surface p-4 shadow-2xl cursor-default" (click)="$event.stopPropagation()">
             <div class="mb-4 flex items-center justify-between border-b border-surface-container pb-3">
               <div>
                 <h2 class="font-headline-sm text-title-md text-primary">Filtrar productos</h2>

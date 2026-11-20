@@ -6,13 +6,15 @@
       <span class="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant">
         Filtros Activos
       </span>
-      <button
-        class="font-label-xs text-label-xs text-on-tertiary-container hover:underline font-bold"
-        type="button"
-        (click)="limpiar.emit()"
-      >
-        Limpiar filtros
-      </button>
+      @if (cantidadActivos() > 0) {
+        <button
+          class="text-[11px] leading-none font-semibold text-on-tertiary-container hover:text-tertiary-container hover:underline cursor-pointer transition-colors"
+          type="button"
+          (click)="limpiar.emit()"
+        >
+          Limpiar filtros
+        </button>
+      }
     </div>
     <div class="pt-1">
       <span class="font-body-sm text-body-sm text-on-surface-variant">

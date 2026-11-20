@@ -1,4 +1,4 @@
-  <article  [routerLink]="['/productos', producto().id]" class="bg-surface-container-lowest rounded-lg p-space-md flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow group">
+  <article [routerLink]="['/productos', producto().id]" class="cursor-pointer bg-surface-container-lowest rounded-lg p-space-md flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow group">
     <div class="space-y-space-sm">
       <div class="flex items-center justify-between">
         <span class="font-label-xs text-label-xs px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-bold tracking-wider uppercase">
@@ -30,9 +30,12 @@
           (click)="alternarFavorito($event)"
           [attr.aria-label]="favoritosService.esFavorito(producto().id) ? 'Quitar de favoritos' : 'Guardar en favoritos'"
           [attr.aria-pressed]="favoritosService.esFavorito(producto().id)"
-          class="absolute right-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-600 shadow hover:text-red-600"
+          class="group/fav absolute right-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-600 shadow cursor-pointer transition-all duration-200 hover:scale-110 hover:bg-red-50 hover:text-red-600 hover:shadow-md active:scale-90"
         >
-          <span class="material-symbols-outlined" [class.text-red-600]="favoritosService.esFavorito(producto().id)">{{ favoritosService.esFavorito(producto().id) ? 'favorite' : 'favorite_border' }}</span>
+          <span
+            class="material-symbols-outlined transition-transform duration-200 group-hover/fav:scale-110"
+            [class.text-red-600]="favoritosService.esFavorito(producto().id)"
+          >{{ favoritosService.esFavorito(producto().id) ? 'favorite' : 'favorite_border' }}</span>
         </button>
       </div>
       <div>
