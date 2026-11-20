@@ -1,9 +1,13 @@
 <div class="fixed top-0 left-0 right-0 z-50 bg-[#ffffff] shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
   <div
-    class="marquee-wrapper overflow-hidden bg-[#202b36] py-1.5 text-[10px] font-bold uppercase tracking-wider text-white"
+    class="marquee-wrapper overflow-hidden bg-[#202b36] py-1.5 text-[10px] font-bold uppercase tracking-wider text-white select-none cursor-grab active:cursor-grabbing touch-pan-y"
     aria-label="Beneficios y promociones de Tecnova"
+    (pointerdown)="onMarqueePointerDown($event)"
+    (pointermove)="onMarqueePointerMove($event)"
+    (pointerup)="onMarqueePointerUp($event)"
+    (pointercancel)="onMarqueePointerUp($event)"
   >
-    <div class="marquee-track items-center">
+    <div #marqueeTrack class="marquee-track items-center">
       <div class="flex shrink-0 items-center gap-6 pr-6">
         @for (item of anuncios(); track item.text) {
           <span class="flex items-center gap-1.5 whitespace-nowrap">
@@ -28,8 +32,8 @@
     <div class="mx-auto flex h-full max-w-[1360px] items-center justify-between gap-2 px-3 sm:gap-5 sm:px-6">
       <div class="flex shrink-0 items-center gap-3">
         <a routerLink="/productos" class="flex items-center gap-2">
-          <span class="text-lg font-semibold tracking-tight text-[#0b1721] sm:text-xl">
-            Tecnova
+          <span class="font-['Space_Grotesk'] text-[22px] font-bold tracking-tight text-[#0b1721] sm:text-[26px]">
+            tecnova<span class="text-[#d77851]">.</span>
           </span>
         </a>
       </div>

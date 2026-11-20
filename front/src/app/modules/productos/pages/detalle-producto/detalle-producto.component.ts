@@ -23,26 +23,42 @@ export class DetalleProductoComponent {
   protected readonly favoritosService = inject(FavoritosService);
 
   readonly cantidad = signal(1);
+  readonly almacenamiento = signal<'1TB' | '2TB'>('1TB');
 
   readonly producto = toSignal(
     this.route.paramMap.pipe(
       switchMap((params) => {
         this.cantidad.set(1);
+        this.almacenamiento.set('1TB');
         const id = Number(params.get('id'));
         return this.productosService.getProductoPorId(id);
       }),
     ),
   );
 
+  readonly extraAlmacenamiento = computed(() => (this.almacenamiento() === '2TB' ? 350000 : 0));
+
+  readonly precioFinal = computed(() => (this.producto()?.precio ?? 0) + this.extraAlmacenamiento());
+
   // Precio dividido en seis cuotas.
-  readonly cuota = computed(() => (this.producto()?.precio ?? 0) / 6);
+  readonly cuota = computed(() => this.precioFinal() / 6);
 
   // Precio con el descuento del 10% por transferencia.
-  readonly precioTransferencia = computed(() => (this.producto()?.precio ?? 0) * 0.9);
+  readonly precioTransferencia = computed(() => this.precioFinal() * 0.9);
 
   readonly precioUsd = computed(() => {
-    const precio = this.producto()?.precio;
-    return precio ? this.dolarService.convertirDesdeArs(precio) : null;
+    const precio = this.precioFinal();
+    return precio > 0 ? this.dolarService.convertirDesdeArs(precio) : null;
+  });
+
+  readonly especificaciones = computed<string[]>(() => {
+    const desc = this.producto()?.descripcion?.trim() ?? '';
+    if (!desc) return [];
+    const partes = desc
+      .split(/\s*[•|\n]\s*/)
+      .map((s) => s.trim().replace(/\.$/, ''))
+      .filter(Boolean);
+    return partes.length > 1 ? partes : [];
   });
 
   readonly cantidadEnCarrito = computed(() => {
@@ -90,10 +106,20 @@ export class DetalleProductoComponent {
     this.cantidad.update((c) => Math.max(1, c - 1));
   }
 
+  seleccionarAlmacenamiento(opcion: '1TB' | '2TB'): void {
+    this.almacenamiento.set(opcion);
+  }
+
   agregarAlCarrito(): void {
     const prod = this.producto();
     if (!prod || !this.puedeAgregar()) return;
-    this.carritoService.agregarProducto(prod, this.cantidad());
+    this.carritoService.agregarProducto(
+      {
+        ...prod,
+        precio: this.precioFinal(),
+      },
+      this.cantidad(),
+    );
   }
 
   alternarFavorito(): void {
