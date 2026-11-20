@@ -1,16 +1,17 @@
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { CarritoService } from '../../../../api/services/carrito/carrito.service';
+import { DolarService } from '../../../../api/services/dolar/dolar.service';
 import { ProductosService } from '../../../../api/services/productos/productos.service';
 import { FavoritosService } from '../../../../api/services/productos/favoritos.service';
 
 @Component({
   selector: 'app-detalle-producto',
   standalone: true,
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, DecimalPipe],
   templateUrl: './detalle-producto.component.html',
   styleUrl: './detalle-producto.component.css',
 })
@@ -18,6 +19,7 @@ export class DetalleProductoComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly productosService = inject(ProductosService);
   private readonly carritoService = inject(CarritoService);
+  private readonly dolarService = inject(DolarService);
   protected readonly favoritosService = inject(FavoritosService);
 
   readonly cantidad = signal(1);
@@ -37,6 +39,11 @@ export class DetalleProductoComponent {
 
   // Precio con el descuento del 10% por transferencia.
   readonly precioTransferencia = computed(() => (this.producto()?.precio ?? 0) * 0.9);
+
+  readonly precioUsd = computed(() => {
+    const precio = this.producto()?.precio;
+    return precio ? this.dolarService.convertirDesdeArs(precio) : null;
+  });
 
   readonly cantidadEnCarrito = computed(() => {
     const id = this.producto()?.id;
