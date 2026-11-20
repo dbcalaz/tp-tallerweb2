@@ -38,7 +38,7 @@ jobs:
         env:
           API_URL: ${{ vars.API_URL }}
         run: |
-          node -e "const fs = require('fs'); fs.writeFileSync('src/environments/environment.ts', 'export const environment = {\n  API_URL: ' + JSON.stringify(process.env.API_URL) + '\n};\n');"
+          node -e "const fs = require('fs'); const p = 'src/environments/environment.ts'; const content = fs.readFileSync(p, 'utf8').replace(/API_URL:\s*['\"][^'\"]*['\"]/, 'API_URL: ' + JSON.stringify(process.env.API_URL)); fs.writeFileSync(p, content);"
 
       - name: Build Angular app for GitHub Pages
         working-directory: front

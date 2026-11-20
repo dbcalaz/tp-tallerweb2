@@ -23,8 +23,9 @@ Con esta configuración, **un único Web Service de Render** compila y sirve tan
    - `DATABASE_URL`: URL del pooler de Neon (la de `back/.env`).
    - `DIRECT_URL`: URL directa de Neon (sin `-pooler`, para `prisma migrate deploy`).
    - `JWT_SECRET`: se autogenera con el Blueprint (o poné una clave segura).
+   - `MP_ACCESS_TOKEN`: Access Token de prueba/producción de Mercado Pago (del mismo par que `mpPublicKey` del front).
    - `NODE_ENV`: `production`
-   - *(Opcional, solo para emails de recuperación)*: `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`.
+   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`: credenciales SMTP (para envío de comprobantes de compra y recuperación de contraseña).
    *(No hace falta configurar `FRONTEND_URL` ni `API_URL`: Express usa `RENDER_EXTERNAL_URL` automáticamente y Angular usa `/api`).*
 5. Al finalizar el deploy, tu aplicación completa estará online en `https://<tu-servicio>.onrender.com`.
 
