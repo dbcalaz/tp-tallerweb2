@@ -87,7 +87,11 @@ export class UsuarioService {
         const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
         await this.usuarioRepository.replacePasswordResetToken(user.id, tokenHash, expiresAt);
 
-        const frontendUrl = (process.env.FRONTEND_URL || "http://localhost:4200").replace(/\/+$/, "");
+        const frontendUrl = (
+            process.env.FRONTEND_URL
+            || process.env.RENDER_EXTERNAL_URL
+            || "http://localhost:4200"
+        ).replace(/\/+$/, "");
         const resetUrl = `${frontendUrl}/restablecer-contrasena?token=${encodeURIComponent(token)}`;
         await this.emailService.enviarEnlaceRecuperacion(user.email, resetUrl);
     }

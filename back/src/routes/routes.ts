@@ -10,6 +10,9 @@ import favoritosRoutes from "./favoritos.routes.js";
 export class AppRoutes {
     static get routes(): Router {
         const router = Router();
+        router.get("/api/health", (_req, res) => {
+            res.status(200).json({ status: "ok" });
+        });
         router.use("/api/usuario", usersRoutes);
         router.use("/api/productos", productoRoutes);
         router.use("/api/favoritos", favoritosRoutes);
