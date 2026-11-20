@@ -35,7 +35,15 @@
     </div>
 
     @if (cargando()) {
-      <p class="text-sm text-tertiary py-10 text-center">Cargando catálogo...</p>
+      <div class="space-y-4 py-6">
+        <div class="flex items-center justify-center gap-2 text-sm text-tertiary">
+          <span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
+          <span>Cargando catálogo...</span>
+        </div>
+        @for (item of [1, 2, 3]; track item) {
+          <div class="h-20 rounded-lg bg-surface-container-low border border-surface-container-high/50 animate-pulse"></div>
+        }
+      </div>
     } @else if (error()) {
       <p class="text-sm text-error py-10 text-center">No se pudo cargar el catálogo. Intentá nuevamente.</p>
     } @else {

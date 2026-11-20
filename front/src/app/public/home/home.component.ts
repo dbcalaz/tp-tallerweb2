@@ -1,6 +1,7 @@
 import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
 import { CategoriasService } from '../../api/services/categorias/categoria.service';
 import { ProductosService } from '../../api/services/productos/productos.service';
 import { CardCategoriaComponent } from '../../modules/productos/components/card-categoria/card-categoria.component';
@@ -21,6 +22,8 @@ export class HomeComponent implements OnInit {
 
   protected readonly categorias = signal<Categoria[]>([]);
   protected readonly productos = signal<Producto[]>([]);
+  protected readonly cargandoCategorias = signal(true);
+  protected readonly cargandoProductos = signal(true);
 
   protected readonly destacados = computed(() =>
     this.productos()
@@ -32,7 +35,10 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.categoriasService
       .listCategorias()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.cargandoCategorias.set(false)),
+      )
       .subscribe({
         next: (res) => this.categorias.set(res),
         error: (err) => console.error('Error al listar categorías', err),
@@ -40,7 +46,10 @@ export class HomeComponent implements OnInit {
 
     this.productosService
       .listProductos()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.cargandoProductos.set(false)),
+      )
       .subscribe({
         next: (res) => this.productos.set(res),
         error: (err) => console.error('Error al listar productos', err),

@@ -139,6 +139,18 @@
                     {{ error() }}
                   </td>
                 </tr>
+              } @else if (cargando() && !pagina()) {
+                @for (item of [1, 2, 3, 4, 5, 6]; track item) {
+                  <tr class="animate-pulse bg-surface-container-low">
+                    <td class="px-space-sm py-space-sm"><div class="w-12 h-12 rounded bg-surface-container-high"></div></td>
+                    <td class="px-space-md py-space-sm"><div class="h-4 w-48 rounded bg-surface-container-high"></div></td>
+                    <td class="px-space-md py-space-sm"><div class="h-4 w-24 rounded bg-surface-container-high"></div></td>
+                    <td class="px-space-md py-space-sm"><div class="h-4 w-20 rounded bg-surface-container-high"></div></td>
+                    <td class="px-space-md py-space-sm"><div class="h-4 w-20 ml-auto rounded bg-surface-container-high"></div></td>
+                    <td class="px-space-md py-space-sm"><div class="h-5 w-24 mx-auto rounded bg-surface-container-high"></div></td>
+                    <td class="px-space-md py-space-sm"><div class="h-8 w-28 ml-auto rounded bg-surface-container-high"></div></td>
+                  </tr>
+                }
               } @else if (pagina(); as datos) {
                 @for (p of datos.items; track p.id) {
                   <tr

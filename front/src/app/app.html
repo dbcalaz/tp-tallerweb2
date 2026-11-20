@@ -1,3 +1,13 @@
+@if (loading.isLoading()) {
+  <div
+    role="progressbar"
+    aria-label="Cargando contenido"
+    class="fixed top-0 left-0 right-0 z-[9999] h-[3px] overflow-hidden bg-[#d8e4f2]"
+  >
+    <div class="loading-bar-runner h-full w-2/5 bg-gradient-to-r from-[#0b1721] via-[#d77851] to-[#4f1800]"></div>
+  </div>
+}
+
 @if (authSession.isAdmin()) {
 } @else if (authSession.isAuthenticated()) {
   <app-navbar />
@@ -20,6 +30,8 @@
 <div class="app-content">
   <router-outlet />
 </div>
+
+<app-scroll-top />
 
 @if (authSession.isAuthenticated() && !authSession.isAdmin()) {
   <app-footer />

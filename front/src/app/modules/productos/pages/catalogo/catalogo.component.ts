@@ -188,6 +188,7 @@ export class CatalogoComponent {
 
   protected cambiarPagina(pagina: number): void {
     this.paginaActual.set(limitarPagina(pagina, this.paginasTotales()));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   protected cambiarOrden(valor: string): void {

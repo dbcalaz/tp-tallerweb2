@@ -89,8 +89,17 @@
           </a>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-space-sm">
-          @for (categoria of categorias(); track categoria.id) {
-            <app-card-categoria [categoria]="categoria" />
+          @if (cargandoCategorias()) {
+            @for (item of [1, 2, 3, 4, 5, 6]; track item) {
+              <div class="h-36 rounded-lg bg-surface-container animate-pulse p-4 flex flex-col justify-between">
+                <div class="w-16 h-16 mx-auto rounded-lg bg-surface-container-highest"></div>
+                <div class="h-3.5 w-3/4 mx-auto rounded bg-surface-container-highest"></div>
+              </div>
+            }
+          } @else {
+            @for (categoria of categorias(); track categoria.id) {
+              <app-card-categoria [categoria]="categoria" />
+            }
           }
         </div>
       </section>
@@ -109,8 +118,19 @@
           </div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-desktop">
-          @for (producto of destacados(); track producto.id) {
-            <app-card-producto [producto]="producto" />
+          @if (cargandoProductos()) {
+            @for (item of [1, 2, 3, 4]; track item) {
+              <div class="rounded-lg bg-surface-container-lowest p-4 shadow-sm animate-pulse space-y-3">
+                <div class="aspect-square w-full rounded bg-surface-container"></div>
+                <div class="h-4 w-3/4 rounded bg-surface-container"></div>
+                <div class="h-3 w-1/2 rounded bg-surface-container"></div>
+                <div class="h-6 w-2/3 rounded bg-surface-container-high"></div>
+              </div>
+            }
+          } @else {
+            @for (producto of destacados(); track producto.id) {
+              <app-card-producto [producto]="producto" />
+            }
           }
         </div>
       </section>

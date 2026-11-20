@@ -91,12 +91,24 @@
         />
         <section class="lg:col-span-9 flex flex-col gap-space-lg">
           <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-gutter-desktop">
-            @for (producto of productosPaginados(); track producto.id) {
-              <app-card-producto [producto]="producto" />
-            } @empty {
-              <p class="col-span-full text-on-surface-variant">
-                No hay productos en esta categoría.
-              </p>
+            @if (cargando()) {
+              @for (item of [1, 2, 3, 4, 5, 6, 7, 8]; track item) {
+                <div class="rounded-lg bg-surface-container-lowest p-4 shadow-sm animate-pulse space-y-3">
+                  <div class="aspect-square w-full rounded bg-surface-container"></div>
+                  <div class="h-4 w-4/5 rounded bg-surface-container"></div>
+                  <div class="h-3 w-1/2 rounded bg-surface-container"></div>
+                  <div class="h-6 w-2/3 rounded bg-surface-container-high"></div>
+                  <div class="h-9 w-full rounded bg-surface-container"></div>
+                </div>
+              }
+            } @else {
+              @for (producto of productosPaginados(); track producto.id) {
+                <app-card-producto [producto]="producto" />
+              } @empty {
+                <p class="col-span-full text-on-surface-variant">
+                  No hay productos en esta categoría.
+                </p>
+              }
             }
           </div>
           @if (paginasTotales() > 1) {

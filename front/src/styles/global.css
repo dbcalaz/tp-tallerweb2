@@ -248,3 +248,12 @@
 html, body { min-height: 100%; margin: 0; }
 body { color: #172033; font-family: Inter, "Segoe UI", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 button, input { font: inherit; }
+
+@keyframes loading-bar-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+.loading-bar-runner {
+  animation: loading-bar-slide 1.15s ease-in-out infinite;
+}

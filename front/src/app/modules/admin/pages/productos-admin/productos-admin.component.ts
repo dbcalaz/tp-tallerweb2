@@ -108,6 +108,7 @@ export class ProductosAdminComponent implements OnInit {
     const total = this.pagina()?.totalPaginas ?? 1;
     this.paginaActual.set(Math.min(Math.max(1, numero), total));
     this.cargar();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   protected cambiarFilas(filas: number): void {

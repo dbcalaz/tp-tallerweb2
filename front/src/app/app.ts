@@ -1,19 +1,20 @@
-
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthSessionService } from './api/services/auth/auth-session.service';
-import { ToastService } from './shared/toast.service';
-import { Navbar } from './public/navbar/navbar';
 import { FooterComponent } from './public/footer/footer.component';
+import { Navbar } from './public/navbar/navbar';
+import { LoadingService } from './shared/loading.service';
+import { ScrollTopComponent } from './shared/scroll-top/scroll-top.component';
+import { ToastService } from './shared/toast.service';
 
 @Component({
-  imports: [ RouterOutlet, Navbar, FooterComponent, RouterLink],
+  imports: [RouterOutlet, Navbar, FooterComponent, RouterLink, ScrollTopComponent],
   selector: 'app-root',
   styleUrl: '../styles/app.css',
   templateUrl: './app.html',
 })
 export class App {
-  private readonly router = inject(Router);
   protected readonly authSession = inject(AuthSessionService);
   protected readonly toast = inject(ToastService);
+  protected readonly loading = inject(LoadingService);
 }
