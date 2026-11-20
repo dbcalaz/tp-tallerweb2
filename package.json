@@ -8,15 +8,9 @@
     "dev": "node scripts/dev.mjs",
     "dev:front": "npm --prefix front start",
     "dev:back": "npm --prefix back run dev",
-    "db:generate": "npm --prefix back run db:generate",
-    "db:deploy": "npm --prefix back run db:deploy",
     "build:front": "npm --prefix front run build",
-    "build:back": "npm --prefix back run build"
-  },
-  "devDependencies": {
-    "@types/nodemailer": "^8.0.2"
-  },
-  "dependencies": {
-    "nodemailer": "^10.5.0"
+    "build:back": "npm --prefix back run build",
+    "build": "npm --prefix front ci && npm --prefix front run build && npm --prefix back ci && npm --prefix back run build && npm --prefix back run db:deploy",
+    "start": "npm --prefix back start"
   }
 }

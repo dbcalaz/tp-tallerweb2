@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import cors from "cors";
 import express, { type NextFunction, type Request, type Response } from "express";
 import { HttpError } from "./errors/http.error.js";
@@ -13,10 +15,32 @@ app.use("/api", (_req, res, next) => {
     res.setHeader("Cache-Control", "no-store");
     next();
 });
+const corsOrigin = process.env.CORS_ORIGIN
+    ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim())
+    : "*";
+
 app.use(express.json({ limit: "10mb" }));
-app.use(cors());
+app.use(cors({ origin: corsOrigin }));
 app.use(requestLogger);
 app.use(AppRoutes.routes);
+
+if (process.env.NODE_ENV === "production") {
+    const frontCandidates = [
+        path.resolve(import.meta.dirname, "../../front/dist/tp-tallerweb2/browser"),
+        path.resolve(import.meta.dirname, "../../../front/dist/tp-tallerweb2/browser"),
+    ];
+    const frontDistPath = frontCandidates.find((dir) => fs.existsSync(path.join(dir, "index.html")));
+
+    if (frontDistPath) {
+        app.use(express.static(frontDistPath));
+        app.use((req: Request, res: Response, next: NextFunction) => {
+            if (req.method !== "GET" || req.path.startsWith("/api")) {
+                return next();
+            }
+            return res.sendFile(path.join(frontDistPath, "index.html"));
+        });
+    }
+}
 
 app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
     if (err instanceof HttpError) {
