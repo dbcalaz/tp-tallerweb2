@@ -22,8 +22,16 @@
 }
 
 @if (toast.message()) {
-  <div class="success-toast" role="status" aria-live="polite">
-    {{ toast.message() }}
+  <div class="toast-shell">
+    <div
+      class="success-toast"
+      [class.success-toast--error]="toast.kind() === 'error'"
+      role="status"
+      aria-live="polite"
+      (click)="toast.dismiss()"
+    >
+      {{ toast.message() }}
+    </div>
   </div>
 }
 

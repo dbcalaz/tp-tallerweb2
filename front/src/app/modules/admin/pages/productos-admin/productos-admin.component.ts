@@ -173,7 +173,7 @@ export class ProductosAdminComponent implements OnInit {
           );
           this.cargar();
         },
-        error: () => this.toast.showSuccess('No se pudo actualizar el producto. Intentá nuevamente.'),
+        error: () => this.toast.showError('No se pudo actualizar el producto. Intentá nuevamente.'),
       });
   }
 }

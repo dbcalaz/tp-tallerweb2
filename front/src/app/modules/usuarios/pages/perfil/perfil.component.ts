@@ -84,7 +84,7 @@ export class PerfilComponent implements OnInit {
         error: (err) => {
           console.error('Error al cargar perfil:', err);
           this.cargando.set(false);
-          this.toast.showSuccess('No se pudo cargar el perfil.');
+          this.toast.showError('No se pudo cargar el perfil.');
         },
       });
   }
@@ -128,7 +128,7 @@ export class PerfilComponent implements OnInit {
         },
         error: () => {
           this.guardando.set(false);
-          this.toast.showSuccess('Error al actualizar los datos. Intentá nuevamente.');
+          this.toast.showError('Error al actualizar los datos. Intentá nuevamente.');
         },
       });
   }
