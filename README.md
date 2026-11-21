@@ -2,6 +2,10 @@
 
 Aplicación de comercio electrónico con frontend Angular y API Node.js/Express. El backend usa Prisma y PostgreSQL.
 
+## Demo en producción
+
+- **Sitio desplegado (Render + Neon):** <https://tp-tallerweb2.onrender.com/>
+
 ## Requisitos
 
 - Node.js 24 o compatible con Angular CLI 22.
