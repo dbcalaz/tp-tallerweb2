@@ -1,5 +1,4 @@
 <div class="max-w-[1360px] mx-auto px-margin-desktop py-space-xl w-full">
-  <!-- Top Bar: Navigation link & Stepper -->
   <div class="mb-space-xl flex flex-col md:flex-row md:items-center justify-between gap-space-lg">
     <a
       routerLink="/catalogo"
@@ -8,8 +7,6 @@
       <span class="material-symbols-outlined text-[18px]">arrow_back</span>
       <span>Volver al carrito</span>
     </a>
-
-    <!-- Checkout Stepper -->
     <div class="flex items-center gap-space-md sm:gap-space-lg">
       <div class="flex items-center gap-space-sm">
         <div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-[12px] font-bold shadow-sm">
@@ -26,12 +23,8 @@
       </div>
     </div>
   </div>
-
-  <!-- Main 2-Column Checkout Layout -->
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
-    <!-- LEFT COLUMN: Checkout Form (7 of 12 cols, ~60-65%) -->
     <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-space-lg">
-      <!-- Section A: Información Personal -->
       <section class="bg-surface-container-lowest p-space-lg sm:p-space-xl rounded-xl shadow-sm">
         <div class="flex items-center justify-between gap-space-md mb-space-sm pb-space-sm">
           <div class="flex items-center gap-space-sm">
@@ -45,7 +38,6 @@
         </div>
 
         <form [formGroup]="form" class="grid grid-cols-1 sm:grid-cols-2 gap-x-gutter-desktop gap-y-space-md mt-space-md">
-          <!-- Nombre -->
           <div class="flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-nombre">
               Nombre <span class="text-on-tertiary-container">*</span>
@@ -61,8 +53,6 @@
               <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
             }
           </div>
-
-          <!-- Apellido -->
           <div class="flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-apellido">
               Apellido <span class="text-on-tertiary-container">*</span>
@@ -78,8 +68,6 @@
               <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
             }
           </div>
-
-          <!-- DNI / CUIT -->
           <div class="flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-dni">
               DNI o CUIT <span class="text-on-tertiary-container">*</span>
@@ -96,8 +84,6 @@
               <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
             }
           </div>
-
-          <!-- Teléfono -->
           <div class="flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-tel">
               Teléfono / Móvil <span class="text-on-tertiary-container">*</span>
@@ -114,8 +100,6 @@
               <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
             }
           </div>
-
-          <!-- Correo Electrónico (Full Width) -->
           <div class="sm:col-span-2 flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-email">
               Correo electrónico <span class="text-on-tertiary-container">*</span>
@@ -140,8 +124,6 @@
           </div>
         </form>
       </section>
-
-      <!-- Section B: Dirección de entrega -->
       <section class="bg-surface-container-lowest p-space-lg sm:p-space-xl rounded-xl shadow-sm">
         <div class="flex items-center justify-between gap-space-md mb-space-sm pb-space-sm">
           <div class="flex items-center gap-space-sm">
@@ -153,9 +135,7 @@
           </div>
           <span class="hidden sm:inline-block font-label-xs text-label-xs uppercase tracking-wider text-on-primary-container px-space-xs py-1 rounded bg-surface-container-low font-semibold">Paso 1.2</span>
         </div>
-
         <form [formGroup]="form" class="grid grid-cols-1 sm:grid-cols-6 gap-x-gutter-desktop gap-y-space-md mt-space-md">
-          <!-- Provincia -->
           <div class="sm:col-span-3 flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-provincia">
               Provincia <span class="text-on-tertiary-container">*</span>
@@ -177,8 +157,6 @@
               <span class="material-symbols-outlined pointer-events-none absolute right-2 text-on-surface-variant text-[20px]">expand_more</span>
             </div>
           </div>
-
-          <!-- Localidad / Barrio -->
           <div class="sm:col-span-3 flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-localidad">
               Localidad / Barrio <span class="text-on-tertiary-container">*</span>
@@ -194,8 +172,6 @@
               <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
             }
           </div>
-
-          <!-- Calle -->
           <div class="sm:col-span-3 flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-calle">
               Calle <span class="text-on-tertiary-container">*</span>
@@ -211,8 +187,6 @@
               <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
             }
           </div>
-
-          <!-- Altura / Número -->
           <div class="sm:col-span-1 flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-altura">
               Altura <span class="text-on-tertiary-container">*</span>
@@ -228,8 +202,6 @@
               <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
             }
           </div>
-
-          <!-- Piso (Opcional) -->
           <div class="sm:col-span-1 flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-piso">
               Piso <span class="font-normal text-on-surface-variant">(Opc.)</span>
@@ -242,8 +214,6 @@
               type="text"
             />
           </div>
-
-          <!-- Departamento (Opcional) -->
           <div class="sm:col-span-1 flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-depto">
               Depto <span class="font-normal text-on-surface-variant">(Opc.)</span>
@@ -256,8 +226,6 @@
               type="text"
             />
           </div>
-
-          <!-- Código Postal -->
           <div class="sm:col-span-2 flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-cp">
               Código Postal <span class="text-on-tertiary-container">*</span>
@@ -273,17 +241,6 @@
               <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
             }
           </div>
-
-          <!-- Modalidad de Despacho Seleccionada -->
-          <div class="sm:col-span-4 flex items-center bg-surface-container-low rounded-lg p-space-sm gap-space-sm self-end h-[38px]">
-            <span class="material-symbols-outlined text-[18px] text-on-tertiary-container">local_shipping</span>
-            <div class="flex items-center justify-between w-full">
-              <span class="font-body-sm text-body-sm text-on-surface font-medium">Austral Direct Express (24-48 hs hábiles)</span>
-              <span class="font-label-xs text-label-xs text-primary font-bold bg-surface-container-high px-1.5 py-0.5 rounded">Bonificado</span>
-            </div>
-          </div>
-
-          <!-- Referencias Adicionales (Textarea) -->
           <div class="sm:col-span-6 flex flex-col gap-space-xs">
             <label class="font-label-md text-label-md text-on-surface font-semibold" for="checkout-refs">
               Indicaciones para la entrega <span class="font-normal text-on-surface-variant">(Opcional)</span>
@@ -298,8 +255,6 @@
           </div>
         </form>
       </section>
-
-      <!-- CTA & Actions Footer -->
       <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-space-md py-space-sm">
         <a
           routerLink="/catalogo"
@@ -396,14 +351,6 @@
           <p class="font-body-sm text-body-sm text-on-surface font-semibold">Compra 100% Protegida</p>
           <p class="font-body-sm text-[11px] text-on-surface-variant">Transacciones seguras con encriptación SSL y garantía oficial en todos los productos.</p>
         </div>
-      </div>
-
-      <!-- Support Link -->
-      <div class="text-center">
-        <a href="#" class="font-body-sm text-body-sm text-on-tertiary-container hover:underline flex items-center justify-center gap-1">
-          <span class="material-symbols-outlined text-[14px]">support_agent</span>
-          ¿Dudas con tu entrega?
-        </a>
       </div>
     </aside>
   </div>

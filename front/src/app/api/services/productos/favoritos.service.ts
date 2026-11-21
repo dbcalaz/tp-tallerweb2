@@ -44,7 +44,7 @@ export class FavoritosService {
         this.ids.set(next);
         this.toast.showSuccess(quitar ? 'Producto quitado de favoritos.' : 'Producto agregado a favoritos.');
       },
-      error: () => this.toast.showSuccess('No se pudo actualizar favoritos. Intentá nuevamente.'),
+      error: () => this.toast.showError('No se pudo actualizar favoritos. Intentá nuevamente.'),
     });
   }
 
@@ -55,7 +55,7 @@ export class FavoritosService {
         this.productos.set(productos);
         this.ids.set(new Set(productos.map((item) => item.id)));
       },
-      error: () => this.toast.showSuccess('No se pudieron cargar tus favoritos.'),
+      error: () => this.toast.showError('No se pudieron cargar tus favoritos.'),
     });
   }
 }

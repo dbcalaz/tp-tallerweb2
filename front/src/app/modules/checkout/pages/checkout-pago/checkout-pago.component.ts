@@ -99,7 +99,7 @@ export class CheckoutPagoComponent {
       return this.mp;
     } catch (err) {
       console.error('Error loading Mercado Pago SDK:', err);
-      this.toast.showSuccess('Error al cargar el procesador de pagos. Recargá la página.');
+      this.toast.showError('Error al cargar el procesador de pagos. Recargá la página.');
       throw err;
     }
   }
@@ -199,7 +199,7 @@ export class CheckoutPagoComponent {
       }
 
       if (!this.paymentMethodId()) {
-        this.toast.showSuccess('No se pudo identificar el método de pago. Verificá el número de tarjeta.');
+        this.toast.showError('No se pudo identificar el método de pago. Verificá el número de tarjeta.');
         return;
       }
 
@@ -240,7 +240,7 @@ export class CheckoutPagoComponent {
     } catch (err: any) {
       console.error('Error en checkout:', err);
       const msg = err?.error?.message || err?.message || 'Hubo un error al procesar el pago. Verificá los datos de la tarjeta.';
-      this.toast.showSuccess(msg);
+      this.toast.showError(msg);
     } finally {
       this.isProcessing.set(false);
     }

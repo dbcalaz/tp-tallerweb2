@@ -213,7 +213,7 @@ export class CarritoService {
           error: (err) => {
             console.error('Error al actualizar en backend:', err);
             const msg = err?.error?.message;
-            if (msg) this.toastService.showSuccess(msg);
+            if (msg) this.toastService.showError(msg);
           },
         });
     }

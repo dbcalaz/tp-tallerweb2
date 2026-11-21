@@ -1,12 +1,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { RegistroRequestDto } from '../../../../api/dto/usuario.dto';
-import { UsuariosService } from '../../../../api/services/usuarios/usuarios.service';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { finalize, timeout } from 'rxjs';
-import { Router } from '@angular/router';
+import { RegistroRequestDto } from '../../../../api/dto/usuario.dto';
 import { AuthSessionService } from '../../../../api/services/auth/auth-session.service';
+import { UsuariosService } from '../../../../api/services/usuarios/usuarios.service';
 import { ToastService } from '../../../../shared/toast.service';
 
 interface RegistrationError {
@@ -17,7 +24,7 @@ interface RegistrationError {
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-registro',
-  styleUrl: '../../../../../styles/signup.css',
+  // Se quitó styleUrl (signup.css): el estilo ahora es 100% Tailwind en el HTML.
   templateUrl: './registro.component.html',
 })
 export class RegistroComponent {
@@ -26,7 +33,9 @@ export class RegistroComponent {
   private readonly authSession = inject(AuthSessionService);
   private readonly toast = inject(ToastService);
 
-  private readonly passwordComplexity: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  private readonly passwordComplexity: ValidatorFn = (
+    control: AbstractControl,
+  ): ValidationErrors | null => {
     const value = String(control.value ?? '');
     if (!value) return null;
 
@@ -40,21 +49,35 @@ export class RegistroComponent {
     return meetsRequirements ? null : { passwordComplexity: true };
   };
 
-  protected readonly form = new FormGroup({
-    email: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.email],
-    }),
-    password: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.minLength(8), this.passwordComplexity],
-    }),
-    passwordConfirmation: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    apellido: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    direccion: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    termsAccepted: new FormControl(false, { nonNullable: true, validators: [Validators.requiredTrue] }),
-  }, { validators: (group) => group.get('password')?.value === group.get('passwordConfirmation')?.value ? null : { passwordMismatch: true } });
+  protected readonly form = new FormGroup(
+    {
+      email: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.email],
+      }),
+      password: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(8), this.passwordComplexity],
+      }),
+      passwordConfirmation: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      apellido: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      direccion: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      termsAccepted: new FormControl(false, {
+        nonNullable: true,
+        validators: [Validators.requiredTrue],
+      }),
+    },
+    {
+      validators: (group) =>
+        group.get('password')?.value === group.get('passwordConfirmation')?.value
+          ? null
+          : { passwordMismatch: true },
+    },
+  );
 
   protected readonly isSubmitting = signal(false);
   protected showPassword = false;
@@ -73,28 +96,33 @@ export class RegistroComponent {
 
     this.isSubmitting.set(true);
     const { email, password, nombre, apellido, direccion } = this.form.getRawValue();
-    this.usersApi.register(new RegistroRequestDto(email, password, nombre, apellido, direccion)).pipe(
-      timeout({ first: 10000 }),
-      finalize(() => this.isSubmitting.set(false)),
-    ).subscribe({
-      next: (response) => {
-        this.authSession.start(response.user, response.token);
-        this.form.reset();
-        this.toast.showSuccess('Te registraste correctamente.');
-        void this.router.navigateByUrl('/productos');
-      },
-      error: (error: unknown) => {
-        const timedOut = error instanceof Error && error.name === 'TimeoutError';
-        const httpError = error instanceof HttpErrorResponse ? error : null;
-        const response = httpError?.error as RegistrationError | null;
-        this.errorMessage.set(timedOut
-          ? 'El servidor tardó demasiado en responder. Verificá que esté iniciado e intentá nuevamente.'
-          : httpError?.status === 0
-            ? 'No se pudo conectar con el servidor. Verificá que esté iniciado e intentá nuevamente.'
-            : response?.message || 'No se pudo completar el registro. Intentá nuevamente.');
-        this.serverErrors.set(response?.fieldErrors || {});
-      },
-    });
+    this.usersApi
+      .register(new RegistroRequestDto(email, password, nombre, apellido, direccion))
+      .pipe(
+        timeout({ first: 10000 }),
+        finalize(() => this.isSubmitting.set(false)),
+      )
+      .subscribe({
+        next: (response) => {
+          this.authSession.start(response.user, response.token);
+          this.form.reset();
+          this.toast.showSuccess('Te registraste correctamente.');
+          void this.router.navigateByUrl('/productos');
+        },
+        error: (error: unknown) => {
+          const timedOut = error instanceof Error && error.name === 'TimeoutError';
+          const httpError = error instanceof HttpErrorResponse ? error : null;
+          const response = httpError?.error as RegistrationError | null;
+          this.errorMessage.set(
+            timedOut
+              ? 'El servidor tardó demasiado en responder. Verificá que esté iniciado e intentá nuevamente.'
+              : httpError?.status === 0
+                ? 'No se pudo conectar con el servidor. Verificá que esté iniciado e intentá nuevamente.'
+                : response?.message || 'No se pudo completar el registro. Intentá nuevamente.',
+          );
+          this.serverErrors.set(response?.fieldErrors || {});
+        },
+      });
   }
 
   protected clearServerError(field: string): void {
@@ -102,5 +130,4 @@ export class RegistroComponent {
     delete errors[field];
     this.serverErrors.set(errors);
   }
-
 }
