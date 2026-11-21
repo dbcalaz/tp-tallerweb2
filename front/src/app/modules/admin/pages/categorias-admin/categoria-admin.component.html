@@ -1,22 +1,19 @@
 <div class="admin-theme min-h-screen bg-surface text-on-surface font-body">
   <app-admin-header />
-
   <main class="w-full pt-20 px-4 md:px-6 pb-20 max-w-7xl mx-auto">
-
     <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
       <nav class="flex items-center gap-1.5 text-xs text-tertiary font-medium">
         <span>Administración</span>
         <span class="text-surface-container-highest">/</span>
         <span>Catálogos</span>
         <span class="text-surface-container-highest">/</span>
-        <span class="text-primary font-semibold">Gestión Taxonómica & Marcas</span>
+        <span class="text-primary font-semibold">Gestión</span>
       </nav>
       <div class="inline-flex max-w-full flex-wrap items-center gap-2 px-2.5 py-1 rounded bg-surface-container-high text-secondary text-xs">
         <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
         <span>Baja lógica activa en todo el sistema (sin pérdida de registros)</span>
       </div>
     </div>
-
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6">
       <div>
         <h1 class="font-display text-2xl md:text-3xl font-bold tracking-tight text-on-surface">
@@ -33,7 +30,6 @@
         </button>
       </div>
     </div>
-
     @if (cargando()) {
       <div class="space-y-4 py-6">
         <div class="flex items-center justify-center gap-2 text-sm text-tertiary">
@@ -47,7 +43,6 @@
     } @else if (error()) {
       <p class="text-sm text-error py-10 text-center">No se pudo cargar el catálogo. Intentá nuevamente.</p>
     } @else {
-
     <section class="space-y-4 mb-14" id="seccion-categorias">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-surface-container-high/60">
         <div>
@@ -58,7 +53,6 @@
           <span class="text-xs text-tertiary">Mostrando {{ categorias().length }} categorías</span>
         </div>
       </div>
-
       <div class="space-y-3">
         @for (cat of categorias(); track cat.id) {
           @if (cat.activo) {
@@ -85,12 +79,11 @@
                     <span class="material-symbols-outlined text-[15px]">edit</span>
                     <span>Editar</span>
                   </button>
-                  <button type="button" (click)="cambiarEstado('categoria', cat.id, cat.activo)" class="h-7 w-7 inline-flex items-center justify-center rounded text-tertiary hover:text-error hover:bg-surface-container-high" title="Deshabilitar categoría">
+                  <button type="button" (click)="pedirDeshabilitarCategoria(cat)" class="h-7 w-7 inline-flex items-center justify-center rounded text-tertiary hover:text-error hover:bg-surface-container-high" title="Deshabilitar categoría">
                     <span class="material-symbols-outlined text-[16px]">delete</span>
                   </button>
                 </div>
               </div>
-
               @if (estaAbierta(cat.id)) {
                 <div class="p-3 space-y-1.5 bg-surface-container-low/40">
                   @for (tipo of cat.tipos; track tipo.id) {
@@ -151,7 +144,6 @@
                   </button>
                 </div>
               </div>
-
               @if (estaAbierta(cat.id)) {
                 <div class="p-3 space-y-1.5 bg-surface-container-lowest">
                   <div class="p-2 rounded bg-surface-container text-xs text-tertiary flex items-center gap-2 mb-2">
@@ -173,7 +165,6 @@
         }
       </div>
     </section>
-
     <section class="space-y-4 mb-14" id="seccion-tipos">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-surface-container-high/60">
         <div>
@@ -185,16 +176,14 @@
           <span>Agregar tipo</span>
         </button>
       </div>
-
       <div class="rounded-lg bg-surface-container-low border border-surface-container-high/60 overflow-hidden shadow-sm">
         <div class="grid grid-cols-12 items-center px-4 py-2.5 bg-surface-container text-xs font-semibold uppercase tracking-wider text-tertiary border-b border-surface-container-high">
           <div class="col-span-7 sm:col-span-6">Nombre del tipo</div>
           <div class="col-span-3 sm:col-span-3">Estado</div>
           <div class="col-span-2 sm:col-span-3 text-right">Acciones</div>
         </div>
-
         <div class="divide-y divide-surface-container-high/40 text-xs">
-          @for (tipo of tiposPlanos(); track tipo.id) {
+          @for (tipo of tiposVisibles(); track tipo.id) {
             @if (tipo.habilitado) {
               <div class="grid grid-cols-12 items-center px-4 py-3 hover:bg-surface-container transition-colors">
                 <div class="col-span-7 sm:col-span-6 font-medium text-on-surface flex items-center gap-2 truncate pr-2">
@@ -210,7 +199,7 @@
                   <button type="button" (click)="abrirModal('tipo', tipo)" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar tipo">
                     <span class="material-symbols-outlined text-[17px]">edit</span>
                   </button>
-                  <button type="button" (click)="cambiarEstado('tipo', tipo.id, tipo.activo)" class="p-1.5 rounded text-tertiary hover:text-error hover:bg-surface-container-highest transition-colors" title="Deshabilitar tipo">
+                  <button type="button" (click)="pedirDeshabilitarTipo(tipo)" class="p-1.5 rounded text-tertiary hover:text-error hover:bg-surface-container-highest transition-colors" title="Deshabilitar tipo">
                     <span class="material-symbols-outlined text-[17px]">delete</span>
                   </button>
                 </div>
@@ -231,7 +220,7 @@
                     <span class="material-symbols-outlined text-[17px]">edit</span>
                   </button>
                   @if (tipo.activo) {
-                    <button type="button" class="p-1.5 rounded text-tertiary/40 hover:text-tertiary cursor-pointer" title="No puede habilitarse mientras la categoría padre esté inactiva">
+                    <button type="button" (click)="abrirReglaPadre()" class="p-1.5 rounded text-tertiary/40 hover:text-tertiary cursor-pointer" title="No puede habilitarse mientras la categoría padre esté inactiva">
                       <span class="material-symbols-outlined text-[17px]">block</span>
                     </button>
                   } @else {
@@ -247,9 +236,15 @@
             <p class="px-4 py-6 text-tertiary">No hay tipos registrados.</p>
           }
         </div>
+        @if (tiposPlanos().length > limiteLista) {
+          <button type="button" (click)="alternarTipos()" [attr.aria-expanded]="tiposExpandidos()"
+            class="w-full h-10 inline-flex items-center justify-center gap-1.5 border-t border-surface-container-high/60 bg-surface-container text-xs font-semibold text-tertiary hover:text-on-surface hover:bg-surface-container-high transition-colors">
+            <span class="material-symbols-outlined text-[18px] transition-transform duration-200" [class.rotate-180]="tiposExpandidos()">expand_more</span>
+            <span>{{ tiposExpandidos() ? 'Ver menos' : 'Ver ' + (tiposPlanos().length - limiteLista) + ' más' }}</span>
+          </button>
+        }
       </div>
     </section>
-
     <section class="space-y-4 mb-14" id="seccion-marcas">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-surface-container-high/60">
         <div>
@@ -261,16 +256,14 @@
           <span>Agregar marca</span>
         </button>
       </div>
-
       <div class="rounded-lg bg-surface-container-low border border-surface-container-high/60 overflow-hidden shadow-sm">
         <div class="grid grid-cols-12 items-center px-4 py-2.5 bg-surface-container text-xs font-semibold uppercase tracking-wider text-tertiary border-b border-surface-container-high">
           <div class="col-span-7 sm:col-span-6">Marca</div>
           <div class="col-span-3 sm:col-span-3">Estado</div>
           <div class="col-span-2 sm:col-span-3 text-right">Acciones</div>
         </div>
-
         <div class="divide-y divide-surface-container-high/40 text-xs">
-          @for (marca of marcas(); track marca.id) {
+          @for (marca of marcasVisibles(); track marca.id) {
             @if (marca.activo) {
               <div class="grid grid-cols-12 items-center px-4 py-3 hover:bg-surface-container transition-colors">
                 <div class="col-span-7 sm:col-span-6 font-medium text-on-surface flex items-center gap-2 truncate pr-2">
@@ -286,7 +279,7 @@
                   <button type="button" (click)="abrirModal('marca', marca)" class="p-1.5 rounded text-tertiary hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Editar marca">
                     <span class="material-symbols-outlined text-[17px]">edit</span>
                   </button>
-                  <button type="button" (click)="cambiarEstado('marca', marca.id, marca.activo)" class="p-1.5 rounded text-tertiary hover:text-error hover:bg-surface-container-highest transition-colors" title="Deshabilitar marca">
+                  <button type="button" (click)="pedirDeshabilitarMarca(marca)" class="p-1.5 rounded text-tertiary hover:text-error hover:bg-surface-container-highest transition-colors" title="Deshabilitar marca">
                     <span class="material-symbols-outlined text-[17px]">delete</span>
                   </button>
                 </div>
@@ -317,20 +310,111 @@
             <p class="px-4 py-6 text-tertiary">No hay marcas registradas.</p>
           }
         </div>
+        @if (marcas().length > limiteLista) {
+          <button type="button" (click)="alternarMarcas()" [attr.aria-expanded]="marcasExpandidas()"
+            class="w-full h-10 inline-flex items-center justify-center gap-1.5 border-t border-surface-container-high/60 bg-surface-container text-xs font-semibold text-tertiary hover:text-on-surface hover:bg-surface-container-high transition-colors">
+            <span class="material-symbols-outlined text-[18px] transition-transform duration-200" [class.rotate-180]="marcasExpandidas()">expand_more</span>
+            <span>{{ marcasExpandidas() ? 'Ver menos' : 'Ver ' + (marcas().length - limiteLista) + ' más' }}</span>
+          </button>
+        }
       </div>
     </section>
-
     }
   </main>
   @if (modalKind) {
-    <div class="fixed inset-0 z-[100] grid place-items-center bg-black/60 p-4" (click)="cerrarModal()">
-      <section class="max-h-[calc(100dvh-2rem)] w-full max-w-lg overflow-y-auto rounded-lg border border-surface-container-high bg-surface-container-lowest p-4 shadow-2xl sm:p-6" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
-        <div class="mb-5 flex items-start justify-between"><div><h2 class="font-display text-xl font-bold">{{ editId ? 'Editar' : 'Agregar' }} {{ modalKind === 'categoria' ? 'categoría' : modalKind === 'tipo' ? 'tipo' : 'marca' }}</h2><p class="mt-1 text-sm text-tertiary">Completá los datos y guardá los cambios.</p></div><button type="button" (click)="cerrarModal()" aria-label="Cerrar" class="rounded p-1 text-tertiary hover:bg-surface-container-high"><span class="material-symbols-outlined">close</span></button></div>
-        <label class="mb-4 flex flex-col gap-2 text-sm font-semibold">Nombre<input [(ngModel)]="nombre" maxlength="80" class="rounded border border-surface-container-high bg-surface px-3 py-2 font-normal outline-none focus:border-primary" placeholder="Ingresá un nombre" /></label>
-        @if (modalKind === 'tipo') { <label class="mb-4 flex flex-col gap-2 text-sm font-semibold">Categoría<select [(ngModel)]="categoriaSeleccionada" class="rounded border border-surface-container-high bg-surface px-3 py-2 font-normal">@for (cat of categorias(); track cat.id) { <option [ngValue]="cat.id">{{ cat.nombre }}</option> }</select></label> }
-        @if (modalKind === 'categoria') { <label class="mb-3 flex flex-col gap-2 text-sm font-semibold">Imagen de categoría <span class="text-xs font-normal text-tertiary">Opcional · PNG, JPG, GIF o WebP · máximo 5 MB</span><input type="file" accept="image/png,image/jpeg,image/webp,image/gif" (change)="seleccionarImagen($event)" class="rounded border border-dashed border-surface-container-high p-2 text-xs" /></label>@if (imagenUrl) { <div class="mb-3 flex items-center gap-3 rounded bg-surface p-2"><img [src]="imagenUrl" alt="Vista previa" class="h-12 w-12 rounded object-cover" /><span class="flex-1 truncate text-xs">{{ imagenNombre }}</span><button type="button" class="text-xs text-error" (click)="imagenUrl = null; imagenNombre = ''">Quitar</button></div> } }
-        @if (errorFormulario) { <p class="mb-3 rounded bg-error-container p-2 text-sm text-error" role="alert">{{ errorFormulario }}</p> }
-        <div class="mt-6 flex justify-end gap-2"><button type="button" (click)="cerrarModal()" class="rounded bg-surface-container-high px-4 py-2 text-sm">Cancelar</button><button type="button" (click)="guardar()" [disabled]="guardando" class="rounded bg-primary-container px-4 py-2 text-sm font-semibold text-white disabled:opacity-50">{{ guardando ? 'Guardando…' : 'Guardar' }}</button></div>
+    <div class="fixed inset-0 z-[100] bg-surface-container-lowest/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" (click)="cerrarModal()">
+      <section class="bg-surface-container-low border border-surface-container-high rounded-xl max-w-md w-full p-6 shadow-2xl space-y-4 my-8" role="dialog" aria-modal="true" aria-labelledby="modal-form-title" (click)="$event.stopPropagation()">
+        <div class="flex items-center justify-between pb-3 border-b border-surface-container-high">
+          <h3 id="modal-form-title" class="font-display text-lg font-bold text-on-surface">{{ tituloModal }}</h3>
+          <button type="button" (click)="cerrarModal()" aria-label="Cerrar" class="text-tertiary hover:text-on-surface">
+            <span class="material-symbols-outlined text-[20px]">close</span>
+          </button>
+        </div>
+        <div>
+          <label for="input-nombre" class="block text-xs font-semibold text-tertiary uppercase tracking-wider mb-1.5">{{ labelNombre }} *</label>
+          <input id="input-nombre" type="text" [(ngModel)]="nombre" maxlength="80" [placeholder]="placeholderNombre"
+            class="w-full h-10 px-3 rounded bg-surface-container border border-surface-container-high text-on-surface text-sm focus:outline-none focus:border-primary" />
+        </div>
+        @if (modalKind === 'tipo') {
+          <div>
+            <label for="select-categoria" class="block text-xs font-semibold text-tertiary uppercase tracking-wider mb-1.5">Categoría padre *</label>
+            <select id="select-categoria" [(ngModel)]="categoriaSeleccionada"
+              class="w-full h-10 px-3 rounded bg-surface-container border border-surface-container-high text-on-surface text-sm focus:outline-none focus:border-primary">
+              @for (cat of categorias(); track cat.id) {
+                <option [ngValue]="cat.id">{{ cat.nombre }}{{ cat.activo ? ' (Activa)' : ' (Deshabilitada)' }}</option>
+              }
+            </select>
+          </div>
+        }
+        @if (modalKind === 'categoria') {
+          <div>
+            <label for="input-imagen" class="block text-xs font-semibold text-tertiary uppercase tracking-wider mb-1.5">Imagen de categoría (opcional)</label>
+            <input id="input-imagen" type="file" accept="image/png,image/jpeg,image/webp,image/gif" (change)="seleccionarImagen($event)"
+              class="w-full rounded bg-surface-container border border-dashed border-surface-container-high p-2 text-xs text-tertiary file:mr-3 file:rounded file:border-0 file:bg-surface-container-high file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-on-surface hover:file:bg-surface-container-highest" />
+            <span class="text-[11px] text-tertiary mt-1 block">PNG, JPG, GIF o WebP · máximo 5 MB.</span>
+          </div>
+          @if (imagenUrl) {
+            <div class="flex items-center gap-3 p-2 rounded bg-surface-container">
+              <img [src]="imagenUrl" alt="Vista previa de la imagen" class="h-12 w-12 rounded object-cover" />
+              <span class="flex-1 truncate text-xs text-on-surface">{{ imagenNombre }}</span>
+              <button type="button" (click)="quitarImagen()" class="text-xs font-semibold text-error hover:underline">Quitar</button>
+            </div>
+          }
+        }
+        @if (errorFormulario) {
+          <p class="p-2 rounded bg-error-container/40 text-error text-xs" role="alert">{{ errorFormulario }}</p>
+        }
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" (click)="cerrarModal()" class="px-4 h-9 rounded text-xs font-semibold text-tertiary hover:bg-surface-container-high hover:text-on-surface transition-colors">Cancelar</button>
+          <button type="button" (click)="guardar()" [disabled]="guardando"
+            class="px-4 h-9 rounded bg-primary-container text-white text-xs font-semibold hover:bg-primary hover:text-on-primary-container transition-colors disabled:opacity-50 disabled:cursor-not-allowed">{{ textoGuardar }}</button>
+        </div>
+      </section>
+    </div>
+  }
+  @if (confirmacion) {
+    <div class="fixed inset-0 z-[100] bg-surface-container-lowest/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" (click)="!deshabilitando && cancelarDeshabilitar()">
+      <section class="bg-surface-container-low border border-surface-container-high rounded-xl max-w-md w-full p-6 shadow-2xl space-y-4 my-8" role="alertdialog" aria-modal="true" aria-labelledby="modal-baja-title" aria-describedby="modal-baja-desc" (click)="$event.stopPropagation()">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-full bg-error-container/40 text-error flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[22px]">shield</span>
+          </div>
+          <div>
+            <span class="text-xs uppercase tracking-wider font-semibold text-primary">Baja lógica de registro</span>
+            <h3 id="modal-baja-title" class="font-display text-base font-bold text-on-surface">{{ confirmacion.titulo }}</h3>
+          </div>
+        </div>
+        <p id="modal-baja-desc" class="text-xs text-tertiary leading-relaxed">{{ confirmacion.descripcion }}</p>
+        <p class="text-xs text-tertiary leading-relaxed">Podrás habilitarlo nuevamente cuando lo desees.</p>
+
+        @if (errorConfirmacion) {
+          <p class="p-2 rounded bg-error-container/40 text-error text-xs" role="alert">{{ errorConfirmacion }}</p>
+        }
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" (click)="cancelarDeshabilitar()" [disabled]="deshabilitando" class="px-4 h-9 rounded text-xs font-semibold text-tertiary hover:bg-surface-container-high hover:text-on-surface transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Cancelar</button>
+          <button type="button" (click)="confirmarDeshabilitar()" [disabled]="deshabilitando"
+            class="px-4 h-9 rounded bg-primary-container text-white text-xs font-semibold hover:bg-primary hover:text-on-primary-container transition-colors disabled:opacity-50 disabled:cursor-not-allowed">{{ deshabilitando ? 'Deshabilitando…' : 'Deshabilitar' }}</button>
+        </div>
+      </section>
+    </div>
+  }
+  @if (reglaPadreAbierta) {
+    <div class="fixed inset-0 z-[100] bg-surface-container-lowest/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" (click)="cerrarReglaPadre()">
+      <section class="bg-surface-container-low border border-surface-container-high rounded-xl max-w-md w-full p-6 shadow-2xl space-y-4 my-8" role="dialog" aria-modal="true" aria-labelledby="modal-regla-title" (click)="$event.stopPropagation()">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[22px]">info</span>
+          </div>
+          <div>
+            <h3 id="modal-regla-title" class="font-display text-base font-bold text-on-surface">No es posible habilitar el tipo de producto</h3>
+            <p class="text-xs text-tertiary mt-1 leading-relaxed">
+              No puede rehabilitarse individualmente mientras la categoría padre permanezca deshabilitada. Habilitá primero la categoría padre para desbloquear sus tipos derivados.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center justify-end pt-2">
+          <button type="button" (click)="cerrarReglaPadre()" class="px-4 h-9 rounded bg-surface-container-high text-on-surface hover:bg-surface-container-highest text-xs font-semibold transition-colors">Entendido</button>
+        </div>
       </section>
     </div>
   }

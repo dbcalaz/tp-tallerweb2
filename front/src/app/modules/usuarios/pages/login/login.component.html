@@ -21,7 +21,6 @@
           <button class="password-toggle" type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'" [attr.aria-pressed]="showPassword"><span class="material-symbols-outlined" aria-hidden="true">{{ showPassword ? 'visibility_off' : 'visibility' }}</span></button></div>
         @if (form.controls.password.touched && form.controls.password.hasError('required')) { <small id="password-error" class="field-error">Ingresá tu contraseña.</small> }
       </div>
-      <label class="remember-control"><input type="checkbox"><span>Recordar mi sesión en este equipo</span></label>
       <p class="auth-switch"><a routerLink="/recuperar-contrasena">¿Olvidaste tu contraseña?</a></p>
       <button type="submit" [disabled]="isSubmitting()">{{ isSubmitting() ? 'Ingresando...' : 'Ingresar a mi cuenta' }} <span aria-hidden="true">→</span></button>
     </form>

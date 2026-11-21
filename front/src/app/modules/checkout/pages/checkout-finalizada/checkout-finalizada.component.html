@@ -1,18 +1,27 @@
 <div class="max-w-[1360px] mx-auto px-margin-desktop py-space-xl w-full">
-  <!-- Breadcrumb -->
-  <div class="flex items-center gap-space-xs text-on-surface-variant font-label-xs text-label-xs uppercase tracking-wider mb-space-lg">
-    <span>Austral Checkout</span>
+  <div
+    class="flex items-center gap-space-xs text-on-surface-variant font-label-xs text-label-xs uppercase tracking-wider mb-space-lg"
+  >
+    <span>Tecnova Checkout</span>
     <span class="opacity-40">/</span>
     <span class="text-primary font-bold">Confirmación de compra</span>
   </div>
-
-  <!-- Success Message -->
   <div class="flex flex-col items-center text-center max-w-2xl mx-auto mb-space-xl">
     <div class="relative mb-space-md">
       <div class="w-20 h-20 rounded-full bg-[#82958A] flex items-center justify-center shadow-sm">
-        <span class="material-symbols-outlined text-[40px] text-surface-container-lowest" style="font-variation-settings: 'FILL' 1, 'wght' 600;">check</span>
+        <span
+          class="material-symbols-outlined text-[40px] text-surface-container-lowest"
+          style="
+            font-variation-settings:
+              'FILL' 1,
+              'wght' 600;
+          "
+          >check</span
+        >
       </div>
-      <div class="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-xs text-label-xs font-bold">
+      <div
+        class="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-xs text-label-xs font-bold"
+      >
         ✓
       </div>
     </div>
@@ -20,21 +29,26 @@
       ¡Compra realizada con éxito!
     </h1>
     <p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
-      Recibirás un correo electrónico con el resumen de tu compra y los detalles del pedido en <span class="font-medium text-on-surface">{{ emailCompra() }}</span>.
+      Recibirás un correo electrónico con el resumen de tu compra y los detalles del pedido en
+      <span class="font-medium text-on-surface">{{ emailCompra() }}</span
+      >.
     </p>
   </div>
-
-  <!-- Main Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
-    <!-- Left Column: Order Details -->
     <div class="lg:col-span-8 flex flex-col gap-space-lg">
       <div class="bg-surface-container-lowest rounded-lg p-space-lg shadow-sm">
-        <!-- Order ID Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-space-md mb-space-md gap-space-sm bg-surface-container-low p-space-md rounded-lg">
+        <div
+          class="flex flex-col sm:flex-row sm:items-center justify-between pb-space-md mb-space-md gap-space-sm bg-surface-container-low p-space-md rounded-lg"
+        >
           <div class="flex flex-col">
-            <span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Identificador de orden</span>
+            <span
+              class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider"
+              >Identificador de orden</span
+            >
             <div class="flex items-center gap-space-xs mt-0.5">
-              <span class="font-headline-sm text-headline-sm text-primary tracking-tight">{{ orderId() }}</span>
+              <span class="font-headline-sm text-headline-sm text-primary tracking-tight">{{
+                orderId()
+              }}</span>
               <button
                 (click)="copiarOrderId()"
                 class="p-1 rounded text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors relative"
@@ -44,25 +58,36 @@
                 <span class="material-symbols-outlined text-[18px]">content_copy</span>
               </button>
             </div>
-            <span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">{{ formattedDate() }} • {{ formattedTime() }} hs</span>
+            <span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5"
+              >{{ formattedDate() }} • {{ formattedTime() }} hs</span
+            >
           </div>
-          <div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-[#82958A]/15 text-primary font-label-md text-label-md shrink-0">
+          <div
+            class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-[#82958A]/15 text-primary font-label-md text-label-md shrink-0"
+          >
             <span class="w-2 h-2 rounded-full bg-[#82958A] animate-pulse"></span>
             <span>Pago aprobado • Preparando para despacho</span>
           </div>
         </div>
-
-        <!-- Products List -->
         <div class="mb-space-lg">
           <div class="flex items-center justify-between mb-space-md">
-            <span class="font-title-md text-title-md text-primary">Detalle de hardware adquirido ({{ compra()?.detalles?.length ?? 0 }})</span>
-            <span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Garantía oficial directa</span>
+            <span class="font-title-md text-title-md text-primary"
+              >Detalle de hardware adquirido ({{ compra()?.detalles?.length ?? 0 }})</span
+            >
+            <span
+              class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider"
+              >Garantía oficial directa</span
+            >
           </div>
           <div class="flex flex-col gap-space-md">
             @for (detalle of compra()?.detalles; track detalle.id) {
-              <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md p-space-md bg-surface rounded-lg">
+              <div
+                class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md p-space-md bg-surface rounded-lg"
+              >
                 <div class="flex items-center gap-space-md min-w-0">
-                  <div class="w-20 h-20 rounded bg-surface-container-high shrink-0 overflow-hidden flex items-center justify-center p-2">
+                  <div
+                    class="w-20 h-20 rounded bg-surface-container-high shrink-0 overflow-hidden flex items-center justify-center p-2"
+                  >
                     <img
                       [src]="detalle.producto.imagenUrl || 'images/placeholder.jpg'"
                       [alt]="detalle.producto.nombre"
@@ -71,57 +96,90 @@
                   </div>
                   <div class="flex flex-col min-w-0">
                     <div class="inline-flex items-center gap-space-xs mb-1">
-                      <span class="font-label-xs text-label-xs bg-surface-container-high px-1.5 py-0.5 rounded text-on-surface-variant uppercase">Producto</span>
-                      <span class="font-body-sm text-body-sm text-on-surface-variant">Cant: {{ detalle.cantidad }}</span>
+                      <span
+                        class="font-label-xs text-label-xs bg-surface-container-high px-1.5 py-0.5 rounded text-on-surface-variant uppercase"
+                        >Producto</span
+                      >
+                      <span class="font-body-sm text-body-sm text-on-surface-variant"
+                        >Cant: {{ detalle.cantidad }}</span
+                      >
                     </div>
-                    <span class="font-title-md text-title-md text-on-surface truncate">{{ detalle.producto.nombre }}</span>
-                    <span class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1">{{ detalle.producto.marca ?? '' }} • {{ detalle.producto.tipo ?? '' }}</span>
+                    <span class="font-title-md text-title-md text-on-surface truncate">{{
+                      detalle.producto.nombre
+                    }}</span>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1"
+                      >{{ detalle.producto.marca ?? '' }} • {{ detalle.producto.tipo ?? '' }}</span
+                    >
                   </div>
                 </div>
-                <div class="text-right shrink-0 sm:pl-space-md w-full sm:w-auto flex sm:flex-col justify-between items-end">
+                <div
+                  class="text-right shrink-0 sm:pl-space-md w-full sm:w-auto flex sm:flex-col justify-between items-end"
+                >
                   <span class="font-price-display text-price-display text-primary">
-                    {{ (detalle.precioUnitario * detalle.cantidad) | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
+                    {{
+                      detalle.precioUnitario * detalle.cantidad
+                        | currency: 'ARS' : 'symbol-narrow' : '1.0-0'
+                    }}
                   </span>
-                  <span class="font-body-sm text-body-sm text-on-surface-variant">Factura con IVA incluido</span>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant"
+                    >Factura con IVA incluido</span
+                  >
                 </div>
               </div>
             }
           </div>
         </div>
-
-        <!-- Delivery Info -->
-        <div class="p-space-md bg-surface-container-high/40 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+        <div
+          class="p-space-md bg-surface-container-high/40 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md"
+        >
           <div class="flex items-center gap-space-md">
-            <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+            <div
+              class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0"
+            >
               <span class="material-symbols-outlined text-[20px]">local_shipping</span>
             </div>
             <div class="flex flex-col">
-              <span class="font-title-md text-title-md text-primary">Austral Direct Express Prioritario</span>
-              <span class="font-body-md text-body-md text-on-surface-variant">Entrega estimada: <strong class="text-on-surface font-semibold">Mañana entre 10:00 y 18:00 hs</strong></span>
-              <span class="font-body-sm text-body-sm text-on-surface-variant">Destino: {{ compra()?.direccionEnvio }}</span>
+              <span class="font-title-md text-title-md text-primary"
+                >Tecnova Direct Express Prioritario</span
+              >
+              <span class="font-body-md text-body-md text-on-surface-variant"
+                >Entrega estimada:
+                <strong class="text-on-surface font-semibold"
+                  >Mañana entre 10:00 y 18:00 hs</strong
+                ></span
+              >
+              <span class="font-body-sm text-body-sm text-on-surface-variant"
+                >Destino: {{ compra()?.direccionEnvio }}</span
+              >
             </div>
           </div>
           <div class="shrink-0 bg-surface-container-lowest px-space-md py-1.5 rounded text-center">
-            <span class="font-label-xs text-label-xs uppercase tracking-wider text-on-tertiary-container block">Logística bonificada</span>
+            <span
+              class="font-label-xs text-label-xs uppercase tracking-wider text-on-tertiary-container block"
+              >Logística bonificada</span
+            >
             <span class="font-label-md text-label-md text-primary font-bold">100% Bonificado</span>
           </div>
         </div>
-
       </div>
     </div>
-
-    <!-- Right Column: Financial Summary -->
     <div class="lg:col-span-4 flex flex-col gap-space-lg">
       <div class="bg-surface-container-lowest rounded-lg p-space-lg shadow-sm">
         <div class="pb-space-md mb-space-md">
-          <span class="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant block mb-1">Resumen financiero</span>
+          <span
+            class="font-label-xs text-label-xs uppercase tracking-wider text-on-surface-variant block mb-1"
+            >Resumen financiero</span
+          >
           <h2 class="font-headline-sm text-headline-sm text-primary">Liquidación de pago</h2>
         </div>
-
         <div class="space-y-space-sm pb-space-md mb-space-md">
           <div class="flex justify-between items-center font-body-md text-body-md">
-            <span class="text-on-surface-variant">Subtotal productos ({{ compra()?.detalles?.length ?? 0 }})</span>
-            <span class="text-on-surface font-medium">{{ compra()?.total | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}</span>
+            <span class="text-on-surface-variant"
+              >Subtotal productos ({{ compra()?.detalles?.length ?? 0 }})</span
+            >
+            <span class="text-on-surface font-medium">{{
+              compra()?.total | currency: 'ARS' : 'symbol-narrow' : '1.0-0'
+            }}</span>
           </div>
           <div class="flex justify-between items-center font-body-md text-body-md">
             <span class="text-on-surface-variant">Envío asegurado a CABA</span>
@@ -132,7 +190,6 @@
             <span class="text-on-surface font-medium">Incluido</span>
           </div>
         </div>
-
         <div class="bg-surface-container-low p-space-md rounded-lg mb-space-md">
           <div class="flex justify-between items-baseline mb-1">
             <span class="font-title-md text-title-md text-primary">Total abonado</span>
@@ -140,36 +197,41 @@
               {{ compra()?.total | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
             </span>
           </div>
-          <div class="flex items-center gap-space-xs text-[#82958A] font-price-installment text-price-installment">
+          <div
+            class="flex items-center gap-space-xs text-[#82958A] font-price-installment text-price-installment"
+          >
             <span class="material-symbols-outlined text-[16px]">credit_card</span>
             @if (installments() === 1) {
-              <span>En 1 pago de {{ compra()?.total | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }} ARS</span>
+              <span
+                >En 1 pago de
+                {{ compra()?.total | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }} ARS</span
+              >
             } @else {
-              <span>En {{ installments() }} cuotas fijas de {{ montoCuota() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }} ARS</span>
+              <span
+                >En {{ installments() }} cuotas fijas de
+                {{ montoCuota() | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }} ARS</span
+              >
             }
           </div>
         </div>
-
         <div class="space-y-space-sm mb-space-lg">
           <div class="p-space-sm bg-surface rounded flex items-center justify-between">
             <div class="flex items-center gap-space-xs">
-              <span class="px-1.5 py-0.5 rounded bg-surface-container-high font-label-xs text-label-xs font-bold text-primary uppercase">
+              <span
+                class="px-1.5 py-0.5 rounded bg-surface-container-high font-label-xs text-label-xs font-bold text-primary uppercase"
+              >
                 {{ paymentMethodLabel() }}
               </span>
-              <span class="font-body-sm text-body-sm text-on-surface">Tarjeta terminada en **** ****</span>
+              <span class="font-body-sm text-body-sm text-on-surface"
+                >Tarjeta terminada en **** ****</span
+              >
             </div>
-            <span class="font-label-xs text-label-xs text-[#82958A] uppercase font-bold">Autorizada</span>
+            <span class="font-label-xs text-label-xs text-[#82958A] uppercase font-bold"
+              >Autorizada</span
+            >
           </div>
-          <div class="p-space-sm bg-surface rounded flex flex-col gap-0.5">
-            <div class="flex items-center justify-between">
-              <span class="font-label-xs text-label-xs text-on-surface-variant uppercase">Comprobante fiscal</span>
-              <span class="font-label-xs text-label-xs bg-primary-container text-on-primary px-1.5 py-0.5 rounded">Factura A</span>
-            </div>
-            <span class="font-body-sm text-body-sm text-on-surface">Razón Social: {{ user()?.nombre }} {{ user()?.apellido }} S.A.</span>
-            <span class="font-body-sm text-body-sm text-on-surface-variant">CUIT: {{ user()?.id ?? '' }} • Responsable Inscripto</span>
-          </div>
-        </div>
 
+        </div>
         <div class="flex flex-col gap-space-sm">
           <a
             routerLink="/catalogo"
@@ -186,21 +248,26 @@
             <span>Ir a mi perfil</span>
           </a>
         </div>
-
-        <div class="mt-space-md pt-space-sm flex items-center justify-center gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+        <div
+          class="mt-space-md pt-space-sm flex items-center justify-center gap-space-xs text-on-surface-variant font-body-sm text-body-sm"
+        >
           <span class="material-symbols-outlined text-[16px] text-[#82958A]">lock</span>
           <span>Transacción encriptada y monitoreada</span>
         </div>
       </div>
-
-      <!-- Download Receipt -->
       <div class="bg-surface rounded-lg p-space-md flex items-center gap-space-md">
-        <div class="w-12 h-12 rounded bg-surface-container-lowest flex items-center justify-center shrink-0">
+        <div
+          class="w-12 h-12 rounded bg-surface-container-lowest flex items-center justify-center shrink-0"
+        >
           <span class="material-symbols-outlined primary text-[24px]">receipt_long</span>
         </div>
         <div class="flex flex-col min-w-0 flex-1">
-          <span class="font-title-md text-title-md text-primary truncate">Descargar comprobante</span>
-          <span class="font-body-sm text-body-sm text-on-surface-variant">Factura A en formato PDF legal</span>
+          <span class="font-title-md text-title-md text-primary truncate"
+            >Descargar comprobante</span
+          >
+          <span class="font-body-sm text-body-sm text-on-surface-variant"
+            >Factura A en formato PDF legal</span
+          >
         </div>
         <button
           (click)="descargarComprobantePDF()"

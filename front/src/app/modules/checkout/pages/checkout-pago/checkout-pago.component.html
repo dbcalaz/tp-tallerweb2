@@ -1,5 +1,4 @@
 <div class="w-full max-w-[1240px] mx-auto px-margin md:px-margin-desktop py-space-md md:py-space-lg">
-  <!-- Breadcrumb & Workflow Tracker -->
   <div class="flex flex-col gap-space-sm mb-space-lg">
     <nav class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
       <a routerLink="/catalogo" class="hover:text-primary transition-colors">Inicio</a>
@@ -10,10 +9,7 @@
       <span class="opacity-40">/</span>
       <span class="text-primary font-semibold">Pago y Confirmación</span>
     </nav>
-
-    <!-- Visual Stepper Strip -->
     <div class="bg-surface-container-lowest rounded-xl p-space-sm md:p-space-md shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-md">
-      <!-- Step 1 (Completed) -->
       <a routerLink="/checkout/entrega" class="group flex items-center gap-space-sm w-full sm:w-auto">
         <div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-xs text-label-xs shrink-0 shadow-sm">
           <span class="material-symbols-outlined text-[16px]">check</span>
@@ -30,13 +26,9 @@
           }
         </div>
       </a>
-
-      <!-- Stepper Separator (Desktop) -->
       <div class="hidden sm:flex flex-1 mx-space-lg h-0.5 bg-surface-container-highest relative overflow-hidden">
         <div class="absolute inset-0 bg-primary-container w-full"></div>
       </div>
-
-      <!-- Step 2 (Active) -->
       <div class="flex items-center gap-space-sm w-full sm:w-auto">
         <div class="w-7 h-7 rounded-full bg-on-tertiary-container text-on-primary flex items-center justify-center font-label-xs text-label-xs font-bold shrink-0 shadow-sm ring-2 ring-on-tertiary-container/20">
           2
@@ -51,31 +43,20 @@
       </div>
     </div>
   </div>
-
-  <!-- Main Two-Column Layout -->
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
-    <!-- LEFT COLUMN: Payment Methods (~62% = 7 cols) -->
     <section class="lg:col-span-7 flex flex-col gap-space-md">
-      <!-- Header Section -->
       <div class="bg-surface-container-lowest p-space-md md:p-space-lg rounded-xl shadow-sm flex flex-col gap-space-xs">
         <div class="flex items-center justify-between flex-wrap gap-space-xs">
           <h1 class="font-headline-md text-headline-md text-primary flex items-center gap-space-xs">
             <span class="material-symbols-outlined text-primary text-[26px]">credit_card</span>
             Método de pago
           </h1>
-          <div class="flex items-center gap-space-xs px-2.5 py-1 bg-surface-container-low rounded-lg text-on-surface-variant font-label-xs text-label-xs">
-            <span class="material-symbols-outlined text-[15px] text-primary">lock</span>
-            <span>Checkout seguro 256-bit</span>
-          </div>
         </div>
         <p class="font-body-md text-body-md text-on-surface-variant">
           Seleccioná cómo deseás abonar tu compra. Todas las transacciones son procesadas bajo normativas PCI-DSS de máxima seguridad financiera.
         </p>
       </div>
-
-      <!-- Payment Form -->
       <form [formGroup]="form" class="flex flex-col gap-space-sm">
-        <!-- Credit Card Option -->
         <div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden transition-all duration-200">
           <div class="p-space-md md:p-space-lg">
             <div class="flex items-start justify-between gap-space-sm">
@@ -90,8 +71,6 @@
                 Hasta 6 cuotas fijas
               </span>
             </div>
-
-            <!-- Brand Logos Strip -->
             <div class="flex items-center gap-space-xs mt-space-sm pl-7">
               <span class="px-2 py-0.5 rounded bg-surface-container-high font-label-xs text-label-xs font-bold text-on-surface">VISA</span>
               <span class="px-2 py-0.5 rounded bg-surface-container-high font-label-xs text-label-xs font-bold text-on-surface">MASTERCARD</span>
@@ -99,12 +78,8 @@
               <span class="px-2 py-0.5 rounded bg-surface-container-high font-label-xs text-label-xs font-bold text-on-surface">CABAL</span>
             </div>
           </div>
-
-          <!-- Credit Card Form Fields -->
           <div class="px-space-md md:px-space-lg pb-space-lg pt-space-xs flex flex-col gap-space-md bg-surface-container-low">
             <div class="h-px bg-surface-container-high w-full"></div>
-
-            <!-- Card Number -->
             <div class="flex flex-col gap-1">
               <label class="font-label-md text-label-md text-on-surface flex items-center justify-between" for="cardNumber">
                 <span>Número de tarjeta</span>
@@ -131,8 +106,6 @@
                 <span class="font-body-sm text-[11px] text-error">Número de tarjeta inválido</span>
               }
             </div>
-
-            <!-- Holder Name -->
             <div class="flex flex-col gap-1">
               <label class="font-label-md text-label-md text-on-surface" for="cardholderName">Nombre y apellido del titular</label>
               <input
@@ -146,8 +119,6 @@
                 <span class="font-body-sm text-[11px] text-error">Campo requerido</span>
               }
             </div>
-
-            <!-- Expiry & CVV -->
             <div class="grid grid-cols-2 gap-space-md">
               <div class="flex flex-col gap-1">
                 <label class="font-label-md text-label-md text-on-surface" for="cardExpirationMonth">Vencimiento (MM/AA)</label>
@@ -191,8 +162,6 @@
                 }
               </div>
             </div>
-
-            <!-- DNI del titular -->
             <div class="flex flex-col gap-1">
               <label class="font-label-md text-label-md text-on-surface" for="identificationNumber">DNI del titular</label>
               <input
@@ -206,8 +175,6 @@
                 <span class="font-body-sm text-[11px] text-error">DNI inválido</span>
               }
             </div>
-
-            <!-- Installments Selector -->
             <div class="flex flex-col gap-1 pt-space-xs">
               <label class="font-label-md text-label-md text-on-surface flex items-center justify-between" for="installments">
                 <span>Plan de cuotas fijas</span>
@@ -229,8 +196,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Other payment options (disabled for now) -->
         <div class="bg-surface-container-lowest rounded-xl shadow-sm opacity-50 cursor-not-allowed">
           <div class="p-space-md md:p-space-lg">
             <div class="flex items-start justify-between gap-space-sm">
@@ -244,7 +209,6 @@
             </div>
           </div>
         </div>
-
         <div class="bg-surface-container-lowest rounded-xl shadow-sm opacity-50 cursor-not-allowed">
           <div class="p-space-md md:p-space-lg">
             <div class="flex items-start justify-between gap-space-sm">
@@ -258,8 +222,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Return to delivery step action -->
         <div class="pt-space-xs flex items-center justify-between">
           <a
             routerLink="/checkout/entrega"
@@ -275,12 +237,8 @@
         </div>
       </form>
     </section>
-
-    <!-- RIGHT COLUMN: Purchase Summary (~38% = 5 cols) -->
     <aside class="lg:col-span-5 lg:sticky lg:top-24 flex flex-col gap-space-md">
-      <!-- Summary Box -->
       <div class="bg-surface-container-lowest rounded-xl shadow-md p-space-md md:p-space-lg flex flex-col gap-space-md">
-        <!-- Summary Header -->
         <div class="flex items-center justify-between pb-space-sm border-b border-surface-container-high">
           <div class="flex items-center gap-space-xs">
             <h2 class="font-headline-sm text-headline-sm text-primary">Resumen de compra</h2>
@@ -290,8 +248,6 @@
           </div>
           <a routerLink="/catalogo" class="font-label-xs text-label-xs text-on-surface-variant hover:text-primary transition-colors">Editar carrito</a>
         </div>
-
-        <!-- Itemised Product List -->
         <div class="flex flex-col gap-space-md">
           @for (item of items(); track item.productoId) {
             <div class="flex items-start gap-space-sm group">
@@ -316,8 +272,6 @@
             <div class="h-px bg-surface-container-high w-full"></div>
           }
         </div>
-
-        <!-- Totals -->
         <div class="flex flex-col gap-space-xs pt-space-xs">
           <div class="flex justify-between items-center font-body-md text-body-md text-on-surface-variant">
             <span>Subtotal productos ({{ totalItems() }})</span>
@@ -348,8 +302,6 @@
             }
           </p>
         </div>
-
-        <!-- Confirm Button -->
         <button
           (click)="confirmarCompra()"
           [disabled]="isProcessing() || !mpReady()"
@@ -364,14 +316,10 @@
             <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
           }
         </button>
-
-        <!-- Terms -->
         <p class="font-body-sm text-[11px] text-on-surface-variant text-center">
           Al confirmar la orden, aceptas los Términos del Servicio y políticas de garantía de Austral Tecnología S.R.L.
         </p>
       </div>
-
-      <!-- Trust Badges -->
       <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col gap-space-sm">
         <div class="flex items-center gap-space-sm">
           <span class="material-symbols-outlined text-[20px] text-primary">local_shipping</span>
@@ -388,8 +336,6 @@
           </div>
         </div>
       </div>
-
-      <!-- AFIP Invoice -->
       <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center gap-space-sm">
         <span class="material-symbols-outlined text-[20px] text-primary">receipt_long</span>
         <div>
